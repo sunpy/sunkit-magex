@@ -1,0 +1,31 @@
+{
+  "template": "https://github.com/sunpy/package-template",
+  "commit": "2d45e572cdb08623eaab16e8da0a007f2f3f9e96",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "package_name": "sunkit-magex",
+      "module_name": "sunkit-magex",
+      "short_description": "Potential field source surface modelling",
+      "author_name": "The SunPy Community",
+      "author_email": "sunpy@googlegroups.com",
+      "project_url": "https://sunpy.org",
+      "license": "GNU GPL v3+",
+      "minimum_python_version": "3.9",
+      "use_compiled_extensions": "y",
+      "enable_dynamic_dev_versions": "y",
+      "include_example_code": "n",
+      "include_cruft_update_github_workflow": "y",
+      "_sphinx_theme": "alabaster",
+      "_parent_project": "",
+      "_install_requires": "",
+      "_copy_without_render": [
+        "docs/_templates",
+        "docs/_static",
+        ".github/workflows/sub_package_update.yml"
+      ],
+      "_template": "https://github.com/sunpy/package-template"
+    }
+  },
+  "directory": null
+}
