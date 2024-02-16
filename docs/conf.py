@@ -14,7 +14,7 @@ copyright = "2022, The SunPy Community"
 author = "The SunPy Community"
 
 # The full version, including alpha/beta/rc tags
-from sunkit-magex import __version__
+from sunkit_magex import __version__
 release = __version__
 
 # -- General configuration ---------------------------------------------------

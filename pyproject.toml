@@ -6,7 +6,7 @@ requires = [
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "sunkit-magex"
+name = "sunkit_magex"
 description = "Potential field source surface modelling"
 readme = "README.rst"
 requires-python = ">=3.9"
@@ -39,11 +39,11 @@ include-package-data = true
 [tool.setuptools.packages.find]
 
 [tool.setuptools_scm]
-write_to = "sunkit-magex/_version.py"
+write_to = "sunkit_magex/_version.py"
 
 [tool.pytest.ini_options]
 testpaths = [
-  "sunkit-magex",
+  "sunkit_magex",
   "docs",
 ]
 doctest_plus = "enabled"
@@ -52,20 +52,20 @@ addopts = "--doctest-rst"
 
 [tool.coverage.run]
 omit = [
- "sunkit-magex/__init*",
- "sunkit-magex/conftest.py",
- "sunkit-magex/*setup_package*",
- "sunkit-magex/tests/*",
- "sunkit-magex/*/tests/*",
- "sunkit-magex/extern/*",
- "sunkit-magex/version*",
- "*/sunkit-magex/__init*",
- "*/sunkit-magex/conftest.py",
- "*/sunkit-magex/*setup_package*",
- "*/sunkit-magex/tests/*",
- "*/sunkit-magex/*/tests/*",
- "*/sunkit-magex/extern/*",
- "*/sunkit-magex/version*",
+ "sunkit_magex/__init*",
+ "sunkit_magex/conftest.py",
+ "sunkit_magex/*setup_package*",
+ "sunkit_magex/tests/*",
+ "sunkit_magex/*/tests/*",
+ "sunkit_magex/extern/*",
+ "sunkit_magex/version*",
+ "*/sunkit_magex/__init*",
+ "*/sunkit_magex/conftest.py",
+ "*/sunkit_magex/*setup_package*",
+ "*/sunkit_magex/tests/*",
+ "*/sunkit_magex/*/tests/*",
+ "*/sunkit_magex/extern/*",
+ "*/sunkit_magex/version*",
 ]
 
 [tool.coverage.report]
