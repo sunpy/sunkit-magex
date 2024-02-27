@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#
 # Configuration file for the Sphinx documentation builder.
 #
 # This file does only contain a selection of the most common options. For a
@@ -9,13 +7,13 @@
 
 # -- Project information -----------------------------------------------------
 
+# The full version, including alpha/beta/rc tags
+from sunkit_magex import __version__
+release = __version__
+
 project = "sunkit-magex"
 copyright = "2022, The SunPy Community"
 author = "The SunPy Community"
-
-# The full version, including alpha/beta/rc tags
-from sunkit-magex import __version__
-release = __version__
 
 # -- General configuration ---------------------------------------------------
 
