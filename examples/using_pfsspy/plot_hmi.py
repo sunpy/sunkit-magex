@@ -18,8 +18,8 @@ import sunpy.map
 from sunpy.net import Fido
 from sunpy.net import attrs as a
 
-import pfsspy
-import pfsspy.utils
+import sunkit_magex.pfss
+import sunkit_magex.pfss.utils
 
 ###############################################################################
 # Set up the search.
@@ -57,8 +57,8 @@ print('New shape: ', hmi_map.data.shape)
 # Now calculate the PFSS solution
 nrho = 35
 rss = 2.5
-pfss_in = pfsspy.Input(hmi_map, nrho, rss)
-pfss_out = pfsspy.pfss(pfss_in)
+pfss_in = sunkit_magex.pfss.Input(hmi_map, nrho, rss)
+pfss_out = sunkit_magex.pfss.pfss(pfss_in)
 
 ###############################################################################
 # Using the Output object we can plot the source surface field, and the

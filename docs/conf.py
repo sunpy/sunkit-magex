@@ -4,6 +4,8 @@
 # full list see the documentation:
 # http://www.sphinx-doc.org/en/master/config
 
+import os
+
 # -- Project information -----------------------------------------------------
 
 # The full version, including alpha/beta/rc tags
@@ -70,15 +72,15 @@ html_theme = "sunpy"
 from sphinx_gallery.sorting import ExplicitOrder  # noqa
 
 sphinx_gallery_conf = {
-    'ignore_pattern': '.*helpers.py',
-    'examples_dirs': '../../examples',
-    'gallery_dirs': 'auto_examples',
-    'subsection_order': ExplicitOrder(['../../examples/using_pfsspy',
-                                       '../../examples/finding_data',
-                                       '../../examples/utils',
-                                       '../../examples/pfsspy_info',
-                                       '../../examples/testing']),
-    'reference_url': {'sphinx_gallery': None}
+    "ignore_pattern": ".*helpers.py",
+    "examples_dirs": "../examples",
+    "gallery_dirs": os.path.join("generated", "gallery"),
+    "subsection_order": ExplicitOrder(["../examples/using_pfsspy",
+                                       "../examples/finding_data",
+                                       "../examples/utils",
+                                       "../examples/pfsspy_info",
+                                       "../examples/testing"]),
+    "reference_url": {"sphinx_gallery": None}
 }
 
 # -- Other options ----------------------------------------------------------

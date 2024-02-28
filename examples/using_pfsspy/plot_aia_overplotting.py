@@ -13,9 +13,9 @@ import numpy as np
 import sunpy.map
 from astropy.coordinates import SkyCoord
 
-import pfsspy
-import pfsspy.tracing as tracing
-from pfsspy.sample_data import get_gong_map
+import sunkit_magex.pfss
+import sunkit_magex.pfss.tracing as tracing
+from sunkit_magex.pfss.sample_data import get_gong_map
 
 ###############################################################################
 # Load a GONG magnetic field map
@@ -43,7 +43,7 @@ rss = 2.5
 ###############################################################################
 # From the boundary condition, number of radial grid points, and source
 # surface, we now construct an `Input` object that stores this information
-pfss_in = pfsspy.Input(gong_map, nrho, rss)
+pfss_in = sunkit_magex.pfss.Input(gong_map, nrho, rss)
 
 ###############################################################################
 # Using the `Input` object, plot the input photospheric magnetic field
@@ -97,7 +97,7 @@ ax.set_ylim(bottom=0)
 
 #######################################################################
 # Compute the PFSS solution from the GONG magnetic field input
-pfss_out = pfsspy.pfss(pfss_in)
+pfss_out = sunkit_magex.pfss.pfss(pfss_in)
 
 ###############################################################################
 # Trace field lines from the footpoints defined above.

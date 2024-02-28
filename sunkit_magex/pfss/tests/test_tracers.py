@@ -4,8 +4,8 @@ import astropy.units as u
 import numpy as np
 import pytest
 
-import pfsspy
-from pfsspy import tracing
+import sunkit_magex.pfss
+from sunkit_magex.pfss import tracing
 
 from .example_maps import dipole_map, dipole_result  # NoQA
 
@@ -26,7 +26,7 @@ def flines(dipole_result, request):
 
 def test_field_lines(flines):
     assert isinstance(flines[0],
-                      pfsspy.fieldline.FieldLine)
+                      sunkit_magex.pfss.fieldline.FieldLine)
     assert isinstance(flines.open_field_lines.solar_feet,
                       coord.SkyCoord)
     assert isinstance(flines.open_field_lines.source_surface_feet,

@@ -5,7 +5,7 @@ Open flux and radial grid points
 The script visualises results from ``open_flux_harmonics.py``.
 It shows the ratio of numeric to analytic total unsigned open fluxes in PFSS
 solutions of spherical harmonics, as a function of the number of radial grid
-cells in the pfsspy grid.
+cells in the sunkit_magex.pfss grid.
 """
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
@@ -41,7 +41,7 @@ for lm in df.columns:
 
         ax.yaxis.set_ticks([1, 1.05, 1.1])
         ax.yaxis.tick_right()
-        ax.set_ylabel(r'$\frac{\Phi_{pfsspy}}{\Phi_{analytic}}$',
+        ax.set_ylabel(r'$\frac{\Phi_{sunkit_magex.pfss}}{\Phi_{analytic}}$',
                       rotation=0, labelpad=30, fontsize=16, loc='center')
         ax.yaxis.set_label_position('right')
         ax.yaxis.set_major_formatter(mticker.ScalarFormatter())

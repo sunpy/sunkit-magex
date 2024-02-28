@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sunpy.map
 
-import pfsspy
+import sunkit_magex.pfss
 
 ###############################################################################
 # Create a dipole map
@@ -30,23 +30,23 @@ def dipole_Br(r, theta):
 
 
 br = dipole_Br(1, theta)
-br = sunpy.map.Map(br.T, pfsspy.utils.carr_cea_wcs_header('2010-01-01', br.shape))
-pfss_input = pfsspy.Input(br, nr, rss)
-pfss_output = pfsspy.pfss(pfss_input)
+br = sunpy.map.Map(br.T, sunkit_magex.pfss.utils.carr_cea_wcs_header('2010-01-01', br.shape))
+pfss_input = sunkit_magex.pfss.Input(br, nr, rss)
+pfss_output = sunkit_magex.pfss.pfss(pfss_input)
 print('Computed PFSS solution')
 
 ###############################################################################
 # Trace some field lines
 seed0 = np.atleast_2d(np.array([1, 1, 0]))
-tracers = [pfsspy.tracing.PythonTracer(),
-           pfsspy.tracing.FortranTracer()]
+tracers = [sunkit_magex.pfss.tracing.PythonTracer(),
+           sunkit_magex.pfss.tracing.FortranTracer()]
 nseeds = 2**np.arange(14)
 times = [[], []]
 
 for nseed in nseeds:
     print(nseed)
     seeds = np.repeat(seed0, nseed, axis=0)
-    r, lat, lon = pfsspy.coords.cart2sph(seeds[:, 0], seeds[:, 1], seeds[:, 2])
+    r, lat, lon = sunkit_magex.pfss.coords.cart2sph(seeds[:, 0], seeds[:, 1], seeds[:, 2])
     r = r * astropy.constants.R_sun
     lat = (lat - np.pi / 2) * u.rad
     lon = lon * u.rad

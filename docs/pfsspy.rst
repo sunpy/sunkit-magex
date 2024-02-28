@@ -1,14 +1,14 @@
 API reference
 =============
 
-.. automodapi:: pfsspy
+.. automodapi:: sunkit_magex.pfss
 
-.. automodapi:: pfsspy.grid
+.. automodapi:: sunkit_magex.pfss.grid
 
-.. automodapi:: pfsspy.fieldline
+.. automodapi:: sunkit_magex.pfss.fieldline
 
-.. automodapi:: pfsspy.tracing
+.. automodapi:: sunkit_magex.pfss.tracing
 
-.. automodapi:: pfsspy.utils
+.. automodapi:: sunkit_magex.pfss.utils
 
-.. automodapi:: pfsspy.analytic
+.. automodapi:: sunkit_magex.pfss.analytic

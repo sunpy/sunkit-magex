@@ -2,7 +2,7 @@ import astropy.units as u
 import numpy as np
 import pytest
 
-from pfsspy import analytic
+from sunkit_magex.pfss import analytic
 
 
 @pytest.mark.parametrize('f', [analytic.Bphi, analytic.Btheta])

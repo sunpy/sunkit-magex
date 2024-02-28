@@ -5,7 +5,7 @@ import numpy as np
 
 class Grid:
     r"""
-    Grid on which the pfsspy solution is calculated.
+    Grid on which the sunkit_magex.pfss solution is calculated.
 
     Notes
     -----

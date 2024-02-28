@@ -5,8 +5,8 @@ import numpy as np
 import pytest
 import sunpy.map
 
-import pfsspy
-from pfsspy import utils
+import sunkit_magex.pfss
+from sunkit_magex.pfss import utils
 
 from .example_maps import adapt_map, dipole_map, gong_map  # NoQA
 
@@ -23,7 +23,7 @@ def test_header_generation():
     nphi = 90
     dtime = '2001-01-01 00:00:00'
     shape = [nphi, ntheta]
-    header = pfsspy.utils.carr_cea_wcs_header(dtime, shape)
+    header = sunkit_magex.pfss.utils.carr_cea_wcs_header(dtime, shape)
     assert header['LONPOLE'] == 0
     assert header['CTYPE1'] == 'CRLN-CEA'
     assert header['CTYPE2'] == 'CRLT-CEA'

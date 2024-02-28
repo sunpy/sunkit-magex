@@ -11,9 +11,9 @@ import sunpy.util.exceptions
 from astropy.tests.helper import quantity_allclose
 from sunpy.coordinates import frames
 
-import pfsspy
-import pfsspy.coords
-from pfsspy import tracing
+import sunkit_magex.pfss
+import sunkit_magex.pfss.coords
+from sunkit_magex.pfss import tracing
 
 from .example_maps import dipole_map, dipole_result, gong_map, zero_map  # NoQA
 
@@ -30,8 +30,8 @@ def test_pfss(gong_map):
     expected = np.loadtxt(test_data / 'br_in.txt')
     np.testing.assert_equal(m.data, expected)
 
-    pfss_in = pfsspy.Input(m, 50, 2)
-    pfss_out = pfsspy.pfss(pfss_in)
+    pfss_in = sunkit_magex.pfss.Input(m, 50, 2)
+    pfss_out = sunkit_magex.pfss.pfss(pfss_in)
 
     br = pfss_out.source_surface_br.data
     assert br.shape == m.data.shape
@@ -43,8 +43,8 @@ def test_pfss(gong_map):
 def test_bunit(gong_map):
     # Regression test to check that the output of pfss doesn't change
     m = sunpy.map.Map(gong_map)
-    pfss_in = pfsspy.Input(m, 2, 2)
-    pfss_out = pfsspy.pfss(pfss_in)
+    pfss_in = sunkit_magex.pfss.Input(m, 2, 2)
+    pfss_out = sunkit_magex.pfss.pfss(pfss_in)
     assert pfss_out.bunit == u.G
 
     pfss_out.input_map.meta['bunit'] = 'notaunit'
@@ -134,7 +134,7 @@ def test_shape(zero_map):
     nphi = input.grid.nphi
     ns = input.grid.ns
 
-    out = pfsspy.pfss(input)
+    out = sunkit_magex.pfss.pfss(input)
     alr, als, alp = out._al
     for comp in (alr, als, alp):
         assert np.all(comp == 0)
@@ -160,19 +160,19 @@ def test_shape(zero_map):
 def test_wrong_projection_error(dipole_map):
     dipole_map.meta['ctype1'] = 'HGLN-CAR'
     with pytest.raises(ValueError, match='must be CEA'):
-        pfsspy.Input(dipole_map, 5, 2.5)
+        sunkit_magex.pfss.Input(dipole_map, 5, 2.5)
 
 
 def test_nan_value(dipole_map):
     dipole_map.data[0, 0] = np.nan
     with pytest.raises(
             ValueError, match='At least one value in the input is NaN'):
-        pfsspy.Input(dipole_map, 5, 2.5)
+        sunkit_magex.pfss.Input(dipole_map, 5, 2.5)
 
 
 def test_non_map_input():
     with pytest.raises(ValueError, match='br must be a sunpy Map'):
-        pfsspy.Input(np.random.rand(2, 2), 1, 1)
+        sunkit_magex.pfss.Input(np.random.rand(2, 2), 1, 1)
 
 
 def test_bvec_interpolator(dipole_result):

@@ -6,8 +6,8 @@ import astropy.coordinates as astrocoords
 import astropy.units as u
 import numpy as np
 
-import pfsspy
-import pfsspy.fieldline as fieldline
+import sunkit_magex.pfss
+import sunkit_magex.pfss.fieldline as fieldline
 
 
 class Tracer(abc.ABC):
@@ -21,7 +21,7 @@ class Tracer(abc.ABC):
         ----------
         seeds : astropy.coordinates.SkyCoord
             Coordinaes of the magnetic field seed points.
-        output : pfsspy.Output
+        output : sunkit_magex.pfss.Output
             pfss output.
 
         Returns
@@ -55,7 +55,7 @@ class Tracer(abc.ABC):
         Parameters
         ----------
         seeds : astropy.coordinates.SkyCoord
-        output : pfsspy.Output
+        output : sunkit_magex.pfss.Output
         """
         seeds = seeds.transform_to(output.coordinate_frame)
         # In general the phi value of the magnetic field array can differ from
@@ -113,7 +113,7 @@ class FortranTracer(Tracer):
     @staticmethod
     def vector_grid(output):
         """
-        Create a `streamtracer.VectorGrid` object from an `~pfsspy.Output`.
+        Create a `streamtracer.VectorGrid` object from an `~sunkit_magex.pfss.Output`.
         """
         from streamtracer import VectorGrid
 
@@ -182,7 +182,7 @@ class FortranTracer(Tracer):
                 'You should probably increase max_steps '
                 f'(currently set to {self.max_steps}) and try again.')
 
-        xs = [np.stack(pfsspy.coords.strum2cart(x[:, 2], x[:, 1], x[:, 0]), axis=-1) for x in xs]
+        xs = [np.stack(sunkit_magex.pfss.coords.strum2cart(x[:, 2], x[:, 1], x[:, 0]), axis=-1) for x in xs]
         flines = [fieldline.FieldLine(x[:, 0], x[:, 1], x[:, 2], output) for x in xs]
         return fieldline.FieldLines(flines)
 

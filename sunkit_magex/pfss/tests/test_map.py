@@ -2,14 +2,14 @@
 import astropy.units as u
 import sunpy.map
 
-import pfsspy.map
+import sunkit_magex.pfss.map
 
 from .example_maps import adapt_map, gong_map  # NoQA
 
 
 def test_gong_source(gong_map):
     m = sunpy.map.Map(gong_map)
-    assert isinstance(m, pfsspy.map.GongSynopticMap)
+    assert isinstance(m, sunkit_magex.pfss.map.GongSynopticMap)
     # Check round-trip is robust against sunpy changes to the meta
     m = sunpy.map.Map(m.data, m.meta)
     assert m.date.isot == '2020-09-01T13:04:00.000'
@@ -28,4 +28,4 @@ def test_adapt_map(adapt_map):
     adapt_fits = astropy.io.fits.open(adapt_map)
     for map_slice in adapt_fits[0].data:
         m = sunpy.map.Map((map_slice, adapt_fits[0].header))
-        assert isinstance(m, pfsspy.map.ADAPTMap)
+        assert isinstance(m, sunkit_magex.pfss.map.ADAPTMap)

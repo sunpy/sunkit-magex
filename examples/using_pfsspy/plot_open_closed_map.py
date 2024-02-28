@@ -12,9 +12,9 @@ import numpy as np
 import sunpy.map
 from astropy.coordinates import SkyCoord
 
-import pfsspy
-from pfsspy import tracing
-from pfsspy.sample_data import get_gong_map
+import sunkit_magex.pfss
+from sunkit_magex.pfss import tracing
+from sunkit_magex.pfss.sample_data import get_gong_map
 
 ###############################################################################
 # Load a GONG magnetic field map
@@ -28,8 +28,8 @@ rss = 2.5
 
 ###############################################################################
 # Construct the input, and calculate the output solution
-pfss_in = pfsspy.Input(gong_map, nrho, rss)
-pfss_out = pfsspy.pfss(pfss_in)
+pfss_in = sunkit_magex.pfss.Input(gong_map, nrho, rss)
+pfss_out = sunkit_magex.pfss.pfss(pfss_in)
 
 
 ###############################################################################

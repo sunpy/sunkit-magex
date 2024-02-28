@@ -12,7 +12,7 @@ and :math:`\log r`.
 import matplotlib.pyplot as plt
 import numpy as np
 
-from pfsspy.grid import Grid
+from sunkit_magex.pfss.grid import Grid
 
 ###############################################################################
 # Define the grid spacings

@@ -14,19 +14,46 @@ license = { file = "licenses/LICENSE.rst", content-type = "text/plain" }
 authors = [
   { name = "The SunPy Community", email = "sunpy@googlegroups.com" },
 ]
-dependencies = []
+dependencies = [
+    "astropy>=5.0",
+    "numpy",
+    "scikit-image",
+    "scipy",
+    "sunpy[map]>=4,<5.1",
+]
 dynamic = ["version"]
 
 [project.optional-dependencies]
 tests = [
     "pytest",
     "pytest-doctestplus",
-    "pytest-cov"
+    "pytest-cov",
+    "parfive",
+    "reproject",
+    "streamtracer",
+    "sympy",
 ]
 docs = [
     "sphinx",
     "sphinx-automodapi",
     "tomli; python_version <\"3.11\"",
+    "graphviz",
+    "importlib_metadata",
+    "pillow",
+    "reproject",
+    "sphinx-gallery",
+    "sphinx_rtd_theme",
+    "streamtracer",
+    "sunpy[net,map]",
+    "sympy",
+    "sunpy-sphinx-theme",
+]
+performance = [
+  "numba",
+  "streamtracer",
+]
+analytic = [
+  "sympy",
 ]
 
 [project.urls]

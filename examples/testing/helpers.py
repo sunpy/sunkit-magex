@@ -10,8 +10,8 @@ import sunpy.map
 from sympy import acos, asin, cos, lambdify, sin
 from sympy.abc import x
 
-import pfsspy.analytic as analytic
-import pfsspy.utils
+import sunkit_magex.pfss.analytic as analytic
+import sunkit_magex.pfss.utils
 
 result_dir = (pathlib.Path(__file__) / '..' / 'results').resolve()
 
@@ -29,23 +29,23 @@ def theta_phi_grid(nphi, ns):
 
 def pffspy_output(nphi, ns, nrho, rss, l, m):
     assert l >= 1, 'l must be >= 1'
-    # Return the pfsspy solution for given input parameters
+    # Return the sunkit_magex.pfss solution for given input parameters
     theta, phi = theta_phi_grid(nphi, ns)
 
     br_in = analytic.Br(l, m, rss)(1, theta, phi)
 
-    header = pfsspy.utils.carr_cea_wcs_header('2020-1-1', br_in.shape)
+    header = sunkit_magex.pfss.utils.carr_cea_wcs_header('2020-1-1', br_in.shape)
     input_map = sunpy.map.Map((br_in.T, header))
 
-    pfss_input = pfsspy.Input(input_map, nrho, rss)
-    return pfsspy.pfss(pfss_input)
+    pfss_input = sunkit_magex.pfss.Input(input_map, nrho, rss)
+    return sunkit_magex.pfss.pfss(pfss_input)
 
 
 def brss_pfsspy(nphi, ns, nrho, rss, l, m):
     # Return the radial component of the source surface mangetic field
     # for given input parameters
-    pfsspy_out = pffspy_output(nphi, ns, nrho, rss, l, m)
-    return pfsspy_out.bc[0][:, :, -1].T.astype(float)
+    sunkit_magex.pfss_out = pffspy_output(nphi, ns, nrho, rss, l, m)
+    return sunkit_magex.pfss_out.bc[0][:, :, -1].T.astype(float)
 
 
 def brss_analytic(nphi, ns, rss, l, m):
@@ -77,7 +77,7 @@ def open_flux_numeric(l, m, zss, nrho):
     """
     nphi = 360
     ns = 180
-    br = brss_pfsspy(nphi, ns, nrho, zss, l, m)
+    br = brss_sunkit_magex.pfss(nphi, ns, nrho, zss, l, m)
     return np.sum(np.abs(br)) * (4 * np.pi) / nphi / ns
 
 

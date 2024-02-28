@@ -11,9 +11,9 @@ import numpy as np
 import sunpy.map
 from astropy.coordinates import SkyCoord
 
-import pfsspy
-from pfsspy import coords, tracing
-from pfsspy.sample_data import get_gong_map
+import sunkit_magex.pfss
+from sunkit_magex.pfss import coords, tracing
+from sunkit_magex.pfss.sample_data import get_gong_map
 
 ###############################################################################
 # Load a GONG magnetic field map
@@ -30,7 +30,7 @@ rss = 2.5
 ###############################################################################
 # From the boundary condition, number of radial grid points, and source
 # surface, we now construct an Input object that stores this information
-pfss_in = pfsspy.Input(gong_map, nrho, rss)
+pfss_in = sunkit_magex.pfss.Input(gong_map, nrho, rss)
 
 
 def set_axes_lims(ax):
@@ -50,7 +50,7 @@ set_axes_lims(ax)
 
 ###############################################################################
 # Now calculate the PFSS solution
-pfss_out = pfsspy.pfss(pfss_in)
+pfss_out = sunkit_magex.pfss.pfss(pfss_in)
 
 ###############################################################################
 # Using the Output object we can plot the source surface field, and the

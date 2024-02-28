@@ -6,7 +6,7 @@ import numpy as np
 import sunpy.map
 from astropy.coordinates import SkyCoord
 
-import pfsspy.coords
+import sunkit_magex.pfss.coords
 
 # Default colourmap for magnetic field maps
 _MAG_CMAP = 'RdBu'
@@ -31,7 +31,7 @@ class Output:
 
     Notes
     -----
-    Instances of this class are intended to be created by `pfsspy.pfss`, and
+    Instances of this class are intended to be created by `sunkit_magex.pfss.pfss`, and
     not by users.
     '''
     def __init__(self, alr, als, alp, grid, input_map=None):
@@ -47,7 +47,7 @@ class Output:
 
     def _wcs_header(self):
         """
-        Construct a world coordinate system describing the pfsspy solution.
+        Construct a world coordinate system describing the sunkit_magex.pfss solution.
         """
         return self.input_map.wcs
 
@@ -84,7 +84,7 @@ class Output:
 
         If no metadata is available, returns dimensionless units.
         """
-        # Note that this can be removed once pfsspy depends on sunpy>=2.1, see
+        # Note that this can be removed once sunkit_magex.pfss depends on sunpy>=2.1, see
         # https://github.com/sunpy/sunpy/pull/4451
         unit_str = self.input_map.meta.get('bunit', None)
         if unit_str is None:
@@ -140,7 +140,7 @@ class Output:
         """
         Regular grid interpolator for B.
         """
-        from pfsspy.interpolator import RegularGridInterpolator as rgi
+        from sunkit_magex.pfss.interpolator import RegularGridInterpolator as rgi
         if self._rgi is not None:
             return self._rgi
 
@@ -185,7 +185,7 @@ class Output:
         """
         x, y, z = coord
         # (ph, s, rh) coordinates of current point:
-        rho, s, phi = pfsspy.coords.cart2strum(x, y, z)
+        rho, s, phi = sunkit_magex.pfss.coords.cart2strum(x, y, z)
 
         # Check if position vector is outside the data limits
         if rho < 0 or rho > np.log(self.grid.rss):
@@ -485,7 +485,7 @@ class Output:
             warnings.warn("The obstime of one of more input coordinates "
                           "do not match the pfss model obstime.")
 
-        # Convert SkyCoord to pfsspy.Output coordinate frame
+        # Convert SkyCoord to sunkit_magex.pfss.Output coordinate frame
         coords.transform_to(self.coordinate_frame)
 
         # Do interpolation (returns cartesian vector)

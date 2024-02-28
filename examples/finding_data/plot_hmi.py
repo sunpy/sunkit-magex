@@ -24,7 +24,7 @@ import sunpy.map
 from sunpy.net import Fido
 from sunpy.net import attrs as a
 
-import pfsspy.utils
+import sunkit_magex.pfss.utils
 
 ###############################################################################
 # Set up the search.
@@ -63,5 +63,5 @@ print(files)
 # object. Note that HMI maps have several bits of metadata that do not comply
 # to the FITS standard, so we need to fix them first.
 hmi_map = sunpy.map.Map(files[0])
-pfsspy.utils.fix_hmi_meta(hmi_map)
+sunkit_magex.pfss.utils.fix_hmi_meta(hmi_map)
 hmi_map.peek()

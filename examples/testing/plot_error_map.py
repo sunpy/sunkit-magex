@@ -2,7 +2,7 @@
 Field line error map
 ====================
 This script produces a map of errors between analytic field line equations
-and field lines numerically traced by pfsspy.
+and field lines numerically traced by sunkit_magex.pfss.
 """
 import astropy.constants as const
 import astropy.units as u
@@ -11,7 +11,7 @@ import numpy as np
 from astropy.coordinates import SkyCoord
 from astropy.visualization import quantity_support
 
-from pfsspy import tracing
+from sunkit_magex.pfss import tracing
 
 from helpers import pffspy_output, phi_fline_coords, theta_fline_coords
 
@@ -84,10 +84,10 @@ def plot_map(field, ax, label, title):
 
 
 plot_map(dtheta.to_value(u.deg), axs[0],
-         r'$\theta_{pfsspy} - \theta_{analytic}$ (deg)',
+         r'$\theta_{sunkit_magex.pfss} - \theta_{analytic}$ (deg)',
          'Error in latitude')
 plot_map(dphi.to_value(u.deg), axs[1],
-         r'$\phi_{pfsspy} - \phi_{analytic}$ (deg)',
+         r'$\phi_{sunkit_magex.pfss} - \phi_{analytic}$ (deg)',
          'Error in longitude')
 
 ax = axs[1]

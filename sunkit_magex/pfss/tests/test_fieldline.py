@@ -1,6 +1,6 @@
 import pytest
 
-from pfsspy.fieldline import (
+from sunkit_magex.pfss.fieldline import (
     ClosedFieldLines,
     FieldLine,
     FieldLines,

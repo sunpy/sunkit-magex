@@ -1,2 +1,2 @@
-Using pfsspy
-------------
+Using `sunkit_magex.pfss`
+-------------------------

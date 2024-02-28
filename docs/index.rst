@@ -8,10 +8,8 @@ This is the documentation for sunkit-magex.
    :caption: Contents:
 
    installing
-   auto_examples/index
+   generated/gallery/index
    pfsspy
    performance
-   changes
-   project_status
    numerical_method
    synoptic_fits

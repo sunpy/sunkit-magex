@@ -2,7 +2,7 @@
 Dipole source solution
 ======================
 
-A simple example showing how to use pfsspy to compute the solution to a dipole
+A simple example showing how to use sunkit_magex.pfss to compute the solution to a dipole
 source field.
 """
 import astropy.constants as const
@@ -14,8 +14,8 @@ import sunpy.map
 from astropy.coordinates import SkyCoord
 from astropy.time import Time
 
-import pfsspy
-import pfsspy.coords as coords
+import sunkit_magex.pfss
+import sunkit_magex.pfss.coords as coords
 
 ###############################################################################
 # To start with we need to construct an input for the PFSS model. To do this,
@@ -49,9 +49,9 @@ rss = 2.5
 ###############################################################################
 # From the boundary condition, number of radial grid points, and source
 # surface, we now construct an Input object that stores this information
-header = pfsspy.utils.carr_cea_wcs_header(Time('2020-1-1'), br.shape)
+header = sunkit_magex.pfss.utils.carr_cea_wcs_header(Time('2020-1-1'), br.shape)
 input_map = sunpy.map.Map((br.T, header))
-pfss_in = pfsspy.Input(input_map, nrho, rss)
+pfss_in = sunkit_magex.pfss.Input(input_map, nrho, rss)
 
 ###############################################################################
 # Using the Input object, plot the input field
@@ -64,7 +64,7 @@ ax.set_title('Input dipole field')
 
 ###############################################################################
 # Now calculate the PFSS solution.
-pfss_out = pfsspy.pfss(pfss_in)
+pfss_out = sunkit_magex.pfss.pfss(pfss_in)
 
 ###############################################################################
 # Using the Output object we can plot the source surface field, and the
@@ -96,7 +96,7 @@ lon = np.pi / 2 * u.rad
 lat = np.linspace(-np.pi / 2, np.pi / 2, 33) * u.rad
 seeds = SkyCoord(lon, lat, r, frame=pfss_out.coordinate_frame)
 
-tracer = pfsspy.tracing.FortranTracer()
+tracer = sunkit_magex.pfss.tracing.FortranTracer()
 field_lines = tracer.trace(seeds, pfss_out)
 
 for field_line in field_lines:

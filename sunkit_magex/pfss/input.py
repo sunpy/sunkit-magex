@@ -3,8 +3,8 @@ import copy
 import numpy as np
 import sunpy.map
 
-import pfsspy.utils
-from pfsspy.grid import Grid
+import sunkit_magex.pfss.utils
+from sunkit_magex.pfss.grid import Grid
 
 
 class Input:
@@ -26,7 +26,7 @@ class Input:
     Notes
     -----
     The input must be on a regularly spaced grid in :math:`\phi` and
-    :math:`s = \cos (\theta)`. See `pfsspy.grid` for more
+    :math:`s = \cos (\theta)`. See `sunkit_magex.pfss.grid` for more
     information on the coordinate system.
     """
     def __init__(self, br, nr, rss):
@@ -37,8 +37,8 @@ class Input:
                              'non-finite. The input must consist solely of '
                              'finite values.')
 
-        pfsspy.utils.is_cea_map(br, error=True)
-        pfsspy.utils.is_full_sun_synoptic_map(br, error=True)
+        sunkit_magex.pfss.utils.is_cea_map(br, error=True)
+        sunkit_magex.pfss.utils.is_full_sun_synoptic_map(br, error=True)
 
         self._map_in = copy.deepcopy(br)
         self.dtime = self.map.date
@@ -64,7 +64,7 @@ class Input:
     @property
     def grid(self):
         """
-        `~pfsspy.grid.Grid` that the PFSS solution for this input is
+        `~sunkit_magex.pfss.grid.Grid` that the PFSS solution for this input is
         calculated on.
         """
         return self._grid

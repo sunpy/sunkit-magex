@@ -33,6 +33,6 @@ for lstr in results['analytic']:
 
 cbar = axs.fig.colorbar(cm.ScalarMappable(norm=norm, cmap=cmap),
                         ax=axs.all_axs)
-cbar.ax.set_ylabel(r'$\frac{\Phi_{pfsspy}}{\Phi_{analytic}}$', rotation=0,
+cbar.ax.set_ylabel(r'$\frac{\Phi_{sunkit_magex.pfss}}{\Phi_{analytic}}$', rotation=0,
                    size=18, labelpad=27, va='center')
 plt.show()

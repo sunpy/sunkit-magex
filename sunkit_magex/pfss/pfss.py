@@ -3,7 +3,7 @@ Code for calculating a PFSS extrapolation.
 """
 import numpy as np
 
-import pfsspy
+import sunkit_magex.pfss
 
 HAS_NUMBA = False
 try:
@@ -162,4 +162,4 @@ def pfss(input):
 
     als, alp = _als_alp(nr, nphi, Fs, psi, Fp, als, alp)
 
-    return pfsspy.Output(alr, als, alp, input.grid, input.map)
+    return sunkit_magex.pfss.Output(alr, als, alp, input.grid, input.map)

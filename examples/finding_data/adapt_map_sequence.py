@@ -9,7 +9,7 @@ import sunpy.io
 import sunpy.map
 from matplotlib import gridspec
 
-from pfsspy.sample_data import get_adapt_map
+from sunkit_magex.pfss.sample_data import get_adapt_map
 
 ###############################################################################
 # Load an example ADAPT fits file, utility stored in adapt_helpers.py

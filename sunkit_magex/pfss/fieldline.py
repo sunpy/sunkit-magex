@@ -5,7 +5,7 @@ import astropy.coordinates as coord
 import astropy.units as u
 import numpy as np
 
-from pfsspy import coords
+from sunkit_magex.pfss import coords
 
 
 class FieldLines:

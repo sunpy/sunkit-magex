@@ -10,7 +10,7 @@ import sunpy.time
 from astropy import units as u
 from astropy.wcs import WCS
 
-import pfsspy.map
+import sunkit_magex.pfss.map
 
 
 def fix_hmi_meta(hmi_map):
@@ -52,7 +52,7 @@ def fix_hmi_meta(hmi_map):
 
     # Fix observer coordinate
     if 'hglt_obs' not in hmi_map.meta:
-        hmi_map.meta.update(pfsspy.map._earth_obs_coord_meta(
+        hmi_map.meta.update(sunkit_magex.pfss.map._earth_obs_coord_meta(
             hmi_map.meta['date-obs']))
 
 
@@ -249,10 +249,10 @@ def car_to_cea(m, method='interp'):
     """
     Reproject a plate-carée map in to a cylindrical-equal-area map.
 
-    The solver used in pfsspy requires a magnetic field map with values
+    The solver used in sunkit_magex.pfss requires a magnetic field map with values
     equally spaced in sin(lat) (ie. a CEA projection), but some maps are
     provided equally spaced in lat (ie. a CAR projection). This function
-    reprojects a CAR map into a CEA map so it can be used with pfsspy.
+    reprojects a CAR map into a CEA map so it can be used with sunkit_magex.pfss.
 
     Parameters
     ----------

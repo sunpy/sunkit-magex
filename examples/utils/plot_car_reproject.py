@@ -2,17 +2,17 @@
 Re-projecting from CAR to CEA
 -----------------------------
 
-The pfsspy solver takes a cylindrical-equal-area (CEA) projected magnetic field
+The sunkit_magex.pfss solver takes a cylindrical-equal-area (CEA) projected magnetic field
 map as input, which is equally spaced in sin(latitude). Some synoptic field
 maps are equally spaced in latitude, a plate carée (CAR) projection, and need
 reprojecting.
 
-This example shows how to use the `pfsspy.utils.car_to_cea` function to
-reproject a CAR projection to a CEA projection that pfsspy can take as input.
+This example shows how to use the `sunkit_magex.pfss.utils.car_to_cea` function to
+reproject a CAR projection to a CEA projection that sunkit_magex.pfss can take as input.
 """
 import matplotlib.pyplot as plt
 
-from pfsspy import sample_data, utils
+from sunkit_magex.pfss import sample_data, utils
 
 ###############################################################################
 # Load a sample ADAPT map, which has a CAR projection
