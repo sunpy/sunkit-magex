@@ -27,6 +27,7 @@ jobs:
       submodules: false
       coverage: codecov
       toxdeps: tox-pypi-filter
+      posargs: -n auto
       envs: |
         - linux: py312
     secrets:

@@ -7,9 +7,9 @@ This is the documentation for sunkit-magex.
    :maxdepth: 2
    :caption: Contents:
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   installing
+   generated/gallery/index
+   pfsspy
+   performance
+   numerical_method
+   synoptic_fits
