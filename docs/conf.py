@@ -4,7 +4,6 @@
 # full list see the documentation:
 # http://www.sphinx-doc.org/en/master/config
 
-
 # -- Project information -----------------------------------------------------
 
 # The full version, including alpha/beta/rc tags
@@ -12,7 +11,7 @@ from sunkit_magex import __version__
 release = __version__
 
 project = "sunkit-magex"
-copyright = "2022, The SunPy Community"
+copyright = "2024, The SunPy Community"
 author = "The SunPy Community"
 
 # -- General configuration ---------------------------------------------------
@@ -32,6 +31,7 @@ extensions = [
     "sphinx.ext.mathjax",
     "sphinx_automodapi.automodapi",
     "sphinx_automodapi.smart_resolver",
+    'sphinx_gallery.gen_gallery',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -51,25 +51,39 @@ master_doc = "index"
 
 # -- Options for intersphinx extension ---------------------------------------
 
-# Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {"python": ("https://docs.python.org/", None)}
+intersphinx_mapping = {
+    "python": ("https://docs.python.org/", None),
+    "astropy": ("https://docs.astropy.org/en/stable", None),
+    "sunpy": ("https://docs.sunpy.org/en/stable", None),
+    "numpy": ("https://numpy.org/doc/stable", None),
+    "streamtracer": ("https://streamtracer.readthedocs.io/en/stable", None),
+    "scipy": ("https://docs.scipy.org/doc/scipy/", None),
+    "reproject": ("https://reproject.readthedocs.io/en/stable/", None),
+}
 
 # -- Options for HTML output -------------------------------------------------
 
-# The theme to use for HTML and HTML Help pages.  See the documentation for
-# a list of builtin themes.
-html_theme = "alabaster"
+html_theme = "sunpy"
 
-# Add any paths that contain custom static files (such as style sheets) here,
-# relative to this directory. They are copied after the builtin static files,
-# so a file named "default.css" will overwrite the builtin "default.css".
-# html_static_path = ["_static"]
+# -- Sphinx Gallery ----------------------------------------------------------
+ 
+from sphinx_gallery.sorting import ExplicitOrder  # noqa
 
-# By default, when rendering docstrings for classes, sphinx.ext.autodoc will
-# make docs with the class-level docstring and the class-method docstrings,
-# but not the __init__ docstring, which often contains the parameters to
-# class constructors across the scientific Python ecosystem. The option below
-# will append the __init__ docstring to the class-level docstring when rendering
-# the docs. For more options, see:
-# https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html#confval-autoclass_content
-autoclass_content = "both"
+sphinx_gallery_conf = {
+    'ignore_pattern': '.*helpers.py',
+    'examples_dirs': '../../examples',
+    'gallery_dirs': 'auto_examples',
+    'subsection_order': ExplicitOrder(['../../examples/using_pfsspy',
+                                       '../../examples/finding_data',
+                                       '../../examples/utils',
+                                       '../../examples/pfsspy_info',
+                                       '../../examples/testing']),
+    'reference_url': {'sphinx_gallery': None}
+}
+
+# -- Other options ----------------------------------------------------------
+default_role = 'py:obj'
+
+os.environ["JSOC_EMAIL"] = 'jsoc@sunpy.org'
+
+nitpicky = True
