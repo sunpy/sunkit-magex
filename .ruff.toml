@@ -18,6 +18,11 @@ extend-ignore = [
   "PT007", # Parametrize should be lists of tuples  # TODO! fix
   "PT011", # Too broad exception assert             # TODO! fix
   "PT023", # Always use () on pytest decorators
+
+  # pfsspy
+  # TODO: Fix these
+  "E741",
+  "F811",
 ]
 
 [lint.flake8-tidy-imports]

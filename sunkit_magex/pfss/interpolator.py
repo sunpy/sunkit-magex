@@ -12,7 +12,7 @@ import itertools
 import numpy as np
 
 
-class RegularGridInterpolator(object):
+class RegularGridInterpolator:
     """
     Interpolation on a regular grid in arbitrary dimensions
     The data must be defined on a regular grid; the grid spacing however may be

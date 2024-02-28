@@ -347,7 +347,7 @@ def roll_map(m, lh_edge_lon: u.deg = 0.0 * u.deg, method='interp'):
         raise ValueError(f'method must be one of {methods.keys()} '
                          f'(got {method})')
     if lh_edge_lon > 360.0 * u.deg or lh_edge_lon < 0.0 * u.deg:
-        raise ValueError(f"lh_edge_lon must be in the range [0,360])")
+        raise ValueError("lh_edge_lon must be in the range [0,360])")
 
     reproject = methods[method]
     # Check input map is valid

@@ -44,8 +44,8 @@ def pffspy_output(nphi, ns, nrho, rss, l, m):
 def brss_pfsspy(nphi, ns, nrho, rss, l, m):
     # Return the radial component of the source surface mangetic field
     # for given input parameters
-    sunkit_magex.pfss_out = pffspy_output(nphi, ns, nrho, rss, l, m)
-    return sunkit_magex.pfss_out.bc[0][:, :, -1].T.astype(float)
+    pfsspy_out = pffspy_output(nphi, ns, nrho, rss, l, m)
+    return pfsspy_out.bc[0][:, :, -1].T.astype(float)
 
 
 def brss_analytic(nphi, ns, rss, l, m):
@@ -77,7 +77,7 @@ def open_flux_numeric(l, m, zss, nrho):
     """
     nphi = 360
     ns = 180
-    br = brss_sunkit_magex.pfss(nphi, ns, nrho, zss, l, m)
+    br = brss_pfsspy(nphi, ns, nrho, zss, l, m)
     return np.sum(np.abs(br)) * (4 * np.pi) / nphi / ns
 
 

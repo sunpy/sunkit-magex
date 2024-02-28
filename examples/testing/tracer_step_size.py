@@ -27,7 +27,7 @@ rss = 2
 
 ###############################################################################
 # Calculate PFSS solution
-sunkit_magex.pfss_out = pffspy_output(nphi, ns, nr, rss, l, m)
+pfsspy_out = pffspy_output(nphi, ns, nr, rss, l, m)
 
 ###############################################################################
 # Trace an array of field lines from the source surface down to the solar
@@ -42,7 +42,7 @@ theta, phi = np.meshgrid(theta, phi, indexing='ij')
 theta, phi = theta * u.rad, phi * u.deg
 rss = rss * const.R_sun
 seeds = SkyCoord(radius=rss, lat=theta.ravel(), lon=phi.ravel(),
-                 frame=sunkit_magex.pfss_out.coordinate_frame)
+                 frame=pfsspy_out.coordinate_frame)
 
 step_sizes = [32, 16, 8, 4, 2, 1, 0.5]
 dthetas = []
@@ -51,7 +51,7 @@ for step_size in step_sizes:
     print(f'Tracing {step_size}...')
     # Trace
     tracer = tracing.FortranTracer(step_size=step_size)
-    flines = tracer.trace(seeds, sunkit_magex.pfss_out)
+    flines = tracer.trace(seeds, pfsspy_out)
     # Set a mask of open field lines
     mask = flines.connectivities.astype(bool).reshape(theta.shape)
 

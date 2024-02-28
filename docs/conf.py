@@ -68,7 +68,7 @@ intersphinx_mapping = {
 html_theme = "sunpy"
 
 # -- Sphinx Gallery ----------------------------------------------------------
- 
+
 from sphinx_gallery.sorting import ExplicitOrder  # noqa
 
 sphinx_gallery_conf = {

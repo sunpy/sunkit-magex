@@ -26,7 +26,7 @@ class FieldLines:
         return len(self.field_lines)
 
     @property
-    @functools.lru_cache()
+    @functools.lru_cache
     def polarities(self):
         """
         Magnetic field line polarities. ``0`` for closed, otherwise sign(Br) on
@@ -76,7 +76,7 @@ class OpenFieldLines(FieldLines):
             raise ValueError('Not all field lines are open')
 
     @property
-    @functools.lru_cache()
+    @functools.lru_cache
     def source_surface_feet(self):
         """
         Coordinates of the source suface footpoints.
@@ -88,7 +88,7 @@ class OpenFieldLines(FieldLines):
         return FieldLine._coords(x, y, z, self.field_lines[0]._output)
 
     @property
-    @functools.lru_cache()
+    @functools.lru_cache
     def solar_feet(self):
         """
         Coordinates of the solar footpoints.
@@ -241,7 +241,7 @@ class FieldLine:
         return self._output.get_bvec(coords)
 
     @property
-    @functools.lru_cache()
+    @functools.lru_cache
     def expansion_factor(self):
         r"""
         Magnetic field expansion factor.

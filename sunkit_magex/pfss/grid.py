@@ -98,7 +98,7 @@ class Grid:
         return [self.dp, self.ds, self.dr]
 
     @property
-    @functools.lru_cache()
+    @functools.lru_cache
     def _sqrtsg_correction(self):
         """
         The sqrt(1 - sg**2) correction needed to trace natively. Computed here
