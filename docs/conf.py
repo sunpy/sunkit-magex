@@ -82,7 +82,7 @@ sphinx_gallery_conf = {
     "ignore_pattern": "helpers.py",
     "matplotlib_animations": True,
     "only_warn_on_example_error": True,
-    "plot_gallery": False,
+    "plot_gallery": True,
     "remove_config_comments": True,
     "subsection_order": ExplicitOrder([
         "../examples/using_pfsspy",
