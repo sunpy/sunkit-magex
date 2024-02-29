@@ -5,6 +5,7 @@ exclude = [
   "__pycache__",
   "build",
   "sunkit-magex/version.py",
+  "examples/testing/",
 ]
 
 [lint]
@@ -15,14 +16,7 @@ extend-ignore = [
   # pytest (PT)
   "PT001", # Always use pytest.fixture()
   "PT004", # Fixtures which don't return anything should have leading _
-  "PT007", # Parametrize should be lists of tuples  # TODO! fix
-  "PT011", # Too broad exception assert             # TODO! fix
   "PT023", # Always use () on pytest decorators
-
-  # pfsspy
-  # TODO: Fix these
-  "E741",
-  "F811",
 ]
 
 [lint.flake8-tidy-imports]

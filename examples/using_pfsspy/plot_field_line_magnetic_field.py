@@ -11,33 +11,34 @@ import matplotlib.pyplot as plt
 import sunpy.map
 from astropy.coordinates import SkyCoord
 
-import sunkit_magex.pfss
-from sunkit_magex.pfss import tracing
-from sunkit_magex.pfss.sample_data import get_gong_map
+from sunkit_magex import pfss
 
 ###############################################################################
-# Load a GONG magnetic field map
-gong_fname = get_gong_map()
+# Load a GONG magnetic field map.
+
+gong_fname = pfss.sample_data.get_gong_map()
 gong_map = sunpy.map.Map(gong_fname)
 
 ###############################################################################
 # The PFSS solution is calculated on a regular 3D grid in (phi, s, rho), where
 # rho = ln(r), and r is the standard spherical radial coordinate. We need to
 # define the number of rho grid points, and the source surface radius.
+
 nrho = 35
 rss = 2.5
 
 ###############################################################################
 # From the boundary condition, number of radial grid points, and source
 # surface, we now construct an Input object that stores this information
-pfss_in = sunkit_magex.pfss.Input(gong_map, nrho, rss)
-pfss_out = sunkit_magex.pfss.pfss(pfss_in)
+
+pfss_in = pfss.Input(gong_map, nrho, rss)
+pfss_out = pfss.pfss(pfss_in)
 
 ###############################################################################
 # Now take a seed point, and trace a magnetic field line through the PFSS
 # solution from this point
 
-tracer = tracing.FortranTracer()
+tracer = pfss.tracing.FortranTracer()
 r = 1.2 * const.R_sun
 lat = 70 * u.deg
 lon = 0 * u.deg
@@ -52,6 +53,7 @@ field_lines = tracer.trace(seeds, pfss_out)
 #
 # From the plot we can see that the non-radial component of the mangetic field
 # goes to zero at the source surface, as expected.
+
 field_line = field_lines[0]
 B = field_line.b_along_fline
 r = field_line.coords.radius

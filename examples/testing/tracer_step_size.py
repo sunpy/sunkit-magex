@@ -10,7 +10,7 @@ from astropy.coordinates import SkyCoord
 
 from sunkit_magex.pfss import tracing
 
-from helpers import (
+from examples.testing.helpers import (
     pffspy_output,
     phi_fline_coords,
     result_dir,

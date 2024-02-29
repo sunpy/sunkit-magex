@@ -10,11 +10,11 @@ from sunkit_magex.pfss import coords
 
 class FieldLines:
     """
-    A collection of :class:`FieldLine`.
+    A collection of `~sunkit_magex.pfss.fieldline.FieldLine`.
 
     Parameters
     ----------
-    field_lines : list of `FieldLine`.
+    field_lines : list of `~sunkit_magex.pfss.fieldline.FieldLine`.
     """
     def __init__(self, field_lines):
         self.field_lines = np.array(field_lines)

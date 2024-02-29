@@ -1,16 +1,16 @@
 """
 Code for calculating a PFSS extrapolation.
 """
+
+import contextlib
 import numpy as np
 
 import sunkit_magex.pfss
 
 HAS_NUMBA = False
-try:
+with contextlib.suppress(Exception):
     import numba
     HAS_NUMBA = True
-except Exception:
-    pass
 
 
 def _eigh(A):
@@ -18,7 +18,7 @@ def _eigh(A):
 
 
 def _compute_r_term(m, k, ns, Q, brt, lam, ffm, nr, ffp, psi, psir):
-    for l in range(ns):
+    for l in range(ns):  # NOQA: E741
         # Ignore the l=0 and m=0 term; for a globally divergence free field
         # this term is zero anyway, but numerically it may be small which
         # causes numerical issues when solving for c, d
@@ -71,12 +71,12 @@ def pfss(input):
 
     Parameters
     ----------
-    input : :class:`Input`
+    input : ~sunkit_magex.pfss.Input
         Input parameters.
 
     Returns
     -------
-    out : :class:`Output`
+    ~sunkit_magex.pfss.Output
 
     Notes
     -----

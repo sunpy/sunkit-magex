@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import pandas as pd
 
-from helpers import LMAxes, result_dir
+from examples.testing.helpers import LMAxes, result_dir
 
 nl = 3
 
@@ -53,6 +53,5 @@ for l in range(1, nl+1):
             for minor in [True, False]:
                 ax.xaxis.set_ticks([], minor=minor)
                 ax.yaxis.set_ticks([], minor=minor)
-
 
 plt.show()

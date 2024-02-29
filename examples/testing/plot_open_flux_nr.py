@@ -2,16 +2,16 @@
 Open flux and radial grid points
 ================================
 
-The script visualises results from ``open_flux_harmonics.py``.
+The script visualizes results from ``open_flux_harmonics.py``.
 It shows the ratio of numeric to analytic total unsigned open fluxes in PFSS
 solutions of spherical harmonics, as a function of the number of radial grid
-cells in the sunkit_magex.pfss grid.
+cells in the `sunkit_magex.pfss` grid.
 """
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import pandas as pd
 
-from helpers import LMAxes, result_dir
+from examples.testing.helpers import LMAxes, result_dir
 
 df = pd.read_csv(result_dir / 'open_flux_results.csv', index_col=0)
 axs = LMAxes(nl=5)

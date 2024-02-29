@@ -8,8 +8,8 @@ import sunpy.map
 import sunkit_magex.pfss
 from sunkit_magex.pfss import utils
 
-from .example_maps import adapt_map, dipole_map, gong_map  # NoQA
-
+# Ignore missing metadata warnings
+pytestmark = [pytest.mark.filterwarnings('ignore:Missing metadata for observer')]
 
 def test_load_adapt(adapt_map):
     adaptMapSequence = utils.load_adapt(adapt_map)
@@ -63,7 +63,7 @@ def test_validation(dipole_map, error):
 def test_validation_not_full_map(dipole_map):
     dipole_map.meta['cdelt1'] = 0.001
     assert not utils.is_full_sun_synoptic_map(dipole_map)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='Number of points in phi direction times'):
         utils.is_full_sun_synoptic_map(dipole_map, error=True)
 
 
@@ -82,7 +82,7 @@ def test_car_reproject(adapt_map):
         utils.car_to_cea(adapt_map, method='gibberish')
 
 
-def test_roll_map(gong_map):
+def test_roll_map(adapt_map, gong_map):
     lh_edge_test = 0.0 * u.deg
     gong_map = sunpy.map.Map(gong_map)
     rolled_map = utils.roll_map(gong_map,

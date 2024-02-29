@@ -69,23 +69,31 @@ html_theme = "sunpy"
 
 # -- Sphinx Gallery ----------------------------------------------------------
 
+from sunpy_sphinx_theme import PNG_ICON  # noqa
 from sphinx_gallery.sorting import ExplicitOrder  # noqa
 
 sphinx_gallery_conf = {
-    "ignore_pattern": ".*helpers.py",
-    "examples_dirs": "../examples",
-    "gallery_dirs": os.path.join("generated", "gallery"),
+    "backreferences_dir": os.path.join("generated", "modules"),
+    "filename_pattern": "^((?!skip_).)*$",
+    "ignore_pattern": "helpers.py",
+    "examples_dirs": os.path.join("..", "examples"),
     "subsection_order": ExplicitOrder(["../examples/using_pfsspy",
                                        "../examples/finding_data",
                                        "../examples/utils",
-                                       "../examples/pfsspy_info",
+                                       "../examples/internals",
                                        "../examples/testing"]),
-    "reference_url": {"sphinx_gallery": None}
+    "gallery_dirs": os.path.join("generated", "gallery"),
+    "matplotlib_animations": True,
+    "default_thumb_file": PNG_ICON,
+    "abort_on_example_error": False,
+    "plot_gallery": "True",
+    "remove_config_comments": True,
+    "only_warn_on_example_error": True,
 }
 
 # -- Other options ----------------------------------------------------------
-default_role = 'py:obj'
-
+# JSOC email os env
+# see https://github.com/sunpy/sunpy/wiki/Home:-JSOC
 os.environ["JSOC_EMAIL"] = 'jsoc@sunpy.org'
 
 nitpicky = True

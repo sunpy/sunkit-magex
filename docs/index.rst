@@ -9,7 +9,7 @@ This is the documentation for sunkit-magex.
 
    installing
    generated/gallery/index
-   pfsspy
+   reference/index
    performance
-   numerical_method
+   numerical_methods_pfss/index.rst
    synoptic_fits

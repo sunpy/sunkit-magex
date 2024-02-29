@@ -54,8 +54,7 @@ class Output:
     @property
     def _lon0(self):
         """Longitude offset of the map."""
-        return (self.input_map.meta['crval1'] *
-                u.Unit(self.input_map.meta['cunit1']))
+        return self.input_map.reference_coordinate.lon
 
     @property
     def coordinate_frame(self):
@@ -84,19 +83,8 @@ class Output:
 
         If no metadata is available, returns dimensionless units.
         """
-        # Note that this can be removed once sunkit_magex.pfss depends on sunpy>=2.1, see
-        # https://github.com/sunpy/sunpy/pull/4451
-        unit_str = self.input_map.meta.get('bunit', None)
-        if unit_str is None:
-            return u.dimensionless_unscaled
-
-        unit = u.Unit(unit_str, format='fits', parse_strict='silent')
-        if isinstance(unit, u.UnrecognizedUnit):
-            warnings.warn(f'Could not parse unit string "{unit_str}" as a valid FITS unit.\n'
-                          'See https://fits.gsfc.nasa.gov/fits_standard.html '
-                          'for the FITS unit standards.')
-            unit = u.dimensionless_unscaled
-        return unit
+        unit = self.input_map.unit
+        return u.dimensionless_unscaled if unit is None else unit
 
     @property
     def source_surface_br(self):

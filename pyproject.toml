@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sunkit_magex"
-description = "Potential field source surface modelling"
+description = "Solar Magnetic field Extrapollation"
 readme = "README.rst"
 requires-python = ">=3.9"
 license = { file = "licenses/LICENSE.rst", content-type = "text/plain" }
@@ -15,38 +15,35 @@ authors = [
   { name = "The SunPy Community", email = "sunpy@googlegroups.com" },
 ]
 dependencies = [
-    "astropy>=5.0",
-    "numpy",
-    "scikit-image",
-    "scipy",
-    "sunpy[map]>=4,<5.1",
+  "astropy>=5.2.0",
+  "numpy>=1.21.0",
+  "scikit-image>=0.19.0",
+  # !=1.10.0 due to https://github.com/scipy/scipy/issues/17718
+  "scipy>=1.8.0,!=1.10.0",
+  "sunpy[map]>=5.1",
 ]
 dynamic = ["version"]
 
 [project.optional-dependencies]
 tests = [
-    "pytest",
-    "pytest-doctestplus",
-    "pytest-cov",
-    "parfive",
-    "reproject",
-    "streamtracer",
-    "sympy",
+  "pytest",
+  "pytest-doctestplus",
+  "pytest-cov",
+  "parfive",
+  "reproject",
+  "streamtracer",
+  "sympy",
 ]
 docs = [
-    "sphinx",
-    "sphinx-automodapi",
-    "tomli; python_version <\"3.11\"",
-    "graphviz",
-    "importlib_metadata",
-    "pillow",
-    "reproject",
-    "sphinx-gallery",
-    "sphinx_rtd_theme",
-    "streamtracer",
-    "sunpy[net,map]",
-    "sympy",
-    "sunpy-sphinx-theme",
+  "sphinx",
+  "sphinx-automodapi",
+  "pillow",
+  "reproject",
+  "sphinx-gallery",
+  "streamtracer",
+  "sunpy[net,map]",
+  "sympy",
+  "sunpy-sphinx-theme",
 ]
 performance = [
   "numba",
@@ -57,7 +54,12 @@ analytic = [
 ]
 
 [project.urls]
-repository = "https://sunpy.org"
+Homepage = "https://sunpy.org"
+Download = "https://pypi.org/project/sunkit-magex/"
+"Source Code" = "https://github.com/sunpy/sunkit-magex/"
+Documentation = "https://docs.sunpy.org/"
+Changelog = "https://docs.sunpy.org/en/stable/whatsnew/changelog.html"
+"Issue Tracker" = "https://github.com/sunpy/sunkit-magex/issues"
 
 [tool.setuptools]
 zip-safe = false
