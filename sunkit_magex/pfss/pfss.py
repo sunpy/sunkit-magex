@@ -1,16 +1,16 @@
 """
 Code for calculating a PFSS extrapolation.
 """
-
-import contextlib
 import numpy as np
 
 import sunkit_magex.pfss
 
 HAS_NUMBA = False
-with contextlib.suppress(Exception):
+try:
     import numba
     HAS_NUMBA = True
+except Exception:
+    pass
 
 
 def _eigh(A):

@@ -10,8 +10,51 @@ import sunpy.time
 from astropy import units as u
 from astropy.wcs import WCS
 
+__all__ = ['fix_hmi_meta', 'load_adapt', 'carr_cea_wcs_header', 'is_cea_map', 'is_car_map', 'is_full_sun_synoptic_map', 'car_to_cea', 'roll_map']
 
-__all__ = ['load_adapt', 'carr_cea_wcs_header', 'is_cea_map', 'is_car_map', 'is_full_sun_synoptic_map', 'car_to_cea', 'roll_map']
+def fix_hmi_meta(hmi_map):
+    """
+    Fix non-compliant FITS metadata in HMI maps.
+
+    This function:
+        - Corrects CUNIT2 from 'Sine Latitude' to 'deg'
+        - Corrects CDELT1 and CDELT2 for a CEA projection
+        - Populates the DATE-OBS keyword from the T_OBS keyword
+        - Sets the observer coordinate to the Earth
+
+    Notes
+    -----
+    If you have sunpy > 2.1 installed, this function is not needed as sunpy
+    will automatically make these fixes.
+    """
+    if not isinstance(hmi_map, sunpy.map.sources.HMIMap):
+        raise ValueError('Input must be of type HMIMap. '
+                         'n.b. if you have sunpy 2.1 installed, '
+                         'this function is redundant '
+                         'as sunpy 2.1 automatically fixes HMI metadata.')
+
+    if hmi_map.meta['cunit1'] == 'Degree':
+        hmi_map.meta['cunit1'] = 'deg'
+
+    if hmi_map.meta['cunit2'] == 'Sine Latitude':
+        hmi_map.meta['cunit2'] = 'deg'
+
+        # Since, this map uses the cylindrical equal-area (CEA) projection,
+        # the spacing should be modified to 180/pi times the original value
+        # Reference: Section 5.5, Thompson 2006
+        hmi_map.meta['cdelt2'] = 180 / np.pi * hmi_map.meta['cdelt2']
+        hmi_map.meta['cdelt1'] = np.abs(hmi_map.meta['cdelt1'])
+
+    if 'date-obs' not in hmi_map.meta and 't_obs' in hmi_map.meta:
+        hmi_map.meta['date-obs'] = sunpy.time.parse_time(
+            hmi_map.meta['t_obs']).isot
+
+    # Fix observer coordinate
+    if 'hglt_obs' not in hmi_map.meta:
+        from sunkit_magex import pfss
+
+        hmi_map.meta.update(pfss.map._earth_obs_coord_meta(hmi_map.meta['date-obs']))
+
 
 def load_adapt(adapt_path):
     """

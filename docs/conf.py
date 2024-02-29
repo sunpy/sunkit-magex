@@ -10,8 +10,8 @@ import os
 
 # The full version, including alpha/beta/rc tags
 from sunkit_magex import __version__
-release = __version__
 
+release = __version__
 project = "sunkit-magex"
 copyright = "2024, The SunPy Community"
 author = "The SunPy Community"
@@ -73,27 +73,32 @@ from sunpy_sphinx_theme import PNG_ICON  # noqa
 from sphinx_gallery.sorting import ExplicitOrder  # noqa
 
 sphinx_gallery_conf = {
-    "backreferences_dir": os.path.join("generated", "modules"),
-    "filename_pattern": "^((?!skip_).)*$",
-    "ignore_pattern": "helpers.py",
-    "examples_dirs": os.path.join("..", "examples"),
-    "subsection_order": ExplicitOrder(["../examples/using_pfsspy",
-                                       "../examples/finding_data",
-                                       "../examples/utils",
-                                       "../examples/internals",
-                                       "../examples/testing"]),
-    "gallery_dirs": os.path.join("generated", "gallery"),
-    "matplotlib_animations": True,
-    "default_thumb_file": PNG_ICON,
     "abort_on_example_error": False,
-    "plot_gallery": "True",
-    "remove_config_comments": True,
+    "backreferences_dir": os.path.join("generated", "modules"),
+    "default_thumb_file": PNG_ICON,
+    "examples_dirs": os.path.join("..", "examples"),
+    "filename_pattern": '^((?!skip_).)*$',
+    "gallery_dirs": os.path.join("generated", "gallery"),
+    "ignore_pattern": "helpers.py",
+    "matplotlib_animations": True,
     "only_warn_on_example_error": True,
+    "plot_gallery": False,
+    "remove_config_comments": True,
+    "subsection_order": ExplicitOrder([
+        "../examples/using_pfsspy",
+        "../examples/finding_data",
+        "../examples/utils",
+        "../examples/internals",
+        "../examples/testing"
+    ]),
 }
 
 # -- Other options ----------------------------------------------------------
-# JSOC email os env
-# see https://github.com/sunpy/sunpy/wiki/Home:-JSOC
+
+# JSOC email OS ENV
+# See https://github.com/sunpy/sunpy/wiki/Home:-JSOC
 os.environ["JSOC_EMAIL"] = 'jsoc@sunpy.org'
 
+default_role = 'py:obj'
 nitpicky = True
+numfig = True

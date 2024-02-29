@@ -10,7 +10,7 @@ name = "sunkit_magex"
 description = "Solar Magnetic field Extrapollation"
 requires-python = ">=3.10"
 readme = { file = "README.rst", content-type = "text/x-rst" }
-license = { file = "licenses/LICENSE.rst", content-type = "text/plain" }
+license = { file = "licenses/LICENSE.rst"}
 authors = [
   { name = "The SunPy Community", email = "sunpy@googlegroups.com" },
 ]
@@ -77,7 +77,24 @@ testpaths = [
 ]
 doctest_plus = "enabled"
 text_file_format = "rst"
-addopts = "--doctest-rst"
+addopts = "--doctest-rst -p no:unraisableexception -p no:threadexception"
+filterwarnings = [
+    "error",
+    # Do not fail on pytest config issues (i.e. missing plugins) but do show them
+    "always::pytest.PytestConfigWarning",
+    # A list of warnings to ignore follows. If you add to this list, you MUST
+    # add a comment or ideally a link to an issue that explains why the warning
+    # is being ignored
+    # https://github.com/pytest-dev/pytest-cov/issues/557
+    # It was fixed and released but it does not seem to be fixed
+    "ignore:The --rsyncdir command line argument and rsyncdirs config variable are deprecated.:DeprecationWarning",
+    # https://github.com/pandas-dev/pandas/issues/54466
+    # Should stop when pandas 3.0.0 is released
+    "ignore:(?s).*Pyarrow will become a required dependency of pandas:DeprecationWarning",
+    # Can be removed when https://github.com/dateutil/dateutil/issues/1314 is resolved
+    # deprecated in Python 3.12, needs a release of dateutil 2.8.3 or higher
+    "ignore:datetime.datetime.utcfromtimestamp():DeprecationWarning",
+]
 
 [tool.coverage.run]
 omit = [
