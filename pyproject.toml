@@ -8,8 +8,8 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "sunkit_magex"
 description = "Solar Magnetic field Extrapollation"
-readme = "README.rst"
 requires-python = ">=3.10"
+readme = { file = "README.rst", content-type = "text/x-rst" }
 license = { file = "licenses/LICENSE.rst", content-type = "text/plain" }
 authors = [
   { name = "The SunPy Community", email = "sunpy@googlegroups.com" },
@@ -81,20 +81,20 @@ addopts = "--doctest-rst"
 
 [tool.coverage.run]
 omit = [
- "sunkit_magex/__init*",
- "sunkit_magex/conftest.py",
- "sunkit_magex/*setup_package*",
- "sunkit_magex/tests/*",
- "sunkit_magex/*/tests/*",
- "sunkit_magex/extern/*",
- "sunkit_magex/version*",
- "*/sunkit_magex/__init*",
- "*/sunkit_magex/conftest.py",
- "*/sunkit_magex/*setup_package*",
- "*/sunkit_magex/tests/*",
- "*/sunkit_magex/*/tests/*",
- "*/sunkit_magex/extern/*",
- "*/sunkit_magex/version*",
+  "sunkit_magex/__init*",
+  "sunkit_magex/conftest.py",
+  "sunkit_magex/*setup_package*",
+  "sunkit_magex/tests/*",
+  "sunkit_magex/*/tests/*",
+  "sunkit_magex/extern/*",
+  "sunkit_magex/version*",
+  "*/sunkit_magex/__init*",
+  "*/sunkit_magex/conftest.py",
+  "*/sunkit_magex/*setup_package*",
+  "*/sunkit_magex/tests/*",
+  "*/sunkit_magex/*/tests/*",
+  "*/sunkit_magex/extern/*",
+  "*/sunkit_magex/version*",
 ]
 
 [tool.coverage.report]

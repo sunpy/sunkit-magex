@@ -1,5 +1,6 @@
+**************************
 sunkit-magex Documentation
---------------------------
+**************************
 
 This is the documentation for sunkit-magex.
 
