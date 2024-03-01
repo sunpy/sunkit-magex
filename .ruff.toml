@@ -12,7 +12,7 @@ exclude = [
 select = ["E", "F", "W", "UP", "PT"]
 extend-ignore = [
   # pycodestyle (E, W)
-  "E501", # LineTooLong
+  "E501", # LineTooLong                             # TODO! fix
   # pytest (PT)
   "PT001", # Always use pytest.fixture()
   "PT004", # Fixtures which don't return anything should have leading _

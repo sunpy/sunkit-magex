@@ -51,6 +51,9 @@ source_suffix = ".rst"
 # The master toctree document.
 master_doc = "index"
 
+# Treat everything in single ` as a Python reference.
+default_role = 'py:obj'
+
 # -- Options for intersphinx extension ---------------------------------------
 
 intersphinx_mapping = {
@@ -99,6 +102,5 @@ sphinx_gallery_conf = {
 # See https://github.com/sunpy/sunpy/wiki/Home:-JSOC
 os.environ["JSOC_EMAIL"] = 'jsoc@sunpy.org'
 
-default_role = 'py:obj'
 nitpicky = True
 numfig = True

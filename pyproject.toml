@@ -10,7 +10,7 @@ name = "sunkit_magex"
 description = "Solar Magnetic field Extrapollation"
 requires-python = ">=3.10"
 readme = { file = "README.rst", content-type = "text/x-rst" }
-license = { file = "licenses/LICENSE.rst"}
+license = { file = "licenses/LICENSE.rst", content-type = "text/plain"}
 authors = [
   { name = "The SunPy Community", email = "sunpy@googlegroups.com" },
 ]
