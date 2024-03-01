@@ -4,6 +4,8 @@ GONG PFSS extrapolation
 
 Calculating PFSS solution for a GONG synoptic magnetic field map.
 """
+# sphinx_gallery_thumbnail_number = 4
+
 import astropy.constants as const
 import astropy.units as u
 import matplotlib.pyplot as plt
@@ -11,35 +13,37 @@ import numpy as np
 import sunpy.map
 from astropy.coordinates import SkyCoord
 
-import sunkit_magex.pfss
-from sunkit_magex.pfss import coords, tracing
-from sunkit_magex.pfss.sample_data import get_gong_map
+from sunkit_magex import pfss
 
 ###############################################################################
-# Load a GONG magnetic field map
-gong_fname = get_gong_map()
+# Load a GONG magnetic field map.
+
+gong_fname = pfss.sample_data.get_gong_map()
 gong_map = sunpy.map.Map(gong_fname)
 
 ###############################################################################
 # The PFSS solution is calculated on a regular 3D grid in (phi, s, rho), where
 # rho = ln(r), and r is the standard spherical radial coordinate. We need to
 # define the number of rho grid points, and the source surface radius.
+
 nrho = 35
 rss = 2.5
 
 ###############################################################################
 # From the boundary condition, number of radial grid points, and source
-# surface, we now construct an Input object that stores this information
-pfss_in = sunkit_magex.pfss.Input(gong_map, nrho, rss)
+# surface, we now construct an Input object that stores this information.
 
+pfss_in = pfss.Input(gong_map, nrho, rss)
+
+
+###############################################################################
+# Using the Input object, plot the input field.
 
 def set_axes_lims(ax):
     ax.set_xlim(0, 360)
     ax.set_ylim(0, 180)
 
 
-###############################################################################
-# Using the Input object, plot the input field
 m = pfss_in.map
 fig = plt.figure()
 ax = plt.subplot(projection=m)
@@ -49,12 +53,14 @@ ax.set_title('Input field')
 set_axes_lims(ax)
 
 ###############################################################################
-# Now calculate the PFSS solution
-pfss_out = sunkit_magex.pfss.pfss(pfss_in)
+# Now calculate the PFSS solution.
+
+pfss_out = pfss.pfss(pfss_in)
 
 ###############################################################################
 # Using the Output object we can plot the source surface field, and the
 # polarity inversion line.
+
 ss_br = pfss_out.source_surface_br
 # Create the figure and axes
 fig = plt.figure()
@@ -92,15 +98,15 @@ plt.colorbar()
 ax.set_title('$B_{r}$ ' + f'at r={r:.2f}' + '$r_{\\odot}$')
 set_axes_lims(ax)
 
-
 ###############################################################################
 # Finally, using the 3D magnetic field solution we can trace some field lines.
 # In this case 64 points equally gridded in theta and phi are chosen and
 # traced from the source surface outwards.
+
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
-tracer = tracing.FortranTracer()
+tracer = pfss.tracing.FortranTracer()
 r = 1.2 * const.R_sun
 lat = np.linspace(-np.pi / 2, np.pi / 2, 8, endpoint=False)
 lon = np.linspace(0, 2 * np.pi, 8, endpoint=False)
@@ -121,6 +127,5 @@ for field_line in field_lines:
             color=color, linewidth=1)
 
 ax.set_title('PFSS solution')
-plt.show()
 
-# sphinx_gallery_thumbnail_number = 4
+plt.show()

@@ -18,7 +18,7 @@ def test_bangular_rss(f):
 
 def test_br_rss():
     zss = 2
-    l = 1
+    l = 1  # NOQA: E741
     m = 0
     c = zss**(-l-2) * ((2*l + 1) / (l + 1 + l * zss**(-2*l - 1)))
     f = analytic.Br(l, m, zss)

@@ -10,8 +10,7 @@ import sunpy.time
 from astropy import units as u
 from astropy.wcs import WCS
 
-import sunkit_magex.pfss.map
-
+__all__ = ['fix_hmi_meta', 'load_adapt', 'carr_cea_wcs_header', 'is_cea_map', 'is_car_map', 'is_full_sun_synoptic_map', 'car_to_cea', 'roll_map']
 
 def fix_hmi_meta(hmi_map):
     """
@@ -52,8 +51,9 @@ def fix_hmi_meta(hmi_map):
 
     # Fix observer coordinate
     if 'hglt_obs' not in hmi_map.meta:
-        hmi_map.meta.update(sunkit_magex.pfss.map._earth_obs_coord_meta(
-            hmi_map.meta['date-obs']))
+        from sunkit_magex import pfss
+
+        hmi_map.meta.update(pfss.map._earth_obs_coord_meta(hmi_map.meta['date-obs']))
 
 
 def load_adapt(adapt_path):
@@ -74,18 +74,14 @@ def load_adapt(adapt_path):
 
     Returns
     -------
-    adaptMapSequence : `sunpy.map.MapSequence`
+    `sunpy.map.MapSequence`
     """
     adapt_fits = astropy.io.fits.open(adapt_path)
     header = adapt_fits[0].header
     if header['MODEL'] != 'ADAPT':
-        raise ValueError(f"{os.path.basename(adapt_path)} header['MODEL'] "
-                         "is not 'ADAPT'.")
-
-    data_header_pairs = [(map_slice, header)
-                         for map_slice in adapt_fits[0].data]
-    adaptMapSequence = sunpy.map.Map(data_header_pairs, sequence=True)
-    return adaptMapSequence
+        raise ValueError(f"{os.path.basename(adapt_path)} header['MODEL'] is not 'ADAPT'")
+    data_header_pairs = [(map_slice, header) for map_slice in adapt_fits[0].data]
+    return sunpy.map.Map(data_header_pairs, sequence=True)
 
 
 @u.quantity_input
@@ -96,7 +92,7 @@ def carr_cea_wcs_header(dtime, shape, *, map_center_longitude=0*u.deg):
 
     Parameters
     ----------
-    dtime : datetime, None
+    dtime : datetime.datetime
         Datetime to associate with the map.
     shape : tuple
         Map shape. The first entry should be number of points in longitude, the
@@ -104,19 +100,15 @@ def carr_cea_wcs_header(dtime, shape, *, map_center_longitude=0*u.deg):
     map_center_longitude : astropy.units.Quantity
         Change the world coordinate longitude of the central image pixel to allow
         for different roll angles of the Carrington map. Default to 0 deg. Must
-        be supplied with units of `astropy.units.deg`
+        be supplied with units of degrees.
 
     References
     ----------
     .. [1] W. T. Thompson, "Coordinate systems for solar image data",
        https://doi.org/10.1051/0004-6361:20054262
     """
-    # If datetime is None, put in a dummy value here to make
-    # make_fitswcs_header happy, then strip it out at the end
-    obstime = dtime or astropy.time.Time('2000-1-1')
-
     frame_out = coord.SkyCoord(
-        map_center_longitude, 0 * u.deg, const.R_sun, obstime=obstime,
+        map_center_longitude, 0 * u.deg, const.R_sun, obstime=dtime,
         frame="heliographic_carrington", observer='self')
     # Construct header
     header = sunpy.map.make_fitswcs_header(
@@ -126,7 +118,6 @@ def carr_cea_wcs_header(dtime, shape, *, map_center_longitude=0*u.deg):
         reference_pixel=[(shape[0] / 2) - 0.5,
                          (shape[1] / 2) - 0.5] * u.pix,
         projection_code="CEA")
-
     # Fix CDELT for lat axis
     header['CDELT2'] = (180 / np.pi) * (2 / shape[1])
     # pop out the time if it isn't supplied
@@ -144,8 +135,7 @@ def _check_projection(m, proj_code, error=False):
         proj = _get_projection(m, i)
         if proj != proj_code:
             if error:
-                raise ValueError(f'Projection type in CTYPE{i} keyword '
-                                 f'must be {proj_code} (got "{proj}")')
+                raise ValueError(f'Projection type in CTYPE{i} keyword must be {proj_code} (got "{proj}")')
             return False
     return True
 
@@ -187,14 +177,13 @@ def is_full_sun_synoptic_map(m, error=False):
         If `True`, raise an error if *m* does not span the whole solar surface.
     """
     projection = _get_projection(m, 1)
-    checks = {'CEA': _is_full_sun_cea,
-              'CAR': _is_full_sun_car}
-    if projection not in checks.keys():
-        raise NotImplementedError('is_full_sun_synoptic_map is only '
-                                  'implemented for '
-                                  f'{[key for key in checks.keys()]} '
-                                  'projections.')
-    return checks[projection](m, error)
+    checks = {'CEA': _is_full_sun_cea, 'CAR': _is_full_sun_car}
+    if projection in checks:
+        return checks[projection](m, error)
+    else:
+        raise NotImplementedError(
+            f'is_full_sun_synoptic_map is only implemented for {list(checks.keys())} projections.'
+        )
 
 
 def _is_full_sun_car(m, error=False):
@@ -249,10 +238,10 @@ def car_to_cea(m, method='interp'):
     """
     Reproject a plate-carée map in to a cylindrical-equal-area map.
 
-    The solver used in sunkit_magex.pfss requires a magnetic field map with values
+    The solver used in `sunkit_magex.pfss` requires a magnetic field map with values
     equally spaced in sin(lat) (ie. a CEA projection), but some maps are
     provided equally spaced in lat (ie. a CAR projection). This function
-    reprojects a CAR map into a CEA map so it can be used with sunkit_magex.pfss.
+    reprojects a CAR map into a CEA map so it can be used with `sunkit_magex.pfss`.
 
     Parameters
     ----------

@@ -1,6 +1,3 @@
-API reference
-=============
-
 .. automodapi:: sunkit_magex.pfss
 
 .. automodapi:: sunkit_magex.pfss.grid

@@ -1,6 +1,7 @@
 """
 HMI PFSS solutions
-------------------
+==================
+
 Calculating a PFSS solution from a HMI synoptic map.
 
 This example shows how to calcualte a PFSS solution from a HMI synoptic map.
@@ -18,16 +19,13 @@ import sunpy.map
 from sunpy.net import Fido
 from sunpy.net import attrs as a
 
-import sunkit_magex.pfss
-import sunkit_magex.pfss.utils
+from sunkit_magex import pfss
 
 ###############################################################################
 # Set up the search.
 #
-# Note that for SunPy versions earlier than 2.0, a time attribute is needed to
-# do the search, even if (in this case) it isn't used, as the synoptic maps are
-# labelled by Carrington rotation number instead of time
-time = a.Time('2010/01/01', '2010/01/01')
+# The synoptic maps are labelled by Carrington rotation number instead of time.
+
 series = a.jsoc.Series('hmi.synoptic_mr_polfil_720s')
 crot = a.jsoc.PrimeKey('CAR_ROT', 2210)
 
@@ -37,32 +35,36 @@ crot = a.jsoc.PrimeKey('CAR_ROT', 2210)
 # If you use this code, please replace this email address
 # with your own one, registered here:
 # http://jsoc.stanford.edu/ajax/register_email.html
-result = Fido.search(time, series, crot,
-                     a.jsoc.Notify(os.environ["JSOC_EMAIL"]))
+
+result = Fido.search(series, crot, a.jsoc.Notify(os.environ["JSOC_EMAIL"]))
 files = Fido.fetch(result)
 
 ###############################################################################
 # Read in a file. This will read in the first file downloaded to a sunpy Map
-# object
+# object.
+
 hmi_map = sunpy.map.Map(files[0])
 print('Data shape: ', hmi_map.data.shape)
 
 ###############################################################################
 # Since this map is far to big to calculate a PFSS solution quickly, lets
 # resample it down to a smaller size.
+
 hmi_map = hmi_map.resample([360, 180] * u.pix)
 print('New shape: ', hmi_map.data.shape)
 
 ###############################################################################
 # Now calculate the PFSS solution
+
 nrho = 35
 rss = 2.5
-pfss_in = sunkit_magex.pfss.Input(hmi_map, nrho, rss)
-pfss_out = sunkit_magex.pfss.pfss(pfss_in)
+pfss_in = pfss.Input(hmi_map, nrho, rss)
+pfss_out = pfss.pfss(pfss_in)
 
 ###############################################################################
 # Using the Output object we can plot the source surface field, and the
 # polarity inversion line.
+
 ss_br = pfss_out.source_surface_br
 # Create the figure and axes
 fig = plt.figure()

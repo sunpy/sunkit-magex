@@ -7,46 +7,43 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sunkit_magex"
-description = "Potential field source surface modelling"
-readme = "README.rst"
-requires-python = ">=3.9"
+description = "Solar Magnetic field Extrapolation"
+requires-python = ">=3.10"
+readme = { file = "README.rst", content-type = "text/x-rst" }
 license = { file = "licenses/LICENSE.rst", content-type = "text/plain" }
 authors = [
   { name = "The SunPy Community", email = "sunpy@googlegroups.com" },
 ]
 dependencies = [
-    "astropy>=5.0",
-    "numpy",
-    "scikit-image",
-    "scipy",
-    "sunpy[map]>=4,<5.1",
+  "astropy>=5.2.0",
+  "numpy>=1.21.0",
+  "scikit-image>=0.19.0",
+  # !=1.10.0 due to https://github.com/scipy/scipy/issues/17718
+  "scipy>=1.8.0,!=1.10.0",
+  "sunpy[map]>=5.1",
 ]
 dynamic = ["version"]
 
 [project.optional-dependencies]
 tests = [
-    "pytest",
-    "pytest-doctestplus",
-    "pytest-cov",
-    "parfive",
-    "reproject",
-    "streamtracer",
-    "sympy",
+  "pytest",
+  "pytest-doctestplus",
+  "pytest-cov",
+  "parfive",
+  "reproject",
+  "streamtracer",
+  "sympy",
 ]
 docs = [
-    "sphinx",
-    "sphinx-automodapi",
-    "tomli; python_version <\"3.11\"",
-    "graphviz",
-    "importlib_metadata",
-    "pillow",
-    "reproject",
-    "sphinx-gallery",
-    "sphinx_rtd_theme",
-    "streamtracer",
-    "sunpy[net,map]",
-    "sympy",
-    "sunpy-sphinx-theme",
+  "sphinx",
+  "sphinx-automodapi",
+  "pillow",
+  "reproject",
+  "sphinx-gallery",
+  "streamtracer",
+  "sunpy[net,map]",
+  "sympy",
+  "sunpy-sphinx-theme",
 ]
 performance = [
   "numba",
@@ -57,7 +54,12 @@ analytic = [
 ]
 
 [project.urls]
-repository = "https://sunpy.org"
+Homepage = "https://sunpy.org"
+Download = "https://pypi.org/project/sunkit-magex/"
+"Source Code" = "https://github.com/sunpy/sunkit-magex/"
+Documentation = "https://docs.sunpy.org/"
+Changelog = "https://docs.sunpy.org/en/stable/whatsnew/changelog.html"
+"Issue Tracker" = "https://github.com/sunpy/sunkit-magex/issues"
 
 [tool.setuptools]
 zip-safe = false
@@ -75,24 +77,45 @@ testpaths = [
 ]
 doctest_plus = "enabled"
 text_file_format = "rst"
-addopts = "--doctest-rst"
+addopts = "--doctest-rst -p no:unraisableexception -p no:threadexception"
+filterwarnings = [
+    "error",
+    # Do not fail on pytest config issues (i.e. missing plugins) but do show them
+    "always::pytest.PytestConfigWarning",
+    # A list of warnings to ignore follows. If you add to this list, you MUST
+    # add a comment or ideally a link to an issue that explains why the warning
+    # is being ignored
+    # Ignore harmless numpy verison warning
+    "ignore:numpy.ndarray size changed, may indicate binary incompatibility:RuntimeWarning",
+    # This seems to be a transitive faliure we should investigate
+    "ignore:unclosed event loop:ResourceWarning",
+    # https://github.com/pytest-dev/pytest-cov/issues/557
+    # It was fixed and released but it does not seem to be fixed
+    "ignore:The --rsyncdir command line argument and rsyncdirs config variable are deprecated.:DeprecationWarning",
+    # https://github.com/pandas-dev/pandas/issues/54466
+    # Should stop when pandas 3.0.0 is released
+    "ignore:(?s).*Pyarrow will become a required dependency of pandas:DeprecationWarning",
+    # Can be removed when https://github.com/dateutil/dateutil/issues/1314 is resolved
+    # deprecated in Python 3.12, needs a release of dateutil 2.8.3 or higher
+    "ignore:datetime.datetime.utcfromtimestamp():DeprecationWarning",
+]
 
 [tool.coverage.run]
 omit = [
- "sunkit_magex/__init*",
- "sunkit_magex/conftest.py",
- "sunkit_magex/*setup_package*",
- "sunkit_magex/tests/*",
- "sunkit_magex/*/tests/*",
- "sunkit_magex/extern/*",
- "sunkit_magex/version*",
- "*/sunkit_magex/__init*",
- "*/sunkit_magex/conftest.py",
- "*/sunkit_magex/*setup_package*",
- "*/sunkit_magex/tests/*",
- "*/sunkit_magex/*/tests/*",
- "*/sunkit_magex/extern/*",
- "*/sunkit_magex/version*",
+  "sunkit_magex/__init*",
+  "sunkit_magex/conftest.py",
+  "sunkit_magex/*setup_package*",
+  "sunkit_magex/tests/*",
+  "sunkit_magex/*/tests/*",
+  "sunkit_magex/extern/*",
+  "sunkit_magex/version*",
+  "*/sunkit_magex/__init*",
+  "*/sunkit_magex/conftest.py",
+  "*/sunkit_magex/*setup_package*",
+  "*/sunkit_magex/tests/*",
+  "*/sunkit_magex/*/tests/*",
+  "*/sunkit_magex/extern/*",
+  "*/sunkit_magex/version*",
 ]
 
 [tool.coverage.report]

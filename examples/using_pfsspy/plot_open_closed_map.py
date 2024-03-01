@@ -12,32 +12,32 @@ import numpy as np
 import sunpy.map
 from astropy.coordinates import SkyCoord
 
-import sunkit_magex.pfss
-from sunkit_magex.pfss import tracing
-from sunkit_magex.pfss.sample_data import get_gong_map
+from sunkit_magex import pfss
 
 ###############################################################################
-# Load a GONG magnetic field map
-gong_fname = get_gong_map()
+# Load a GONG magnetic field map.
+
+gong_fname = pfss.sample_data.get_gong_map()
 gong_map = sunpy.map.Map(gong_fname)
 
 ###############################################################################
-# Set the model parameters
+# Set the model parameters.
+
 nrho = 40
 rss = 2.5
 
 ###############################################################################
-# Construct the input, and calculate the output solution
-pfss_in = sunkit_magex.pfss.Input(gong_map, nrho, rss)
-pfss_out = sunkit_magex.pfss.pfss(pfss_in)
+# Construct the input, and calculate the output solution.
 
+pfss_in = pfss.Input(gong_map, nrho, rss)
+pfss_out = pfss.pfss(pfss_in)
 
 ###############################################################################
 # Finally, using the 3D magnetic field solution we can trace some field lines.
 # In this case a grid of 90 x 180 points equally gridded in theta and phi are
 # chosen and traced from the source surface outwards.
 #
-# First, set up the tracing seeds
+# First, set up the tracing seeds.
 
 r = const.R_sun
 # Number of steps in cos(latitude)
@@ -49,9 +49,10 @@ lon, lat = lon*u.rad, lat*u.rad
 seeds = SkyCoord(lon.ravel(), lat.ravel(), r, frame=pfss_out.coordinate_frame)
 
 ###############################################################################
-# Trace the field lines
+# Trace the field lines.
+
 print('Tracing field lines...')
-tracer = tracing.FortranTracer(max_steps=2000)
+tracer = pfss.tracing.FortranTracer(max_steps=2000)
 field_lines = tracer.trace(seeds, pfss_out)
 print('Finished tracing field lines')
 
@@ -59,6 +60,7 @@ print('Finished tracing field lines')
 # Plot the result. The to plot is the input magnetogram, and the bottom plot
 # shows a contour map of the the footpoint polarities, which are +/- 1 for open
 # field regions and 0 for closed field regions.
+
 fig = plt.figure()
 m = pfss_in.map
 ax = fig.add_subplot(2, 1, 1, projection=m)

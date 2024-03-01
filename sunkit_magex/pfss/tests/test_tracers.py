@@ -7,21 +7,16 @@ import pytest
 import sunkit_magex.pfss
 from sunkit_magex.pfss import tracing
 
-from .example_maps import dipole_map, dipole_result  # NoQA
-
-
 @pytest.fixture(params=[tracing.PythonTracer(),
                         tracing.FortranTracer()],
                 ids=['python', 'fortran'])
 def flines(dipole_result, request):
     tracer = request.param
-    input, out = dipole_result
+    _, out = dipole_result
     out_frame = out.coordinate_frame
 
     seed = coord.SkyCoord(2*u.deg, -45*u.deg, 1.01*const.R_sun, frame=out_frame)
-    flines = tracer.trace(seed, out)
-    print(flines[0].coords)
-    return flines
+    return tracer.trace(seed, out)
 
 
 def test_field_lines(flines):

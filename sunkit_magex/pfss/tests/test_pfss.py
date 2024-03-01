@@ -15,8 +15,6 @@ import sunkit_magex.pfss
 import sunkit_magex.pfss.coords
 from sunkit_magex.pfss import tracing
 
-from .example_maps import dipole_map, dipole_result, gong_map, zero_map  # NoQA
-
 R_sun = const.R_sun
 test_data = pathlib.Path(__file__).parent / 'data'
 
@@ -45,7 +43,7 @@ def test_bunit(gong_map):
     m = sunpy.map.Map(gong_map)
     pfss_in = sunkit_magex.pfss.Input(m, 2, 2)
     pfss_out = sunkit_magex.pfss.pfss(pfss_in)
-    assert pfss_out.bunit == u.G
+    assert pfss_out.bunit == m.unit
 
     pfss_out.input_map.meta['bunit'] = 'notaunit'
     with pytest.warns(UserWarning, match='Could not parse unit string "notaunit"'):

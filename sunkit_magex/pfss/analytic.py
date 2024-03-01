@@ -15,7 +15,7 @@ Angular definitions
   (ie. the co-latitude).
 - ``phi`` is the azimuthal angle, in the range :math:`0, 2\pi`.
 
-Using this module requires `sympy` to be installed.
+Using this module requires ``sympy`` to be installed.
 """
 
 import astropy.units as u
@@ -34,14 +34,14 @@ def _normalise_angles(theta: u.deg, phi: u.deg):
     return theta, phi
 
 
-def _Ynm(l, m, theta, phi):
+def _Ynm(l, m, theta, phi):  # NOQA: E741
     """
     Return values of spherical harmonic with numbers l, m at coordiantes
     theta, phi.
     """
     # Note swapped arguments phi, theta, as scipy has a different
     # definition of these
-    return -scipy.special.sph_harm(m, l, phi, theta)
+    return -scipy.special.sph_harm(m, l, phi, theta)  # NOQA: E741
 
 
 def _cot(theta):
@@ -51,7 +51,7 @@ def _cot(theta):
 _extras = {'Ynm': _Ynm, 'cot': _cot, 'exp': np.exp}
 
 
-def _spherical_harmonic_sympy(l, m):
+def _spherical_harmonic_sympy(l, m):  # NOQA: E741
     """
     Return a complex spherical harmonic with numbers ``l, m``.
 
@@ -79,7 +79,7 @@ def _spherical_harmonic_sympy(l, m):
     return harm, theta, phi
 
 
-def _c(l, zss):
+def _c(l, zss):  # NOQA: E741
     """
     """
     def cl(z):
@@ -90,7 +90,7 @@ def _c(l, zss):
     return cl
 
 
-def _d(l, zss):
+def _d(l, zss):  # NOQA: E741
     """
     """
     def dl(z):
@@ -101,7 +101,7 @@ def _d(l, zss):
     return dl
 
 
-def Br(l, m, zss):
+def Br(l, m, zss):  # NOQA: E741
     """
     Analytic radial component of magnetic field on the source surface.
 
@@ -114,8 +114,7 @@ def Br(l, m, zss):
 
     Returns
     -------
-    function :
-        Has the signature ``Br(z, theta, phi)``.
+    Function with signature ``Br(z, theta, phi)``.
     """
     sph, t, p = _spherical_harmonic_sympy(l, m)
     sph = sympy.lambdify((t, p), sph, _extras)
@@ -128,7 +127,7 @@ def Br(l, m, zss):
     return f
 
 
-def Btheta(l, m, zss):
+def Btheta(l, m, zss):  # NOQA: E741
     """
     Analytic theta component of magnetic field on the source surface.
 
@@ -141,8 +140,7 @@ def Btheta(l, m, zss):
 
     Returns
     -------
-    function :
-        Has the signature ``Btheta(z, theta, phi)``.
+    Function with signature ``Btheta(z, theta, phi)``.
     """
     sph, t, p = _spherical_harmonic_sympy(l, m)
     sph = sympy.diff(sph, t)
@@ -156,7 +154,7 @@ def Btheta(l, m, zss):
     return f
 
 
-def Bphi(l, m, zss):
+def Bphi(l, m, zss):  # NOQA: E741
     """
     Analytic phi component of magnetic field on the source surface.
 
@@ -169,8 +167,7 @@ def Bphi(l, m, zss):
 
     Returns
     -------
-    function :
-        Has the signature ``Bphi(z, theta, phi)``.
+    Function with signature ``Bphi(z, theta, phi)``.
     """
     sph, t, p = _spherical_harmonic_sympy(l, m)
     sph = sympy.diff(sph, p)

@@ -12,31 +12,36 @@ and :math:`\log r`.
 import matplotlib.pyplot as plt
 import numpy as np
 
-from sunkit_magex.pfss.grid import Grid
+from sunkit_magex import pfss
 
 ###############################################################################
-# Define the grid spacings
+# Define the grid spacings.
+
 ns = 15
 nphi = 360
 nr = 10
 rss = 2.5
 
 ###############################################################################
-# Create the grid
-grid = Grid(ns, nphi, nr, rss)
+# Create the grid.
+
+grid = pfss.grid.Grid(ns, nphi, nr, rss)
 
 ###############################################################################
-# Get the grid edges, and transform to r and theta coordinates
+# Get the grid edges, and transform to r and theta coordinates.
+
 r_edges = np.exp(grid.rg)
 theta_edges = np.arccos(grid.sg)
 
 ###############################################################################
 # The corners of the grid are where lines of constant (r, theta) intersect,
 # so meshgrid these together to get all the grid corners.
+
 r_grid_points, theta_grid_points = np.meshgrid(r_edges, theta_edges)
 
 ###############################################################################
-# Plot the resulting grid corners
+# Plot the resulting grid corners.
+
 fig = plt.figure()
 ax = fig.add_subplot(projection='polar')
 

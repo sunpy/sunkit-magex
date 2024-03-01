@@ -9,9 +9,9 @@ from sunkit_magex.pfss.fieldline import (
 
 
 @pytest.mark.parametrize(("x", "open", "pol"),
-                         [[[1, 2.5], True, 1],
-                          [[2.5, 1], True, -1],
-                          [[1, 1], False, 0],
+                         [([1, 2.5], True, 1),
+                          ([2.5, 1], True, -1),
+                          ([1, 1], False, 0),
                           ])
 def test_open(x, open, pol):
     fline = FieldLine(x, [0, 0], [0, 0], None)
@@ -26,11 +26,11 @@ def test_open(x, open, pol):
     assert len(flines.closed_field_lines) == int(not open)
 
 
-@pytest.mark.parametrize(("x", "cls"),
-                         [[[1, 2.5], ClosedFieldLines],
-                          [[1, 1], OpenFieldLines],
+@pytest.mark.parametrize(("x", "cls", "message"),
+                         [([1, 2.5], ClosedFieldLines, "Not all field lines are closed"),
+                          ([1, 1], OpenFieldLines, "Not all field lines are open"),
                           ])
-def test_flines_errors(x, cls):
+def test_flines_errors(x, cls, message):
     fline = FieldLine(x, [0, 0], [0, 0], None)
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match=message):
         cls([fline])

@@ -42,7 +42,7 @@ class Tracer(abc.ABC):
     @staticmethod
     def cartesian_to_coordinate():
         """
-        Convert cartesian coordinate outputted by a tracer to a `FieldLine`
+        Convert cartesian coordinate outputted by a tracer to a `~sunkit_magex.pfss.fieldline.FieldLine`
         object.
         """
 
@@ -139,9 +139,9 @@ class FortranTracer(Tracer):
         # (theta direction becomes singular at the poles so it is not cyclic)
         cyclic = [True, False, False]
         origin_coord = [0, -1, 0]
-        vector_grid = VectorGrid(vectors, grid_spacing, cyclic=cyclic,
-                                 origin_coord=origin_coord)
-        return vector_grid
+        return VectorGrid(
+            vectors, grid_spacing, cyclic=cyclic, origin_coord=origin_coord
+        )
 
     def trace(self, seeds, output):
         if self.max_steps == 'auto':

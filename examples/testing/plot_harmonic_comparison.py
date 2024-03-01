@@ -1,21 +1,22 @@
 """
 Spherical harmonic comparisons
 ==============================
+
 Comparing analytical spherical harmonic solutions to PFSS output.
 """
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 
-from helpers import LMAxes, brss_analytic, brss_pfsspy
+from examples.testing.helpers import LMAxes, brss_analytic, brss_pfsspy
 
 ###############################################################################
-# Compare the the sunkit_magex.pfss solution to the analytic solutions. Cuts are taken
-# on the source surface at a constant phi value to do a 1D comparison.
+# Compare the the `sunkit_magex.pfss` solution to the analytic solutions.
+# Cuts are taken on the source surface at a constant phi value to do a 1D comparison.
+
 nphi = 360
 ns = 180
 rss = 2
 nrho = 20
-
 nl = 2
 axs = LMAxes(nl=nl)
 
@@ -36,6 +37,5 @@ for l in range(1, nl+1):
             ax.spines['top'].set_visible(True)
         ax.set_xlim(0, 180)
         ax.axhline(0, linestyle='--', linewidth=0.5, color='black')
-
 
 plt.show()

@@ -1,8 +1,9 @@
 """
 Field line error map
 ====================
+
 This script produces a map of errors between analytic field line equations
-and field lines numerically traced by sunkit_magex.pfss.
+and field lines numerically traced by `sunkit_magex.pfss`.
 """
 import astropy.constants as const
 import astropy.units as u
@@ -11,11 +12,14 @@ import numpy as np
 from astropy.coordinates import SkyCoord
 from astropy.visualization import quantity_support
 
-from sunkit_magex.pfss import tracing
+from sunkit_magex import pfss
 
-from helpers import pffspy_output, phi_fline_coords, theta_fline_coords
+from examples.testing.helpers import pffspy_output, phi_fline_coords, theta_fline_coords
 
 quantity_support()
+
+###############################################################################
+# Calculate PFSS solution.
 
 l = 3
 m = 3
@@ -23,15 +27,12 @@ nphi = 360
 ns = 180
 nr = 40
 rss = 2
-
-
-###############################################################################
-# Calculate PFSS solution
 pfsspy_out = pffspy_output(nphi, ns, nr, rss, l, m)
-
 rss = rss * const.R_sun
+
 ###############################################################################
-# Trace field lines
+# Trace field lines.
+
 n = 90
 # Create 1D theta, phi arrays
 phi = np.linspace(0, 360, n * 2)
@@ -47,7 +48,7 @@ step_size = 1
 dthetas = []
 print(f'Tracing {step_size}...')
 # Trace
-tracer = tracing.FortranTracer(step_size=step_size)
+tracer = pfss.tracing.FortranTracer(step_size=step_size)
 flines = tracer.trace(seeds, pfsspy_out)
 # Set a mask of open field lines
 mask = flines.connectivities.astype(bool).reshape(theta.shape)

@@ -1,7 +1,8 @@
 """
 Tracer performance
 ==================
-Comparing the performance of Python and FORTRAN tracers.
+
+Comparing the performance of Python and Rust tracers.
 """
 import timeit
 
@@ -11,10 +12,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import sunpy.map
 
-import sunkit_magex.pfss
+from sunkit_magex import pfss
 
 ###############################################################################
-# Create a dipole map
+# Create a dipole map.
+
 ntheta = 180
 nphi = 360
 nr = 50
@@ -24,29 +26,29 @@ phi = np.linspace(0, 2 * np.pi, nphi)
 theta = np.linspace(-np.pi / 2, np.pi / 2, ntheta)
 theta, phi = np.meshgrid(theta, phi)
 
-
 def dipole_Br(r, theta):
     return 2 * np.sin(theta) / r**3
 
 
 br = dipole_Br(1, theta)
-br = sunpy.map.Map(br.T, sunkit_magex.pfss.utils.carr_cea_wcs_header('2010-01-01', br.shape))
-pfss_input = sunkit_magex.pfss.Input(br, nr, rss)
-pfss_output = sunkit_magex.pfss.pfss(pfss_input)
+br = sunpy.map.Map(br.T, pfss.utils.carr_cea_wcs_header('2010-01-01', br.shape))
+pfss_input = pfss.Input(br, nr, rss)
+pfss_output = pfss.pfss(pfss_input)
 print('Computed PFSS solution')
 
 ###############################################################################
-# Trace some field lines
+# Trace some field lines.
+
 seed0 = np.atleast_2d(np.array([1, 1, 0]))
-tracers = [sunkit_magex.pfss.tracing.PythonTracer(),
-           sunkit_magex.pfss.tracing.FortranTracer()]
+tracers = [pfss.tracing.PythonTracer(),
+           pfss.tracing.FortranTracer()]
 nseeds = 2**np.arange(14)
 times = [[], []]
 
 for nseed in nseeds:
     print(nseed)
     seeds = np.repeat(seed0, nseed, axis=0)
-    r, lat, lon = sunkit_magex.pfss.coords.cart2sph(seeds[:, 0], seeds[:, 1], seeds[:, 2])
+    r, lat, lon = pfss.coords.cart2sph(seeds[:, 0], seeds[:, 1], seeds[:, 2])
     r = r * astropy.constants.R_sun
     lat = (lat - np.pi / 2) * u.rad
     lon = lon * u.rad
@@ -60,7 +62,8 @@ for nseed in nseeds:
         times[i].append(t)
 
 ###############################################################################
-# Plot the results
+# Plot the results.
+
 fig, ax = plt.subplots()
 ax.scatter(nseeds[1:len(times[0])], times[0][1:], label='python')
 ax.scatter(nseeds[1:], times[1][1:], label='fortran')
@@ -81,10 +84,5 @@ ax.set_ylabel('Seconds')
 ax.axvline(180 * 360, color='k', linestyle='--', label='180x360 seed points')
 
 ax.legend()
-plt.show()
 
-###############################################################################
-# This shows the results of the above script, run on a 2014 MacBook pro with
-# a 2.6 GHz Dual-Core Intel Core i5:
-#
-# .. image:: ../../example_figures/tracer_performace.png
+plt.show()
