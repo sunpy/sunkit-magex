@@ -85,6 +85,8 @@ filterwarnings = [
     # A list of warnings to ignore follows. If you add to this list, you MUST
     # add a comment or ideally a link to an issue that explains why the warning
     # is being ignored
+    # Ignore harmless numpy verison warning
+    "ignore:numpy.ndarray size changed, may indicate binary incompatibility:RuntimeWarning",
     # https://github.com/pytest-dev/pytest-cov/issues/557
     # It was fixed and released but it does not seem to be fixed
     "ignore:The --rsyncdir command line argument and rsyncdirs config variable are deprecated.:DeprecationWarning",
