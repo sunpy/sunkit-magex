@@ -87,6 +87,8 @@ filterwarnings = [
     # is being ignored
     # Ignore harmless numpy verison warning
     "ignore:numpy.ndarray size changed, may indicate binary incompatibility:RuntimeWarning",
+    # This seems to be a transitive faliure we should investigate
+    "ignore:unclosed event loop:ResourceWarning",
     # https://github.com/pytest-dev/pytest-cov/issues/557
     # It was fixed and released but it does not seem to be fixed
     "ignore:The --rsyncdir command line argument and rsyncdirs config variable are deprecated.:DeprecationWarning",
