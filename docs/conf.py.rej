@@ -1,0 +1,19 @@
+diff a/docs/conf.py b/docs/conf.py	(rejected hunks)
+@@ -5,6 +5,8 @@
+ # http://www.sphinx-doc.org/en/master/config
+ 
+ 
++import datetime
++
+ # -- Project information -----------------------------------------------------
+ 
+ # The full version, including alpha/beta/rc tags
+@@ -12,7 +14,7 @@ from sunkit_magex import __version__
+ release = __version__
+ 
+ project = "sunkit-magex"
+-copyright = "2022, The SunPy Community"
++copyright = str(datetime.datetime.now().year) + " , The SunPy Community"  # noqa: A001
+ author = "The SunPy Community"
+ 
+ # -- General configuration ---------------------------------------------------

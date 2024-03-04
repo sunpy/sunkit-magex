@@ -1,0 +1,57 @@
+diff a/pyproject.toml b/pyproject.toml	(rejected hunks)
+@@ -26,7 +26,6 @@ tests = [
+ docs = [
+   "sphinx",
+   "sphinx-automodapi",
+-  "tomli; python_version <\"3.11\"",
+ ]
+ 
+ [project.urls]
+@@ -40,47 +39,3 @@ include-package-data = true
+ 
+ [tool.setuptools_scm]
+ write_to = "sunkit_magex/_version.py"
+-
+-[tool.pytest.ini_options]
+-testpaths = [
+-  "sunkit_magex",
+-  "docs",
+-]
+-doctest_plus = "enabled"
+-text_file_format = "rst"
+-addopts = "--doctest-rst"
+-
+-[tool.coverage.run]
+-omit = [
+-  "sunkit_magex/__init*",
+-  "sunkit_magex/conftest.py",
+-  "sunkit_magex/*setup_package*",
+-  "sunkit_magex/tests/*",
+-  "sunkit_magex/*/tests/*",
+-  "sunkit_magex/extern/*",
+-  "sunkit_magex/version*",
+-  "*/sunkit_magex/__init*",
+-  "*/sunkit_magex/conftest.py",
+-  "*/sunkit_magex/*setup_package*",
+-  "*/sunkit_magex/tests/*",
+-  "*/sunkit_magex/*/tests/*",
+-  "*/sunkit_magex/extern/*",
+-  "*/sunkit_magex/version*",
+-]
+-
+-[tool.coverage.report]
+-exclude_lines = [
+-  # Have to re-enable the standard pragma
+-  "pragma: no cover",
+-  # Don't complain about packages we have installed
+-  "except ImportError",
+-  # Don't complain if tests don't hit assertions
+-  "raise AssertionError",
+-  "raise NotImplementedError",
+-  # Don't complain about script hooks
+-  "def main(.*):",
+-  # Ignore branches that don't pertain to this version of Python
+-  "pragma: py{ignore_python_version}",
+-  # Don't complain about IPython completion helper
+-  "def _ipython_key_completions_",
+-]
