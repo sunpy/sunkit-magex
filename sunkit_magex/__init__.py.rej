@@ -1,0 +1,8 @@
+diff a/sunkit_magex/__init__.py b/sunkit_magex/__init__.py	(rejected hunks)
+@@ -1,2 +1,4 @@
++
+ from .version import version as __version__
+-__all__ = []
+\ No newline at end of file
++
++__all__ = []

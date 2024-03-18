@@ -1,0 +1,37 @@
+diff a/docs/conf.py b/docs/conf.py	(rejected hunks)
+@@ -4,16 +4,18 @@
+ # full list see the documentation:
+ # http://www.sphinx-doc.org/en/master/config
+ 
++import datetime
+ 
+ # -- Project information -----------------------------------------------------
+ 
+ # The full version, including alpha/beta/rc tags
+ from sunkit_magex import __version__
++
+ release = __version__
+ 
+ project = "sunkit-magex"
+-copyright = "2022, The SunPy Community"
+ author = "The SunPy Community"
++copyright = f"{datetime.datetime.now().year}, {author}"  # noqa: A001
+ 
+ # -- General configuration ---------------------------------------------------
+ 
+@@ -49,6 +51,9 @@ source_suffix = ".rst"
+ # The master toctree document.
+ master_doc = "index"
+ 
++# Treat everything in single ` as a Python reference.
++default_role = 'py:obj'
++
+ # -- Options for intersphinx extension ---------------------------------------
+ 
+ # Example configuration for intersphinx: refer to the Python standard library.
+@@ -73,3 +78,5 @@ html_theme = "alabaster"
+ # the docs. For more options, see:
+ # https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html#confval-autoclass_content
+ autoclass_content = "both"
++
++# -- Other options ----------------------------------------------------------
