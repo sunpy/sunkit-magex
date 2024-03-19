@@ -2,20 +2,15 @@
 Tracer step size (calculations)
 ===============================
 """
-import astropy.constants as const
-import astropy.units as u
 import numpy as np
 import pandas as pd
+
+import astropy.constants as const
+import astropy.units as u
 from astropy.coordinates import SkyCoord
 
+from examples.testing.helpers import pffspy_output, phi_fline_coords, result_dir, theta_fline_coords
 from sunkit_magex.pfss import tracing
-
-from examples.testing.helpers import (
-    pffspy_output,
-    phi_fline_coords,
-    result_dir,
-    theta_fline_coords,
-)
 
 l = 3
 m = 3

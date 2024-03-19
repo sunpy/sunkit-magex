@@ -5,16 +5,16 @@ Field line error map
 This script produces a map of errors between analytic field line equations
 and field lines numerically traced by `sunkit_magex.pfss`.
 """
-import astropy.constants as const
-import astropy.units as u
 import matplotlib.pyplot as plt
 import numpy as np
+
+import astropy.constants as const
+import astropy.units as u
 from astropy.coordinates import SkyCoord
 from astropy.visualization import quantity_support
 
-from sunkit_magex import pfss
-
 from examples.testing.helpers import pffspy_output, phi_fline_coords, theta_fline_coords
+from sunkit_magex import pfss
 
 quantity_support()
 

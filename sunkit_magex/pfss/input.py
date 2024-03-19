@@ -1,6 +1,7 @@
 import copy
 
 import numpy as np
+
 import sunpy.map
 
 import sunkit_magex.pfss.utils

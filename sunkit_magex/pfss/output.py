@@ -1,10 +1,12 @@
-import functools
 import warnings
+import functools
+
+import numpy as np
 
 import astropy.units as u
-import numpy as np
-import sunpy.map
 from astropy.coordinates import SkyCoord
+
+import sunpy.map
 
 import sunkit_magex.pfss.coords
 
@@ -25,7 +27,7 @@ class Output:
     alp :
         Vector potential * grid spacing in azimuth direction.
     grid : Grid
-        Grid that the output was caclulated on.
+        Grid that the output was calculated on.
     input_map : sunpy.map.GenericMap
         The input map.
 
@@ -225,7 +227,7 @@ class Output:
     @property
     def _al(self):
         """
-        Vector potential times cell edge lenghts.
+        Vector potential times cell edge lengths.
 
         Returns ar*Lr, as*Ls, ap*Lp on cell edges.
         """
@@ -417,7 +419,7 @@ class Output:
         Parameters
         ----------
         coords : `astropy.coordinates.SkyCoord`
-            An arbitary point or set of points (length N >= 1) in the PFSS
+            An arbitrary point or set of points (length N >= 1) in the PFSS
             model domain (1Rs < r < Rss).
 
         out_type : str

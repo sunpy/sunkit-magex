@@ -1,14 +1,16 @@
 import os
 
+import numpy as np
+
 import astropy.constants as const
 import astropy.coordinates as coord
 import astropy.io
 import astropy.time
-import numpy as np
-import sunpy.map
-import sunpy.time
 from astropy import units as u
 from astropy.wcs import WCS
+
+import sunpy.map
+import sunpy.time
 
 __all__ = ['fix_hmi_meta', 'load_adapt', 'carr_cea_wcs_header', 'is_cea_map', 'is_car_map', 'is_full_sun_synoptic_map', 'car_to_cea', 'roll_map']
 

@@ -1,14 +1,16 @@
-import functools
 import pathlib
+import functools
 
-import astropy.units as u
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import numpy as np
 import scipy.integrate
-import sunpy.map
 from sympy import acos, asin, cos, lambdify, sin
 from sympy.abc import x
+
+import astropy.units as u
+
+import sunpy.map
 
 import sunkit_magex.pfss.analytic as analytic
 import sunkit_magex.pfss.utils
@@ -19,7 +21,7 @@ pi = np.pi * u.rad
 
 
 def theta_phi_grid(nphi, ns):
-    # Return a theta, phi grid with a given numer of points
+    # Return a theta, phi grid with a given number of points
     phi = np.linspace(0, 2 * np.pi, nphi)
     s = np.linspace(-1, 1, ns)
     s, phi = np.meshgrid(s, phi)

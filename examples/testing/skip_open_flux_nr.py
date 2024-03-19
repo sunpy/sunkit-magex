@@ -4,7 +4,7 @@ Open flux and radial grid points (calculations)
 
 Comparing total unsigned flux to analytic solutions.
 
-This script caclulates the ratio of numeric to analytic total unsigned open
+This script calculates the ratio of numeric to analytic total unsigned open
 fluxes in PFSS solutions of spherical harmonics, as a function of the number of
 radial grid cells in the sunkit_magex.pfss grid.
 """

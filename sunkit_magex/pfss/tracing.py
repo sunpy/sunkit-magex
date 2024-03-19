@@ -1,10 +1,11 @@
 import abc
 import warnings
 
+import numpy as np
+
 import astropy.constants as const
 import astropy.coordinates as astrocoords
 import astropy.units as u
-import numpy as np
 
 import sunkit_magex.pfss
 import sunkit_magex.pfss.fieldline as fieldline

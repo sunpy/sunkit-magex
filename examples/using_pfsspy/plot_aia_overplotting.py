@@ -9,11 +9,13 @@ overplot the traced field lines on an AIA 193 map.
 
 import os
 
-import astropy.units as u
 import matplotlib.pyplot as plt
 import numpy as np
-import sunpy.map
+
+import astropy.units as u
 from astropy.coordinates import SkyCoord
+
+import sunpy.map
 
 import sunkit_magex.pfss
 import sunkit_magex.pfss.tracing as tracing

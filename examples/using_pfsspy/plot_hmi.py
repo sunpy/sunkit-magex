@@ -4,7 +4,7 @@ HMI PFSS solutions
 
 Calculating a PFSS solution from a HMI synoptic map.
 
-This example shows how to calcualte a PFSS solution from a HMI synoptic map.
+This example shows how to calculate a PFSS solution from a HMI synoptic map.
 There are a couple of important things that this example shows:
 
 - HMI maps have non-standard metadata, so this needs to be fixed
@@ -13,8 +13,10 @@ There are a couple of important things that this example shows:
 """
 import os
 
-import astropy.units as u
 import matplotlib.pyplot as plt
+
+import astropy.units as u
+
 import sunpy.map
 from sunpy.net import Fido
 from sunpy.net import attrs as a

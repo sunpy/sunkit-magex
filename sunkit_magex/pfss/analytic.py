@@ -18,10 +18,11 @@ Angular definitions
 Using this module requires ``sympy`` to be installed.
 """
 
-import astropy.units as u
 import numpy as np
 import scipy.special
 import sympy
+
+import astropy.units as u
 
 
 @u.quantity_input
@@ -36,7 +37,7 @@ def _normalise_angles(theta: u.deg, phi: u.deg):
 
 def _Ynm(l, m, theta, phi):  # NOQA: E741
     """
-    Return values of spherical harmonic with numbers l, m at coordiantes
+    Return values of spherical harmonic with numbers l, m at coordinates
     theta, phi.
     """
     # Note swapped arguments phi, theta, as scipy has a different
@@ -73,7 +74,7 @@ def _spherical_harmonic_sympy(l, m):  # NOQA: E741
     theta, phi = sympy.symbols('theta, phi')
     harm = sympy.Ynm(L, M, theta, phi)
     if m < 0:
-        # Phase shift to align definition of Ymn with defnition in paper.
+        # Phase shift to align definition of Ymn with definition in paper.
         harm *= -1j
     harm = harm.subs([(L, l), (M, m)])
     return harm, theta, phi

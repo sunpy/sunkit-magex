@@ -6,12 +6,14 @@ Calculating PFSS solution for a GONG synoptic magnetic field map.
 """
 # sphinx_gallery_thumbnail_number = 4
 
-import astropy.constants as const
-import astropy.units as u
 import matplotlib.pyplot as plt
 import numpy as np
-import sunpy.map
+
+import astropy.constants as const
+import astropy.units as u
 from astropy.coordinates import SkyCoord
+
+import sunpy.map
 
 from sunkit_magex import pfss
 

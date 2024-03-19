@@ -1,11 +1,13 @@
-import astropy.constants as const
-import astropy.coordinates as coord
-import astropy.units as u
 import numpy as np
 import pytest
 
+import astropy.constants as const
+import astropy.coordinates as coord
+import astropy.units as u
+
 import sunkit_magex.pfss
 from sunkit_magex.pfss import tracing
+
 
 @pytest.fixture(params=[tracing.PythonTracer(),
                         tracing.FortranTracer()],
