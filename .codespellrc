@@ -1,6 +1,7 @@
 [codespell]
 skip = *.asdf,*.fits,*.fts,*.header,*.json,*.xsh,*cache*,*egg*,*extern*,.git,.idea,.tox,_build,*truncated,*.svg,.asv_env,.history
 ignore-words-list =
+    als,  # magex specific
     alog,
     nd,
     nin,
@@ -10,4 +11,4 @@ ignore-words-list =
     upto,
     afile,
     precessed,
-    precess
+    precess,
