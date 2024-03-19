@@ -5,7 +5,7 @@
 # http://www.sphinx-doc.org/en/master/config
 
 import os
-
+import datetime
 # -- Project information -----------------------------------------------------
 
 # The full version, including alpha/beta/rc tags
@@ -13,7 +13,7 @@ from sunkit_magex import __version__
 
 release = __version__
 project = "sunkit-magex"
-copyright = "2024, The SunPy Community"
+copyright = str(datetime.datetime.now().year) + " , The SunPy Community"  # noqa: A001
 author = "The SunPy Community"
 
 # -- General configuration ---------------------------------------------------
@@ -69,6 +69,15 @@ intersphinx_mapping = {
 # -- Options for HTML output -------------------------------------------------
 
 html_theme = "sunpy"
+
+# By default, when rendering docstrings for classes, sphinx.ext.autodoc will
+# make docs with the class-level docstring and the class-method docstrings,
+# but not the __init__ docstring, which often contains the parameters to
+# class constructors across the scientific Python ecosystem. The option below
+# will append the __init__ docstring to the class-level docstring when rendering
+# the docs. For more options, see:
+# https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html#confval-autoclass_content
+autoclass_content = "both"
 
 # -- Sphinx Gallery ----------------------------------------------------------
 
