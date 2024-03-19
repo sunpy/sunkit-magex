@@ -6,10 +6,12 @@ Comparing the performance of Python and Rust tracers.
 """
 import timeit
 
-import astropy.coordinates
-import astropy.units as u
 import matplotlib.pyplot as plt
 import numpy as np
+
+import astropy.coordinates
+import astropy.units as u
+
 import sunpy.map
 
 from sunkit_magex import pfss

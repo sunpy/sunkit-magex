@@ -1,9 +1,10 @@
 import functools
 
+import numpy as np
+
 import astropy.constants as const
 import astropy.coordinates as coord
 import astropy.units as u
-import numpy as np
 
 from sunkit_magex.pfss import coords
 
@@ -79,7 +80,7 @@ class OpenFieldLines(FieldLines):
     @functools.lru_cache
     def source_surface_feet(self):
         """
-        Coordinates of the source suface footpoints.
+        Coordinates of the source surface footpoints.
         """
         x = np.array([fline._x[fline._ss_coord_index] for fline in self.field_lines])
         y = np.array([fline._y[fline._ss_coord_index] for fline in self.field_lines])

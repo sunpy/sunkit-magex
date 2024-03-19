@@ -2,6 +2,7 @@
 Custom `sunpy.map.GenericMap` sub-classes for different magnetogram sources.
 """
 import astropy.units as u
+
 import sunpy.map
 
 __all__ = ['ADAPTMap']
@@ -41,6 +42,6 @@ def _observer_coord_meta(observer_coord):
 
 def _earth_obs_coord_meta(obstime):
     """
-    Return metadata for an Earth obeserver coordinate.
+    Return metadata for an Earth observer coordinate.
     """
     return _observer_coord_meta(sunpy.coordinates.get_earth(obstime))

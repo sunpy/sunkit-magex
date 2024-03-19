@@ -1,8 +1,10 @@
 import datetime
 
-import astropy.units as u
 import numpy as np
 import pytest
+
+import astropy.units as u
+
 import sunpy.map
 
 import sunkit_magex.pfss

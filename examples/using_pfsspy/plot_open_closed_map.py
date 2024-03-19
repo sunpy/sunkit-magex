@@ -4,13 +4,15 @@ Open/closed field map
 
 Creating an open/closed field map on the solar surface.
 """
-import astropy.constants as const
-import astropy.units as u
 import matplotlib.colors as mcolor
 import matplotlib.pyplot as plt
 import numpy as np
-import sunpy.map
+
+import astropy.constants as const
+import astropy.units as u
 from astropy.coordinates import SkyCoord
+
+import sunpy.map
 
 from sunkit_magex import pfss
 

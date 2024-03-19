@@ -6,6 +6,7 @@
 
 import os
 import datetime
+
 # -- Project information -----------------------------------------------------
 
 # The full version, including alpha/beta/rc tags
@@ -13,8 +14,8 @@ from sunkit_magex import __version__
 
 release = __version__
 project = "sunkit-magex"
-copyright = str(datetime.datetime.now().year) + " , The SunPy Community"  # noqa: A001
 author = "The SunPy Community"
+copyright = f"{datetime.datetime.now().year}, {author}"  # noqa: A001
 
 # -- General configuration ---------------------------------------------------
 

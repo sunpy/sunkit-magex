@@ -15,7 +15,7 @@ class Grid:
     - :math:`s = \cos (\theta )`
     - :math:`\phi`
 
-    where :math:`r, \theta, \phi` are spherical cooridnates that have ranges
+    where :math:`r, \theta, \phi` are spherical coordinates that have ranges
 
     - :math:`1 < r < r_{ss}`
     - :math:`0 < \theta < \pi`

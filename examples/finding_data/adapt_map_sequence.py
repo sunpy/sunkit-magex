@@ -5,9 +5,12 @@ Parsing ADAPT Ensemble .fits files
 Parse an ADAPT FITS file into a `sunpy.map.MapSequence`.
 """
 import matplotlib.pyplot as plt
-import sunpy.map
 from matplotlib import gridspec
+
 from astropy.io import fits
+
+import sunpy.map
+
 from sunkit_magex import pfss
 
 ###############################################################################

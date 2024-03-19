@@ -1,14 +1,16 @@
 import pathlib
 from datetime import timedelta
 
+import numpy as np
+import pytest
+
 import astropy.constants as const
 import astropy.coordinates as coord
 import astropy.units as u
-import numpy as np
-import pytest
+from astropy.tests.helper import quantity_allclose
+
 import sunpy.map
 import sunpy.util.exceptions
-from astropy.tests.helper import quantity_allclose
 from sunpy.coordinates import frames
 
 import sunkit_magex.pfss
@@ -34,7 +36,7 @@ def test_pfss(gong_map):
     br = pfss_out.source_surface_br.data
     assert br.shape == m.data.shape
     expected = np.loadtxt(test_data / 'br_out.txt')
-    # atol is emperically set for tests to pass on CI
+    # atol is empirically set for tests to pass on CI
     np.testing.assert_allclose(br, expected, atol=1e-13, rtol=0)
 
 
@@ -185,7 +187,7 @@ def test_bvec_interpolator(dipole_result):
     b_cart = out.get_bvec(test_coord, out_type="cartesian")
     b_sph = out.get_bvec(test_coord, out_type="spherical")
 
-    # Check the output shape matches is [N,3] whre
+    # Check the output shape matches is [N,3] where
     # N is the length of test_coord, the unit is nT
     assert b_cart.shape == (len(test_coord), 3)
     assert b_sph.shape == (len(test_coord), 3)

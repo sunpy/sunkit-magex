@@ -1,11 +1,6 @@
 import pytest
 
-from sunkit_magex.pfss.fieldline import (
-    ClosedFieldLines,
-    FieldLine,
-    FieldLines,
-    OpenFieldLines,
-)
+from sunkit_magex.pfss.fieldline import ClosedFieldLines, FieldLine, FieldLines, OpenFieldLines
 
 
 @pytest.mark.parametrize(("x", "open", "pol"),

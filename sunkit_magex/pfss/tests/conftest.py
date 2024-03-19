@@ -1,6 +1,8 @@
 import numpy as np
 import pytest
+
 from astropy.time import Time
+
 from sunpy.map import Map
 
 import sunkit_magex.pfss

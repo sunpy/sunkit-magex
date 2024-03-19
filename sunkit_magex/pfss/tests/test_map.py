@@ -1,8 +1,10 @@
 
 import astropy.units as u
+
 import sunpy.map
 
 import sunkit_magex.pfss.map
+
 
 def test_gong_source(gong_map):
     m = sunpy.map.Map(gong_map)
