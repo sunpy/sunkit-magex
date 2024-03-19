@@ -22,6 +22,6 @@ exclude =
     __pycache__
     docs/conf.py
     build
-    sunkit-magex/__init__.py,
+    sunkit-magex/__init__.py
 rst-directives =
     plot
