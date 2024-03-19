@@ -208,7 +208,7 @@ class Output:
 
         finish_integration.terminal = True
         # The integration domain is deliberately huge, because the
-        # the interation automatically stops when an out of bounds error
+        # the integration automatically stops when an out of bounds error
         # is thrown
         t_span = (0, 1e4)
 
