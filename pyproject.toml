@@ -29,6 +29,7 @@ tests = [
   "pytest",
   "pytest-doctestplus",
   "pytest-cov",
+  "pytest-xdist",
   "parfive",
   "reproject",
   "streamtracer",
@@ -66,6 +67,7 @@ zip-safe = false
 include-package-data = true
 
 [tool.setuptools.packages.find]
+exclude = ["sunkit_magex._dev*"]
 
 [tool.setuptools_scm]
 write_to = "sunkit_magex/_version.py"
