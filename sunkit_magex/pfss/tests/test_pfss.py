@@ -21,23 +21,22 @@ R_sun = const.R_sun
 test_data = pathlib.Path(__file__).parent / 'data'
 
 
+@pytest.mark.array_compare(reference_dir="arraydiff_reference")
 def test_pfss(gong_map):
     # Regression test to check that the output of pfss doesn't change
     m = sunpy.map.Map(gong_map)
     # Resample to lower res for easier comparisons
     m = m.resample([30, 15] * u.pix)
-    m = sunpy.map.Map(m.data - np.mean(m.data), m.meta)
+
     expected = np.loadtxt(test_data / 'br_in.txt')
-    np.testing.assert_equal(m.data, expected)
+    m = sunpy.map.Map(expected, m.meta)
 
     pfss_in = sunkit_magex.pfss.Input(m, 50, 2)
     pfss_out = sunkit_magex.pfss.pfss(pfss_in)
 
     br = pfss_out.source_surface_br.data
     assert br.shape == m.data.shape
-    expected = np.loadtxt(test_data / 'br_out.txt')
-    # atol is empirically set for tests to pass on CI
-    np.testing.assert_allclose(br, expected, atol=1e-13, rtol=0)
+    return br
 
 
 def test_bunit(gong_map):

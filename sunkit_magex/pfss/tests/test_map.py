@@ -21,9 +21,9 @@ def test_gong_source(gong_map):
     assert u.allclose(observer.radius, 1.50953137e+11 * u.m)
 
 
-def test_adapt_map(adapt_map):
+def test_adapt_map(adapt_test_file):
     import astropy.io
-    adapt_fits = astropy.io.fits.open(adapt_map)
+    adapt_fits = astropy.io.fits.open(adapt_test_file)
     for map_slice in adapt_fits[0].data:
         m = sunpy.map.Map((map_slice, adapt_fits[0].header))
         assert isinstance(m, sunkit_magex.pfss.map.ADAPTMap)
