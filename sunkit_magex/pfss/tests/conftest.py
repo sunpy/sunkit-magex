@@ -6,6 +6,8 @@ from astropy.time import Time
 from sunpy.map import Map
 
 import sunkit_magex.pfss
+from sunkit_magex.pfss import utils
+from sunkit_magex.tests.helpers import get_dummy_map_from_header, get_fitsfile_from_header
 
 
 @pytest.fixture
@@ -53,16 +55,25 @@ def dipole_result(dipole_map):
 
 
 @pytest.fixture
-def gong_map():
+def adapt_test_file(tmp_path):
     """
-    Automatically download and unzip a sample GONG synoptic map.
+    Return a fake
     """
-    return sunkit_magex.pfss.sample_data.get_gong_map()
+    return get_fitsfile_from_header(
+        "adapt_header.header",
+        tmp_path / "adapt.fits",
+        package="sunkit_magex.pfss.tests.data"
+    )
 
 
 @pytest.fixture
-def adapt_map():
-    """
-    Automatically download and unzip a sample GONG synoptic map.
-    """
-    return sunkit_magex.pfss.sample_data.get_adapt_map()
+def adapt_map(adapt_test_file):
+    return utils.load_adapt(adapt_test_file)
+
+
+@pytest.fixture
+def gong_map():
+    return get_dummy_map_from_header(
+        "gong_header.header",
+        package="sunkit_magex.pfss.tests.data"
+    )

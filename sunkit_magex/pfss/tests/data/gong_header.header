@@ -1,0 +1,76 @@
+SIMPLE  =                    T / Written by IDL:  Fri Oct 16 21:34:12 2020      
+BITPIX  =                  -32 / Bits per pixel                                 
+NAXIS   =                    2 / Number of axes                                 
+NAXIS1  =                  360 /Number of positions along axis 1                
+NAXIS2  =                  180 /Number of positions along axis 2                
+EXTEND  =                    F / File may contain extensions                    
+ORIGIN  = 'National Solar Observatory -- GONG' / FITS file originator           
+OBS-SITE= 'NSO/GONG NETWORK'   / Instrument site location                       
+TELESCOP= 'NSO-GONG'           / NSO/GONG Network                               
+OBS-URL = 'http://gong.nso.edu' / The GONG website                              
+DATE    = '2020-09-01T13:04:00'                                                 
+DATE-OBS= '2020-09-01'                                                          
+TIME-OBS= '13:04   '                                                            
+DATATYPE= 'REAL*4  '           / Type of data                                   
+WAVELNTH=                676.8 / Wavelength of obs (nm)                         
+CAR_ROT =                 2234 / Carr-rot. number of position 0.0               
+WCSNAME = 'Carrington Cylin-equal-area'                                         
+CTYPE1  = 'CRLN-CEA'           / Carrington longitude                           
+CTYPE2  = 'CRLT-CEA'           / Carrington sine latitude                       
+CRPIX1  =              180.500 / 180 degrees from initial longitude             
+CRPIX2  =              90.5000 / Equator of map                                 
+CRVAL1  =                  202 / Carrington longitude of map cntr (deg)         
+CRVAL2  =              0.00000 / Sine-lat of Equator                            
+PV2_1   =              1.00000 / Lambda for latitude coordinate                 
+CDELT1  =              1.00000 / Carrington long. step (deg)                    
+CDELT2  =            0.0111111 / Sine-lat step                                  
+WCSNAMEA= 'Carrington-rotation Cylin-equal-area'                                
+CTYPE1A = 'CRN-CEA '           / Carrington rotation number                     
+CTYPE2A = 'CRLT-CEA'           / Carrington sine latitude                       
+CRPIX1A =              180.500 / Half rotation from initial pixel               
+CRPIX2A =              90.5000 / Equator of map                                 
+CRVAL1A =          2234.438889 / Carr-rot of map cntr                           
+CRVAL2A =              0.00000 / Sine-lat of Equator                            
+PV2_1A  =              1.00000 / Lambda for latitude coordinate                 
+CDELT1A =    -0.00277777777778 / Carrington step (rotation)                     
+CDELT2A =            0.0111111 / Sine-lat step                                  
+IMTYPE  = 'MAGNETIC'                                                            
+NFILETOT=                 7391 / Total number of files included                 
+LONG0   =                   22 / Init. Carr-long. of synoptic map               
+IMGMN01 =            -0.025712 / Image mean                                     
+IMGRMS01=             3.246920 / Image RMS (Standard Deviation)                 
+IMGSKW01=            -5.927231 / Image skewness                                 
+IMGMIN01=          -151.524551 / Image Min                                      
+IMGMAX01=            81.542847 / Image Max                                      
+IMGADV01=             1.647188 / Image Average Deviation                        
+IMGVAR01=            10.542491 / Image Variance                                 
+IMGKUR01=           270.886261 / Image Kurtosis                                 
+MMREL   = 'v3.1    '                                                            
+CARROT  =                 2234                                                  
+BUNIT   = 'Gauss   '                                                            
+LONGMC  =                138.0                                                  
+LONGIMC =                  138                                                  
+LONGADJ =           -0.3384359                                                  
+MAPCOUNT=                 7391                                                  
+MAPL0   =                   82                                                  
+MAPEDGE =                   22                                                  
+CREDGE  =          2234.938889 / Carr-rot of map left edge                      
+CRNOW   =         2234.7731623 / Carr-rot of Now                                
+CR60    =         2234.7722222 / Carr-rot of 60 degrees in                      
+CRCENTER=         2234.4388889 / Carr-rot of map cntr                           
+MAPNAME = '2234_022'                                                            
+MAPDATE = '2020-09-01'         / UT Date of this map (i.e. of last contributor) 
+MAPTIME = '13:04   '           / UT Time of this map (i.e. of last contributor) 
+FILELIST= 'mrzql200901t1304c2234_022'                                           
+COMMENT                                                                         
+COMMENT Please note:                                                            
+COMMENT This is an hourly GONG product with UT date MAPDATE and UT time MAPTIME 
+COMMENT which is between 59.5 and 60.5 degrees from the left edge in the        
+COMMENT Carrington frame.                                                       
+COMMENT                                                                         
+COMMENT This GONG product is produced from the QRII data stream.                
+COMMENT                                                                         
+COMMENT See http://gong.nso.edu for more information about GONG.                
+COMMENT                                                                         
+PLATFORM= 'Linux pipe2 redhat'                                                  
+FITSWASH= '$RCSfile: mag_hourly.kw,v $ $Revision: 1.1.1.1 $ $Date: 2011/05/17 0'

@@ -13,8 +13,8 @@ from sunkit_magex.pfss import utils
 # Ignore missing metadata warnings
 pytestmark = [pytest.mark.filterwarnings('ignore:Missing metadata for observer')]
 
-def test_load_adapt(adapt_map):
-    adaptMapSequence = utils.load_adapt(adapt_map)
+def test_load_adapt(adapt_test_file):
+    adaptMapSequence = utils.load_adapt(adapt_test_file)
     assert isinstance(adaptMapSequence, sunpy.map.MapSequence)
     for map_ in adaptMapSequence:
         assert map_.meta['model'] == "ADAPT"
@@ -69,8 +69,8 @@ def test_validation_not_full_map(dipole_map):
         utils.is_full_sun_synoptic_map(dipole_map, error=True)
 
 
-def test_car_reproject(adapt_map):
-    adapt_map = utils.load_adapt(adapt_map)[0]
+def test_car_reproject(adapt_test_file):
+    adapt_map = utils.load_adapt(adapt_test_file)[0]
     adapt_reproj = utils.car_to_cea(adapt_map)
 
     assert np.all(np.isfinite(adapt_map.data))

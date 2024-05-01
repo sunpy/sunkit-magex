@@ -16,7 +16,7 @@ authors = [
 ]
 dependencies = [
   "astropy>=5.2.0",
-  "numpy>=1.21.0",
+  "numpy>=1.23.0",
   "scikit-image>=0.19.0",
   # !=1.10.0 due to https://github.com/scipy/scipy/issues/17718
   "scipy>=1.8.0,!=1.10.0",
@@ -30,6 +30,7 @@ tests = [
   "pytest-doctestplus",
   "pytest-cov",
   "pytest-xdist",
+  "pytest-arraydiff",
   "parfive",
   "reproject",
   "streamtracer",
