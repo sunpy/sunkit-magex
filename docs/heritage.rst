@@ -5,23 +5,16 @@ Code Heritage
 ``pfsspy``
 ==========
 
-As of initial release, the main component of ``sunkit-magex`` (`sunkit_magex.pfss`) is 
-forked from `pfsspy` package (archived as of August 24, 2023). `pfsspy` 
-implemented the Potential Field Source Surface (PFSS) model, a widely used
-method to extrapolate the magnetic fields of the solar corona. ``pfsspy`` was 
-developed, integrated with `sunpy` and maintained by 
-`David Stansby <https://www.davidstansby.com/>`_
-based on an `original PFSS implementation <https://doi.org/10.5281/zenodo.1472183>`_ 
-by `Anthony Yeates <https://www.maths.dur.ac.uk/users/anthony.yeates/>`_.
+As of initial release, the main component of ``sunkit-magex`` (`sunkit_magex.pfss`) is forked from `pfsspy` package (archived as of August 24, 2023).
+`pfsspy` implemented the Potential Field Source Surface (PFSS) model, a widely used method to extrapolate the magnetic fields of the solar corona.
+`pfsspy` was developed, integrated with `sunpy` and maintained by `David Stansby <https://www.davidstansby.com/>`_, based on an `original PFSS implementation <https://doi.org/10.5281/zenodo.1472183>`_  by `Anthony Yeates <https://www.maths.dur.ac.uk/users/anthony.yeates/>`_.
 
-Details of the numerical methods underlying the solver
-can be found in :any:`numerical_methods_pfss/index`.
+Details of the numerical methods underlying the solver can be found in :any:`numerical_methods_pfss/index`.
 
 Citing
 ------
 
-If you use `sunkit_magex.pfss` in work that results in publication, please cite the
-original ``pfsspy`` Journal of Open Source Software paper at https://doi.org/10.21105/joss.02732.
+If you use `sunkit_magex.pfss` in work that results in publication, please cite the original ``pfsspy`` Journal of Open Source Software paper at https://doi.org/10.21105/joss.02732.
 A ready made bibtex entry is
 
 .. code:: bibtex
@@ -38,8 +31,3 @@ A ready made bibtex entry is
     title = {pfsspy: A Python package for potential field source surface modelling},
     journal = {Journal of Open Source Software}
   }
-
-
-
-
-
