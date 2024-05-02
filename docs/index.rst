@@ -9,8 +9,11 @@ This is the documentation for sunkit-magex.
    :caption: Contents:
 
    installing
+   heritage
    generated/gallery/index
-   reference/index
+   reference/index   
    performance
    numerical_methods_pfss/index.rst
    synoptic_fits
+   
+
