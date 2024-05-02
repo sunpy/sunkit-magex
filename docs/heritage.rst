@@ -7,7 +7,7 @@ Code Heritage
 
 As of initial release, the main component of ``sunkit-magex`` (`sunkit_magex.pfss`) is forked from `pfsspy` package (archived as of August 24, 2023).
 `pfsspy` implemented the Potential Field Source Surface (PFSS) model, a widely used method to extrapolate the magnetic fields of the solar corona.
-`pfsspy` was developed, integrated with `sunpy` and maintained by `David Stansby <https://www.davidstansby.com/>`_, based on an `original PFSS implementation <https://doi.org/10.5281/zenodo.1472183>`_  by `Anthony Yeates <https://www.maths.dur.ac.uk/users/anthony.yeates/>`_.
+`pfsspy` was developed, integrated with `sunpy` and maintained by `David Stansby <https://www.davidstansby.com/>`__, based on an `original PFSS implementation <https://doi.org/10.5281/zenodo.1472183>`__  by `Anthony Yeates <https://www.maths.dur.ac.uk/users/anthony.yeates/>`__.
 
 Details of the numerical methods underlying the solver can be found in :any:`numerical_methods_pfss/index`.
 
