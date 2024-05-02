@@ -65,6 +65,7 @@ intersphinx_mapping = {
     "streamtracer": ("https://streamtracer.readthedocs.io/en/stable", None),
     "scipy": ("https://docs.scipy.org/doc/scipy/", None),
     "reproject": ("https://reproject.readthedocs.io/en/stable/", None),
+    "pfsspy": ("https://pfsspy.readthedocs.io/en/latest/", None),
 }
 
 # -- Options for HTML output -------------------------------------------------
