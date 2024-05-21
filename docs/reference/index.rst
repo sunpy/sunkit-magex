@@ -1,6 +1,6 @@
-API reference
+API Reference
 =============
 
 .. toctree::
 
-    pfsspy
+    pfss

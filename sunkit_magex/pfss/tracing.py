@@ -75,7 +75,7 @@ class Tracer(abc.ABC):
 
 class FortranTracer(Tracer):
     r"""
-    Tracer using Fortran code.
+    Tracer using compiled code via streamtracer.
 
     Parameters
     ----------

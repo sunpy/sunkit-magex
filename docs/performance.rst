@@ -11,7 +11,7 @@ To enable this simply `install numba`_  and use `sunkit_magex.pfss` as normal.
 Streamline tracing
 ==================
 
-`sunkit_magex.pfss` has two streamline tracers: a pure python `sunkit_magex.pfss.tracing.PythonTracer` and a FORTRAN `sunkit_magex.pfss.tracing.FortranTracer`.
+`sunkit_magex.pfss` has two streamline tracers: a pure python `sunkit_magex.pfss.tracing.PythonTracer` and a complied tracer `sunkit_magex.pfss.tracing.FortranTracer`.
 The FORTRAN version is significantly faster, using the `streamtracer`_ package.
 
 .. _numba: https://numba.pydata.org
