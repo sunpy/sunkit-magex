@@ -9,10 +9,32 @@ import astropy.time
 from astropy import units as u
 from astropy.wcs import WCS
 
+import sunpy.coordinates
 import sunpy.map
 import sunpy.time
 
 __all__ = ['fix_hmi_meta', 'load_adapt', 'carr_cea_wcs_header', 'is_cea_map', 'is_car_map', 'is_full_sun_synoptic_map', 'car_to_cea', 'roll_map']
+
+def _observer_coord_meta(observer_coord):
+    """
+    Convert an observer coordinate into FITS metadata.
+    """
+    new_obs_frame = sunpy.coordinates.HeliographicStonyhurst(
+        obstime=observer_coord.obstime)
+    observer_coord = observer_coord.transform_to(new_obs_frame)
+
+    new_meta = {'hglt_obs': observer_coord.lat.to_value(u.deg)}
+    new_meta['hgln_obs'] = observer_coord.lon.to_value(u.deg)
+    new_meta['dsun_obs'] = observer_coord.radius.to_value(u.m)
+    return new_meta
+
+
+def _earth_obs_coord_meta(obstime):
+    """
+    Return metadata for an Earth observer coordinate.
+    """
+    return _observer_coord_meta(sunpy.coordinates.get_earth(obstime))
+
 
 def fix_hmi_meta(hmi_map):
     """
@@ -53,9 +75,8 @@ def fix_hmi_meta(hmi_map):
 
     # Fix observer coordinate
     if 'hglt_obs' not in hmi_map.meta:
-        from sunkit_magex import pfss
 
-        hmi_map.meta.update(pfss.map._earth_obs_coord_meta(hmi_map.meta['date-obs']))
+        hmi_map.meta.update(_earth_obs_coord_meta(hmi_map.meta['date-obs']))
 
 
 def load_adapt(adapt_path):
