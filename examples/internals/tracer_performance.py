@@ -68,7 +68,7 @@ for nseed in nseeds:
 
 fig, ax = plt.subplots()
 ax.scatter(nseeds[1:len(times[0])], times[0][1:], label='python')
-ax.scatter(nseeds[1:], times[1][1:], label='fortran')
+ax.scatter(nseeds[1:], times[1][1:], label='compiled')
 
 pydt = (times[0][4] - times[0][3]) / (nseeds[4] - nseeds[3])
 ax.plot([1, 1e5], [pydt, 1e5 * pydt])
