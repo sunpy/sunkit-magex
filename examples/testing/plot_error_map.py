@@ -27,7 +27,7 @@ nphi = 360
 ns = 180
 nr = 40
 rss = 2
-pfsspy_out = pffspy_output(nphi, ns, nr, rss, l, m)
+pfss_out = pffspy_output(nphi, ns, nr, rss, l, m)
 rss = rss * const.R_sun
 
 ###############################################################################
@@ -42,14 +42,14 @@ theta = np.arcsin(np.linspace(-0.98, 0.98, n, endpoint=False) + 1/n)
 theta, phi = np.meshgrid(theta, phi, indexing='ij')
 theta, phi = theta * u.rad, phi * u.deg
 seeds = SkyCoord(radius=rss, lat=theta.ravel(), lon=phi.ravel(),
-                 frame=pfsspy_out.coordinate_frame)
+                 frame=pfss_out.coordinate_frame)
 
 step_size = 1
 dthetas = []
 print(f'Tracing {step_size}...')
 # Trace
 tracer = pfss.tracing.FortranTracer(step_size=step_size)
-flines = tracer.trace(seeds, pfsspy_out)
+flines = tracer.trace(seeds, pfss_out)
 # Set a mask of open field lines
 mask = flines.connectivities.astype(bool).reshape(theta.shape)
 
