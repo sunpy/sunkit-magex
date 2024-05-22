@@ -205,7 +205,7 @@ def is_full_sun_synoptic_map(m, error=False):
         return checks[projection](m, error)
     else:
         raise NotImplementedError(
-            f'is_full_sun_synoptic_map is only implemented for {list(checks.keys())} projections.'
+            f'is_full_sun_synoptic_map is only implemented for {list(checks.keys())} projections and not {projection}'
         )
 
 
