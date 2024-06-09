@@ -15,3 +15,4 @@ This is the documentation for sunkit-magex.
    performance
    numerical_methods_pfss/index.rst
    synoptic_fits
+   changelog

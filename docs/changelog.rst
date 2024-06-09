@@ -8,7 +8,7 @@ Full Changelog
 ==================
 
 This is the first release and aims to keep the API the same from `pfsspy` to
-`sunkit-magex`.  The main difference is that you will need to replace the
+`sunkit_magex`.  The main difference is that you will need to replace the
 import like so:
 
   .. code-block:: python

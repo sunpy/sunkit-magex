@@ -99,7 +99,7 @@ sphinx_gallery_conf = {
     "plot_gallery": True,
     "remove_config_comments": True,
     "subsection_order": ExplicitOrder([
-        "../examples/using_pfsspy",
+        "../examples/using_sunkit_magex_pfss",
         "../examples/finding_data",
         "../examples/utils",
         "../examples/internals",
