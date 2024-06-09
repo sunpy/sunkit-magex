@@ -1,3 +1,5 @@
+# Import this to register map sources
+import sunkit_magex.pfss.map as _
 from sunkit_magex.pfss import coords, fieldline, sample_data, tracing, utils
 from sunkit_magex.pfss.input import Input
 from sunkit_magex.pfss.output import Output

@@ -7,8 +7,9 @@ Full Changelog
 1.0.0 (2024-05-31)
 ==================
 
-* First release that keeps API the same from `pfsspy` to `sunkit-magex`.
-  The main difference is that you will need to replace the import like so:
+This is the first release and aims to keep the API the same from `pfsspy` to
+`sunkit-magex`.  The main difference is that you will need to replace the
+import like so:
 
   .. code-block:: python
 
@@ -20,5 +21,8 @@ Full Changelog
     from sunkit_magex import pfss as pfsspy
     from sunkit_magex.pfss import tracing
 
-The main breaking changes is that the old sunpy Map classes were removed and added to sunpy.
-You will need to make sure you have sunpy 6.0.0 installed.
+The main changes from the previous release of `pfsspy` are as follows:
+
+* The ``GongSynopticMap`` class has moved into `sunpy`, note that the new
+  class in ``sunpy`` is slightly different in that it does not modify the
+  header.
