@@ -1,6 +1,7 @@
-API reference
+API Reference
 =============
 
 .. toctree::
 
-    pfsspy
+    magex
+    pfss

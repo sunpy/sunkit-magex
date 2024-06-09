@@ -11,7 +11,7 @@ from sunkit_magex.pfss import tracing
 
 @pytest.fixture(params=[tracing.PythonTracer(),
                         tracing.FortranTracer()],
-                ids=['python', 'fortran'])
+                ids=['python', 'compiled'])
 def flines(dipole_result, request):
     tracer = request.param
     _, out = dipole_result

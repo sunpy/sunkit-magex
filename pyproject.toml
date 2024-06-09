@@ -54,6 +54,8 @@ performance = [
 analytic = [
   "sympy",
 ]
+all = ["sunkit-magex[performance,analytic]"]
+dev = ["sunkit-magex[all,tests,docs]"]
 
 [project.urls]
 Homepage = "https://sunpy.org"

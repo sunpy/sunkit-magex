@@ -75,7 +75,7 @@ class Tracer(abc.ABC):
 
 class FortranTracer(Tracer):
     r"""
-    Tracer using Fortran code.
+    Tracer using compiled code via streamtracer.
 
     Parameters
     ----------
@@ -103,7 +103,7 @@ class FortranTracer(Tracer):
             from streamtracer import StreamTracer
         except ModuleNotFoundError as e:
             raise RuntimeError(
-                'Using FortranTracer requires the streamtracer module, '
+                'Using this tracer requires the streamtracer module, '
                 'but streamtracer could not be loaded') from e
         self.max_steps = max_steps
         self.step_size = step_size

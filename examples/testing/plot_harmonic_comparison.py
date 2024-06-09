@@ -7,7 +7,7 @@ Comparing analytical spherical harmonic solutions to PFSS output.
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 
-from examples.testing.helpers import LMAxes, brss_analytic, brss_pfsspy
+from examples.testing.helpers import LMAxes, brss_analytic, brss_pfss
 
 ###############################################################################
 # Compare the the `sunkit_magex.pfss` solution to the analytic solutions.
@@ -25,10 +25,10 @@ for l in range(1, nl+1):
         print(f'l={l}, m={m}')
         ax = axs[l, m]
 
-        br_pfsspy = brss_pfsspy(nphi, ns, nrho, rss, l, m)
+        br_pfss = brss_pfss(nphi, ns, nrho, rss, l, m)
         br_actual = brss_analytic(nphi, ns, rss, l, m)
 
-        ax.plot(br_pfsspy[:, 15], label='sunkit_magex.pfss')
+        ax.plot(br_pfss[:, 15], label='sunkit_magex.pfss')
         ax.plot(br_actual[:, 15], label='analytic')
         if l == 1 and m == 0:
             ax.xaxis.set_major_formatter(mticker.StrMethodFormatter('{x}°'))
