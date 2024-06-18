@@ -214,7 +214,7 @@ class PythonTracer(Tracer):
             xforw = output._integrate_one_way(1, seed, self.rtol, self.atol)
             xback = output._integrate_one_way(-1, seed, self.rtol, self.atol)
             xback = np.flip(xback, axis=1)
-            xout = np.row_stack((xback.T, xforw.T))
+            xout = np.vstack((xback.T, xforw.T))
             fline = fieldline.FieldLine(xout[:, 0], xout[:, 1], xout[:, 2], output)
 
             flines.append(fline)
