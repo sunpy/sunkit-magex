@@ -13,15 +13,16 @@ requires-python = ">=3.10"
 readme = { file = "README.rst", content-type = "text/x-rst" }
 license = { file = "licenses/LICENSE.rst" }
 authors = [
+  { name = "David Stansby" },
   { name = "The SunPy Community", email = "sunpy@googlegroups.com" },
 ]
 dependencies = [
-  "astropy>=5.2.0",
-  "numpy>=1.23.0",
+  "astropy>=5.3.0",
+  "numpy>=1.23.5",
   "scikit-image>=0.19.0",
-  # !=1.10.0 due to https://github.com/scipy/scipy/issues/17718
-  "scipy>=1.8.0,!=1.10.0",
-  "sunpy[map]>=5.1",
+  "scipy>=1.10.1",
+  "streamtracer>=2.2.0",
+  "sunpy[map]>=6.0",
 ]
 dynamic = ["version"]
 
@@ -34,7 +35,6 @@ tests = [
   "pytest-arraydiff",
   "parfive",
   "reproject",
-  "streamtracer",
   "sympy",
 ]
 docs = [
@@ -46,13 +46,11 @@ docs = [
   "pillow",
   "reproject",
   "sphinx-gallery",
-  "streamtracer",
   "sunpy[net,map]",
   "sympy",
 ]
 performance = [
   "numba",
-  "streamtracer",
 ]
 analytic = [
   "sympy",
