@@ -8,13 +8,10 @@ This script calculates the ratio of numeric to analytic total unsigned open
 fluxes in PFSS solutions of spherical harmonics, as a function of the number of
 radial grid cells in the sunkit_magex.pfss grid.
 """
-
-
 import numpy as np
 import pandas as pd
+from _helpers import open_flux_analytic, open_flux_numeric, result_dir
 from tqdm import tqdm
-
-from examples.testing.helpers import open_flux_analytic, open_flux_numeric, result_dir
 
 ###############################################################################
 # Set the source surface height and range of radial grid points.

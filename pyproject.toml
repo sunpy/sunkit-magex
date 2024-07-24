@@ -13,8 +13,8 @@ requires-python = ">=3.10"
 readme = { file = "README.rst", content-type = "text/x-rst" }
 license = { file = "licenses/LICENSE.rst" }
 authors = [
-  { name = "David Stansby" },
   { name = "The SunPy Community", email = "sunpy@googlegroups.com" },
+  { name = "David Stansby" },
 ]
 dependencies = [
   "astropy>=5.3.0",
@@ -35,7 +35,7 @@ tests = [
   "pytest-arraydiff",
   "parfive",
   "reproject",
-  "sympy",
+  "sunkit-magex[all]",
 ]
 docs = [
   "sphinx",
@@ -43,11 +43,10 @@ docs = [
   "sphinx-changelog",
   "sunpy-sphinx-theme",
   "packaging",
-  "pillow",
   "reproject",
   "sphinx-gallery",
-  "sunpy[net,map]",
-  "sympy",
+  "sunpy[net,map]>=6.0",
+  "sunkit-magex[all]",
 ]
 performance = [
   "numba",
@@ -62,7 +61,7 @@ dev = ["sunkit-magex[all,tests,docs]"]
 Homepage = "https://sunpy.org"
 Download = "https://pypi.org/project/sunkit-magex/"
 "Source Code" = "https://github.com/sunpy/sunkit-magex/"
-Documentation = "https://docs.sunpy.org/"
+Documentation = "https://docs.sunpy.org/projects/sunkit-magex/en/stable/"
 Changelog = "https://docs.sunpy.org/en/stable/whatsnew/changelog.html"
 "Issue Tracker" = "https://github.com/sunpy/sunkit-magex/issues"
 

@@ -2,14 +2,18 @@ import abc
 import warnings
 
 import numpy as np
+from streamtracer import StreamTracer, VectorGrid
 
 import astropy.constants as const
 import astropy.coordinates as astrocoords
 import astropy.units as u
 
+from sunpy.util.decorators import deprecated
+
 import sunkit_magex.pfss
 import sunkit_magex.pfss.fieldline as fieldline
 
+__all__ = ['Tracer', 'PerformanceTracer', 'FortranTracer', 'PythonTracer']
 
 class Tracer(abc.ABC):
     """
@@ -37,8 +41,9 @@ class Tracer(abc.ABC):
         Check that *seeds* has the right shape and is the correct type.
         """
         if not isinstance(seeds, astrocoords.SkyCoord):
-            raise ValueError('seeds must be SkyCoord object '
-                             f'(got {type(seeds)} instead)')
+            raise ValueError(
+                f'seeds must be SkyCoord object (got {type(seeds)} instead)'
+            )
 
     @staticmethod
     def cartesian_to_coordinate():
@@ -73,7 +78,7 @@ class Tracer(abc.ABC):
         return x, y, z
 
 
-class FortranTracer(Tracer):
+class PerformanceTracer(Tracer):
     r"""
     Tracer using compiled code via streamtracer.
 
@@ -99,12 +104,6 @@ class FortranTracer(Tracer):
     directly on the poles will not go anywhere.
     """
     def __init__(self, max_steps='auto', step_size=1):
-        try:
-            from streamtracer import StreamTracer
-        except ModuleNotFoundError as e:
-            raise RuntimeError(
-                'Using this tracer requires the streamtracer module, '
-                'but streamtracer could not be loaded') from e
         self.max_steps = max_steps
         self.step_size = step_size
         self.max_steps = max_steps
@@ -116,8 +115,6 @@ class FortranTracer(Tracer):
         """
         Create a `streamtracer.VectorGrid` object from an `~sunkit_magex.pfss.Output`.
         """
-        from streamtracer import VectorGrid
-
         # The indexing order on the last index is (phi, s, r)
         vectors = output.bg.copy()
 
@@ -172,9 +169,7 @@ class FortranTracer(Tracer):
 
         # Filter out of bounds points out
         rho_ss = np.log(output.grid.rss)
-        xs = [x[(x[:, 2] <= rho_ss) & (x[:, 2] >= 0) &
-                (np.abs(x[:, 1]) < 1), :]
-              for x in xs]
+        xs = [x[(x[:, 2] <= rho_ss) & (x[:, 2] >= 0) & (np.abs(x[:, 1]) < 1), :] for x in xs]
 
         rots = self.tracer.ROT
         if np.any(rots == 1):
@@ -191,7 +186,6 @@ class FortranTracer(Tracer):
 class PythonTracer(Tracer):
     """
     Tracer using native python code.
-
     Uses `scipy.integrate.solve_ivp`, with an LSODA method.
     """
     def __init__(self, atol=1e-4, rtol=1e-4):
@@ -219,3 +213,9 @@ class PythonTracer(Tracer):
 
             flines.append(fline)
         return fieldline.FieldLines(flines)
+
+
+class FortranTracer(PerformanceTracer):
+    @deprecated('1.0', message='This class has been renamed to PerformanceTracer as this now does not use Fortran.')
+    def __init__(*args, **kwargs):
+        super().__init__(*args, **kwargs)

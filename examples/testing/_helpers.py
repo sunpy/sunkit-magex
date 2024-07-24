@@ -16,7 +16,6 @@ import sunkit_magex.pfss.analytic as analytic
 import sunkit_magex.pfss.utils
 
 result_dir = (pathlib.Path(__file__) / '..' / 'results').resolve()
-
 pi = np.pi * u.rad
 
 
@@ -83,8 +82,6 @@ def open_flux_numeric(l, m, zss, nrho):
     return np.sum(np.abs(br)) * (4 * np.pi) / nphi / ns
 
 
-######################
-# Field line helpers #
 @u.quantity_input
 def fr(r: u.m, rss: u.m, l):
     rho = r / rss
