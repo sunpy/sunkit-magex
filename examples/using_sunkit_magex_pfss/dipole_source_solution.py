@@ -5,6 +5,8 @@ Dipole source solution
 A simple example showing how to use PFSS to compute the solution to a dipole
 source field.
 """
+# sphinx_gallery_thumbnail_number = 3
+
 import matplotlib.patches as mpatch
 import matplotlib.pyplot as plt
 import numpy as np
@@ -26,7 +28,6 @@ from sunkit_magex import pfss
 
 nphi = 360
 ns = 180
-
 phi = np.linspace(0, 2 * np.pi, nphi)
 s = np.linspace(-1, 1, ns)
 s, phi = np.meshgrid(s, phi)
@@ -59,15 +60,18 @@ pfss_in = pfss.Input(input_map, nrho, rss)
 ###############################################################################
 # Using the Input object, plot the input field.
 
-m = pfss_in.map
+in_map = pfss_in.map
+
 fig = plt.figure()
-ax = plt.subplot(projection=m)
-m.plot()
+ax = fig.add_subplot(projection=in_map)
+
+in_map.plot(axes=ax)
 plt.colorbar()
 ax.set_title('Input dipole field')
 
 ###############################################################################
 # Now calculate the PFSS solution.
+
 pfss_out = pfss.pfss(pfss_in)
 
 ###############################################################################
@@ -76,15 +80,15 @@ pfss_out = pfss.pfss(pfss_in)
 
 ss_br = pfss_out.source_surface_br
 
-# Create the figure and axes
 fig = plt.figure()
-ax = plt.subplot(projection=ss_br)
+ax = fig.add_subplot(projection=ss_br)
 
 # Plot the source surface map
-ss_br.plot()
+ss_br.plot(axes=ax)
+
 # Plot the polarity inversion line
 ax.plot_coord(pfss_out.source_surface_pils[0])
-# Plot formatting
+
 plt.colorbar()
 ax.set_title('Source surface magnetic field')
 
@@ -102,7 +106,7 @@ lon = np.pi / 2 * u.rad
 lat = np.linspace(-np.pi / 2, np.pi / 2, 33) * u.rad
 seeds = SkyCoord(lon, lat, r, frame=pfss_out.coordinate_frame)
 
-tracer = pfss.tracing.FortranTracer()
+tracer = pfss.tracing.PerformanceTracer()
 field_lines = tracer.trace(seeds, pfss_out)
 
 for field_line in field_lines:

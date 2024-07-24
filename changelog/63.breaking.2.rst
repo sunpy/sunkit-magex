@@ -1,0 +1,6 @@
+Deprecated the following pfss utils:
+
+- pfss.utils.fix_hmi_meta
+- pfss.utils.load_adapt
+
+These functions are no longer needed and will be removed.

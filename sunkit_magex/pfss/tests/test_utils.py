@@ -7,17 +7,13 @@ import astropy.units as u
 
 import sunpy.map
 
-import sunkit_magex.pfss
-from sunkit_magex.pfss import utils
-
-# Ignore missing metadata warnings
-pytestmark = [pytest.mark.filterwarnings('ignore:Missing metadata for observer')]
-
-def test_load_adapt(adapt_test_file):
-    adaptMapSequence = utils.load_adapt(adapt_test_file)
-    assert isinstance(adaptMapSequence, sunpy.map.MapSequence)
-    for map_ in adaptMapSequence:
-        assert map_.meta['model'] == "ADAPT"
+from sunkit_magex.pfss.utils import (
+    car_to_cea,
+    carr_cea_wcs_header,
+    is_cea_map,
+    is_full_sun_synoptic_map,
+    roll_map,
+)
 
 
 def test_header_generation():
@@ -25,7 +21,7 @@ def test_header_generation():
     nphi = 90
     dtime = '2001-01-01 00:00:00'
     shape = [nphi, ntheta]
-    header = sunkit_magex.pfss.utils.carr_cea_wcs_header(dtime, shape)
+    header = carr_cea_wcs_header(dtime, shape)
     assert header['LONPOLE'] == 0
     assert header['CTYPE1'] == 'CRLN-CEA'
     assert header['CTYPE2'] == 'CRLT-CEA'
@@ -58,20 +54,19 @@ def test_header_generation():
 
 @pytest.mark.parametrize('error', [True, False])
 def test_validation(dipole_map, error):
-    assert utils.is_cea_map(dipole_map, error)
-    assert utils.is_full_sun_synoptic_map(dipole_map, error)
+    assert is_cea_map(dipole_map, error)
+    assert is_full_sun_synoptic_map(dipole_map, error)
 
 
 def test_validation_not_full_map(dipole_map):
     dipole_map.meta['cdelt1'] = 0.001
-    assert not utils.is_full_sun_synoptic_map(dipole_map)
+    assert not is_full_sun_synoptic_map(dipole_map)
     with pytest.raises(ValueError, match='Number of points in phi direction times'):
-        utils.is_full_sun_synoptic_map(dipole_map, error=True)
+        is_full_sun_synoptic_map(dipole_map, error=True)
 
 
-def test_car_reproject(adapt_test_file):
-    adapt_map = utils.load_adapt(adapt_test_file)[0]
-    adapt_reproj = utils.car_to_cea(adapt_map)
+def test_car_reproject(adapt_map):
+    adapt_reproj = car_to_cea(adapt_map)
 
     assert np.all(np.isfinite(adapt_map.data))
     assert np.all(np.isfinite(adapt_reproj.data))
@@ -81,13 +76,13 @@ def test_car_reproject(adapt_test_file):
         assert adapt_reproj.meta[f'CTYPE{i}'][5:8] == 'CEA'
 
     with pytest.raises(ValueError, match='method must be one of'):
-        utils.car_to_cea(adapt_map, method='gibberish')
+        car_to_cea(adapt_map, method='gibberish')
 
 
 def test_roll_map(adapt_map, gong_map):
     lh_edge_test = 0.0 * u.deg
     gong_map = sunpy.map.Map(gong_map)
-    rolled_map = utils.roll_map(gong_map,
+    rolled_map = roll_map(gong_map,
                                 lh_edge_lon=lh_edge_test)
 
     # Test ref pixel rolled correctly
@@ -99,38 +94,38 @@ def test_roll_map(adapt_map, gong_map):
     assert np.all(np.isfinite(rolled_map.data))
 
     # Test output map is full sun synoptic
-    assert utils.is_full_sun_synoptic_map(rolled_map, error=True)
+    assert is_full_sun_synoptic_map(rolled_map, error=True)
 
     # Test reproject method error handling
     with pytest.raises(ValueError, match='method must be one of'):
-        utils.roll_map(gong_map, method='gibberish')
+        roll_map(gong_map, method='gibberish')
 
     # Test left hand edge input type validation
     # 1. No Units
     with pytest.raises(TypeError,
                        match="has no 'unit' attribute"):
-        utils.roll_map(adapt_map, lh_edge_lon=0)
+        roll_map(adapt_map, lh_edge_lon=0)
     # 2. Incompatible units
     with pytest.raises(u.UnitsError,
                        match="must be in units convertible to 'deg'"):
-        utils.roll_map(adapt_map, lh_edge_lon=0 * u.m)
+        roll_map(adapt_map, lh_edge_lon=0 * u.m)
 
     # Test left hand edge input range validation
     with pytest.raises(ValueError,
                        match='lh_edge_lon must be in'):
-        utils.roll_map(adapt_map, lh_edge_lon=361 * u.deg)
+        roll_map(adapt_map, lh_edge_lon=361 * u.deg)
 
 
 def test_cea_header():
     # Assert default reference pixel is at 0 deg lon
-    cea_default = utils.carr_cea_wcs_header(
+    cea_default = carr_cea_wcs_header(
         datetime.datetime(2020, 1, 1),
         [360, 180]
     )
     assert cea_default['crval1'] == 0.0
 
     # Assert custom reference pixel is expected lon
-    cea_shift = utils.carr_cea_wcs_header(
+    cea_shift = carr_cea_wcs_header(
         datetime.datetime(2020, 1, 1),
         [360, 180],
         map_center_longitude=10.0*u.deg
@@ -140,14 +135,14 @@ def test_cea_header():
     # Test reference pixel shift error handling
     # 1: No units
     with pytest.raises(u.UnitTypeError):
-        cea_default = utils.carr_cea_wcs_header(
+        cea_default = carr_cea_wcs_header(
             datetime.datetime(2020, 1, 1),
             [360, 180],
             map_center_longitude=0.0
         )
     # 2: Wrong Units
     with pytest.raises(u.UnitTypeError):
-        cea_default = utils.carr_cea_wcs_header(
+        cea_default = carr_cea_wcs_header(
             datetime.datetime(2020, 1, 1),
             [360, 180],
             map_center_longitude=0.0*u.m

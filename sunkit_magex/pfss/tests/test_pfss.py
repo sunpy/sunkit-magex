@@ -55,7 +55,7 @@ def test_bunit(gong_map):
 
 
 def test_expansion_factor(dipole_result):
-    inp, out = dipole_result
+    _, out = dipole_result
     out_frame = out.coordinate_frame
 
     tracer = tracing.PythonTracer()
@@ -80,7 +80,7 @@ def test_expansion_factor(dipole_result):
 
 
 def test_field_line_polarity(dipole_result):
-    input, out = dipole_result
+    _, out = dipole_result
     out_frame = out.coordinate_frame
 
     tracer = tracing.PythonTracer()
@@ -99,7 +99,7 @@ def test_field_line_polarity(dipole_result):
 
 
 def test_footpoints(dipole_result):
-    input, out = dipole_result
+    _, out = dipole_result
     out_frame = out.coordinate_frame
 
     tracer = tracing.PythonTracer(atol=1e-8, rtol=1e-8)
@@ -128,12 +128,12 @@ def test_footpoints(dipole_result):
 
 def test_shape(zero_map):
     # Test output map shapes
-    input, out = zero_map
-    nr = input.grid.nr
-    nphi = input.grid.nphi
-    ns = input.grid.ns
+    _input, out = zero_map
+    nr = _input.grid.nr
+    nphi = _input.grid.nphi
+    ns = _input.grid.ns
 
-    out = sunkit_magex.pfss.pfss(input)
+    out = sunkit_magex.pfss.pfss(_input)
     alr, als, alp = out._al
     for comp in (alr, als, alp):
         assert np.all(comp == 0)
