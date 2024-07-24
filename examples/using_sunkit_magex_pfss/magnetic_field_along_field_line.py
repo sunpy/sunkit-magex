@@ -40,11 +40,10 @@ pfss_out = pfss.pfss(pfss_in)
 # Now take a seed point, and trace a magnetic field line through the PFSS
 # solution from this point
 
-tracer = pfss.tracing.FortranTracer()
+tracer = pfss.tracing.PerformanceTracer()
 r = 1.2 * const.R_sun
 lat = 70 * u.deg
 lon = 0 * u.deg
-
 seeds = SkyCoord(lon, lat, r, frame=pfss_out.coordinate_frame)
 field_lines = tracer.trace(seeds, pfss_out)
 
@@ -59,6 +58,7 @@ field_lines = tracer.trace(seeds, pfss_out)
 field_line = field_lines[0]
 B = field_line.b_along_fline
 r = field_line.coords.radius
+
 fig, ax = plt.subplots()
 
 ax.plot(r.to(const.R_sun), B[:, 0], label=r'$B_{r}$')

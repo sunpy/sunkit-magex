@@ -1,0 +1,1 @@
+Made streamtracer a hard dependency of sunkit-magex.

@@ -6,8 +6,7 @@ Comparing analytical spherical harmonic solutions to PFSS output.
 """
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
-
-from examples.testing.helpers import LMAxes, brss_analytic, brss_pfss
+from _helpers import LMAxes, brss_analytic, brss_pfss
 
 ###############################################################################
 # Compare the the `sunkit_magex.pfss` solution to the analytic solutions.

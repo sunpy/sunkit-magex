@@ -14,8 +14,7 @@ import json
 import matplotlib.cm as cm
 import matplotlib.colors as mcolor
 import matplotlib.pyplot as plt
-
-from examples.testing.helpers import LMAxes, result_dir
+from _helpers import LMAxes, result_dir
 
 with open(result_dir / "open_flux_harmonics.json") as f:
     results = json.load(f, parse_int=int)
@@ -27,15 +26,11 @@ cmap = plt.get_cmap('plasma')
 for lstr in results['analytic']:
     for mstr in results['analytic'][lstr]:
         l, m = int(lstr), int(mstr)
-
         ax = axs[l, m]
-        ax.set_facecolor(cmap(norm(results['numeric'][lstr][mstr] /
-                                   results['analytic'][lstr][mstr])))
+        ax.set_facecolor(cmap(norm(results['numeric'][lstr][mstr] / results['analytic'][lstr][mstr])))
         ax.set_aspect('equal')
 
-cbar = axs.fig.colorbar(cm.ScalarMappable(norm=norm, cmap=cmap),
-                        ax=axs.all_axs)
-cbar.ax.set_ylabel(r'$\frac{\Phi_{sunkit_magex.pfss}}{\Phi_{analytic}}$', rotation=0,
-                   size=18, labelpad=27, va='center')
+cbar = axs.fig.colorbar(cm.ScalarMappable(norm=norm, cmap=cmap), ax=axs.all_axs)
+cbar.ax.set_ylabel(r'$\frac{\Phi_{pfss}}{\Phi_{analytic}}$', rotation=0, size=18, labelpad=27, va='center')
 
 plt.show()
