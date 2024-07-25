@@ -76,7 +76,7 @@ class Output:
         """
         Date and time of the input map.
         """
-        return self.input_map.date
+        return self.input_map.reference_date
 
     @property
     def bunit(self):
