@@ -12,6 +12,7 @@ from astropy.wcs import WCS
 import sunpy.coordinates
 import sunpy.map
 import sunpy.time
+from sunpy.util.decorators import deprecated
 
 __all__ = ['fix_hmi_meta', 'load_adapt', 'carr_cea_wcs_header', 'is_cea_map', 'is_car_map', 'is_full_sun_synoptic_map', 'car_to_cea', 'roll_map']
 
@@ -36,6 +37,7 @@ def _earth_obs_coord_meta(obstime):
     return _observer_coord_meta(sunpy.coordinates.get_earth(obstime))
 
 
+@deprecated('1.0', message="This is now fixed within sunpy when you load a HMI file.")
 def fix_hmi_meta(hmi_map):
     """
     Fix non-compliant FITS metadata in HMI maps.
@@ -79,6 +81,7 @@ def fix_hmi_meta(hmi_map):
         hmi_map.meta.update(_earth_obs_coord_meta(hmi_map.meta['date-obs']))
 
 
+@deprecated('1.0', message="This is not required anymore. An example of how to load an ADAPT file is available in the documentation.")
 def load_adapt(adapt_path):
     """
     Parse adapt .fts file as a `sunpy.map.MapSequence`
@@ -150,7 +153,7 @@ def carr_cea_wcs_header(dtime, shape, *, map_center_longitude=0*u.deg):
 
 
 def _get_projection(m, i):
-    return m.meta[f'ctype{i}'][5:8]
+    return m.coordinate_system.axis1.split("-")[-1]
 
 
 def _check_projection(m, proj_code, error=False):

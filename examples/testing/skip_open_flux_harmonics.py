@@ -12,7 +12,7 @@ visualize the result.
 import json
 from collections import defaultdict
 
-from examples.testing.helpers import open_flux_analytic, open_flux_numeric, result_dir
+from _helpers import open_flux_analytic, open_flux_numeric, result_dir
 
 ###############################################################################
 # Set the source surface height, and the (l, m) values to investigate:
@@ -20,8 +20,7 @@ from examples.testing.helpers import open_flux_analytic, open_flux_numeric, resu
 zss = 2
 nrho = 40
 
-results = {'numeric': defaultdict(dict),
-           'analytic': defaultdict(dict)}
+results = {'numeric': defaultdict(dict), 'analytic': defaultdict(dict)}
 
 for l in range(1, 6):
     for m in range(-l, l + 1):
