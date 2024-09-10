@@ -69,6 +69,7 @@ zip-safe = false
 include-package-data = true
 
 [tool.setuptools.packages.find]
+include = ["sunkit_magex*"]
 exclude = ["sunkit_magex._dev*"]
 
 [tool.setuptools_scm]
