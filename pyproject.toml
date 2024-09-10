@@ -2,7 +2,8 @@
 requires = [
   "setuptools>=62.1",
   "setuptools_scm[toml]>=6.2",
-  "wheel",]
+  "wheel",
+]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -70,6 +71,7 @@ zip-safe = false
 include-package-data = true
 
 [tool.setuptools.packages.find]
+include = ["sunkit_magex*"]
 exclude = ["sunkit_magex._dev*"]
 
 [tool.setuptools_scm]
