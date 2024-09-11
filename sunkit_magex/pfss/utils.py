@@ -150,7 +150,7 @@ def carr_cea_wcs_header(dtime, shape, *, map_center_longitude=0*u.deg):
 
 
 def _get_projection(m, i):
-    return m.meta[f'ctype{i}'][5:8]
+    return m.coordinate_system.axis1.split("-")[-1]
 
 
 def _check_projection(m, proj_code, error=False):
