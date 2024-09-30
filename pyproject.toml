@@ -40,6 +40,7 @@ tests = [
 docs = [
   "sphinx",
   "sphinx-automodapi",
+  "packaging",
   "pillow",
   "reproject",
   "sphinx-gallery",
