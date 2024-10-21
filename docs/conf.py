@@ -78,12 +78,11 @@ intersphinx_mapping = {
     "scipy": ("https://docs.scipy.org/doc/scipy/", None),
     "reproject": ("https://reproject.readthedocs.io/en/stable/", None),
     "pfsspy": ("https://pfsspy.readthedocs.io/en/latest/", None),
-<<<<<<<
 }
 
-=======
-# a list of builtin themes.
-html_theme = "alabaster"
+# -- Options for HTML output -------------------------------------------------
+
+html_theme = "sunpy"
 
 # Render inheritance diagrams in SVG
 graphviz_output_format = "svg"
@@ -100,10 +99,7 @@ graphviz_dot_args = [
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
->>>>>>>
-# -- Options for HTML output -------------------------------------------------
-
-html_theme = "sunpy"
+# html_static_path = ["_static"]  # NOQA: ERA001
 
 # By default, when rendering docstrings for classes, sphinx.ext.autodoc will
 # make docs with the class-level docstring and the class-method docstrings,
@@ -113,6 +109,15 @@ html_theme = "sunpy"
 # the docs. For more options, see:
 # https://www.sphinx-doc.org/en/master/usage/extensions/autodoc.html#confval-autoclass_content
 autoclass_content = "both"
+
+# -- Other options ----------------------------------------------------------
+
+# JSOC email OS ENV
+# See https://github.com/sunpy/sunpy/wiki/Home:-JSOC
+os.environ["JSOC_EMAIL"] = 'jsoc@sunpy.org'
+
+nitpicky = True
+numfig = True
 
 # -- Sphinx Gallery ----------------------------------------------------------
 
@@ -139,12 +144,3 @@ sphinx_gallery_conf = {
         "../examples/testing"
     ]),
 }
-
-# -- Other options ----------------------------------------------------------
-
-# JSOC email OS ENV
-# See https://github.com/sunpy/sunpy/wiki/Home:-JSOC
-os.environ["JSOC_EMAIL"] = 'jsoc@sunpy.org'
-
-nitpicky = True
-numfig = True
