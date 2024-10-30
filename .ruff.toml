@@ -26,10 +26,7 @@ extend-ignore = [
   # pytest (PT)
   "PT001", # Always use pytest.fixture()
   "PT004", # Fixtures which don't return anything should have leading _
-<<<<<<<
-=======
   "PT011",  # except(ValueRaises) is too broad
->>>>>>>
   "PT023", # Always use () on pytest decorators
   # flake8-pie
   "PIE808", # Disallow passing 0 as the first argument to range
