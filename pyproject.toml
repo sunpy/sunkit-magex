@@ -48,7 +48,6 @@ docs = [
   "streamtracer",
   "sunpy[net,map]",
   "sympy",
-  "sunpy-sphinx-theme",
 ]
 performance = [
   "numba",
