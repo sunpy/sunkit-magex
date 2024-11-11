@@ -40,6 +40,7 @@ tests = [
 docs = [
   "sphinx",
   "sphinx-automodapi",
+  "sunpy-sphinx-theme",
   "packaging",
   "pillow",
   "reproject",
@@ -47,7 +48,6 @@ docs = [
   "streamtracer",
   "sunpy[net,map]",
   "sympy",
-  "sunpy-sphinx-theme",
 ]
 performance = [
   "numba",
