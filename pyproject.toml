@@ -43,17 +43,6 @@ docs = [
   "sphinx-changelog",
   "sunpy-sphinx-theme",
   "packaging",
-<<<<<<<
-=======
-]
-
-[project.urls]
-Homepage = "https://sunpy.org"
-Download = "https://pypi.org/project/sunkit-magex"
-
-[tool.setuptools]
-zip-safe = false
->>>>>>>
   "pillow",
   "reproject",
   "sphinx-gallery",
@@ -98,12 +87,9 @@ write_to = "sunkit_magex/_version.py"
   enabled = true
   verify_pr_number = true
   changelog_skip_label = "No Changelog Entry Needed"
-  help_url = "https://github.com//blob/main/changelog/README.rst"
-
+  help_url = "https://github.com/sunpy/sunkit-magex/blob/main/changelog/README.rst"
   changelog_missing_long = "There isn't a changelog file in this pull request. Please add a changelog file to the `changelog/` directory following the instructions in the changelog [README](https://github.com//blob/main/changelog/README.rst)."
-
   type_incorrect_long = "The changelog file you added is not one of the allowed types. Please use one of the types described in the changelog [README](https://github.com//blob/main/changelog/README.rst)"
-
   number_incorrect_long = "The number in the changelog file you added does not match the number of this pull request. Please rename the file."
 
 # TODO: This should be in towncrier.toml but Giles currently only works looks in
@@ -112,7 +98,7 @@ write_to = "sunkit_magex/_version.py"
   package = "sunkit-magex"
   filename = "CHANGELOG.rst"
   directory = "changelog/"
-  issue_format = "`#{issue} https:github.com//changelog/pull/{issue}>`__"
+  issue_format = "`#{issue} https://github.com/sunpy/sunkit-magex/pull/{issue}>`__"
   title_format = "{version} ({project_date})"
 
   [[tool.towncrier.type]]
