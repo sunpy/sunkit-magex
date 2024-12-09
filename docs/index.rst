@@ -8,14 +8,6 @@ This is the documentation for sunkit-magex.
    :maxdepth: 2
    :caption: Contents:
 
-<<<<<<<
-=======
-   whatsnew/index
-
-Indices and tables
-==================
-
->>>>>>>
    installing
    heritage
    generated/gallery/index
@@ -23,4 +15,4 @@ Indices and tables
    performance
    numerical_methods_pfss/index.rst
    synoptic_fits
-   changelog
+   whatsnew/index
