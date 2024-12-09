@@ -43,21 +43,6 @@ docs = [
   "sphinx-changelog",
   "sunpy-sphinx-theme",
   "packaging",
-<<<<<<<
-=======
-]
-
-[project.urls]
-Homepage = "https://sunpy.org"
-"Source Code" = "https://github.com/sunpy/sunkit-magex"
-Download = "https://pypi.org/project/sunkit-magex"
-Documentation = "https://docs.sunpy.org/projects/sunkit-magex"
-Changelog = "https://docs.sunpy.org/projects/sunkit-magex/en/stable/whatsnew/changelog.html"
-"Issue Tracker" = "https://github.com/sunpy/sunkit-magex/issues"
-
-[tool.setuptools]
-zip-safe = false
->>>>>>>
   "pillow",
   "reproject",
   "sphinx-gallery",
@@ -77,10 +62,10 @@ dev = ["sunkit-magex[all,tests,docs]"]
 
 [project.urls]
 Homepage = "https://sunpy.org"
-Download = "https://pypi.org/project/sunkit-magex/"
-"Source Code" = "https://github.com/sunpy/sunkit-magex/"
-Documentation = "https://docs.sunpy.org/"
-Changelog = "https://docs.sunpy.org/en/stable/whatsnew/changelog.html"
+"Source Code" = "https://github.com/sunpy/sunkit-magex"
+Download = "https://pypi.org/project/sunkit-magex"
+Documentation = "https://docs.sunpy.org/projects/sunkit-magex"
+Changelog = "https://docs.sunpy.org/projects/sunkit-magex/en/stable/whatsnew/changelog.html"
 "Issue Tracker" = "https://github.com/sunpy/sunkit-magex/issues"
 
 [tool.setuptools]
