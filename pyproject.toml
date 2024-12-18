@@ -43,17 +43,6 @@ docs = [
   "sphinx-changelog",
   "sunpy-sphinx-theme",
   "packaging",
-<<<<<<<
-=======
-]
-
-[project.urls]
-Homepage = "https://sunpy.org"
-Download = "https://pypi.org/project/sunkit-magex"
-
-[tool.setuptools]
-zip-safe = false
->>>>>>>
   "pillow",
   "reproject",
   "sphinx-gallery",
