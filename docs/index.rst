@@ -8,6 +8,14 @@ This is the documentation for sunkit-magex.
    :maxdepth: 2
    :caption: Contents:
 
+<<<<<<<
+=======
+   whatsnew/index
+
+Indices and tables
+==================
+
+>>>>>>>
    installing
    heritage
    generated/gallery/index
