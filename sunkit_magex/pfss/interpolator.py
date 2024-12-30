@@ -41,8 +41,8 @@ class RegularGridInterpolator:
             values = np.asarray(values)
 
         if len(points) > values.ndim:
-            raise ValueError("There are %d point arrays, but values has %d "
-                             "dimensions" % (len(points), values.ndim))
+            raise ValueError(f"There are {len(points)} point arrays, but "
+                             "values has {values.ndim} dimensions")
 
         if hasattr(values, 'dtype') and hasattr(values, 'astype'):
             if not np.issubdtype(values.dtype, np.inexact):
@@ -52,14 +52,14 @@ class RegularGridInterpolator:
 
         for i, p in enumerate(points):
             if not np.all(np.diff(p) > 0.):
-                raise ValueError("The points in dimension %d must be strictly "
-                                 "ascending" % i)
+                raise ValueError(f"The points in dimension {i} must be strictly "
+                                 "ascending")
             if not np.asarray(p).ndim == 1:
-                raise ValueError("The points in dimension %d must be "
-                                 "1-dimensional" % i)
+                raise ValueError(f"The points in dimension {i} must be "
+                                 "1-dimensional")
             if not values.shape[i] == len(p):
-                raise ValueError("There are %d points and %d values in "
-                                 "dimension %d" % (len(p), values.shape[i], i))
+                raise ValueError(f"There are {len(p)} points and {values.shape[i]} "
+                                 "values in dimension {i}")
         self.grid = tuple([np.asarray(p) for p in points])
         self.values = values
 
@@ -75,8 +75,8 @@ class RegularGridInterpolator:
         xi = _ndim_coords_from_arrays(xi, ndim=ndim)
         if xi.shape[-1] != len(self.grid):
             raise ValueError("The requested sample points xi have dimension "
-                             "%d, but this RegularGridInterpolator has "
-                             "dimension %d" % (xi.shape[1], ndim))
+                             f"{xi.shape[1]}, but this RegularGridInterpolator has "
+                             f"dimension {ndim}")
 
         xi_shape = xi.shape
         xi = xi.reshape(-1, xi_shape[-1])
