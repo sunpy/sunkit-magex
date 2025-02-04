@@ -17,7 +17,6 @@ Angular definitions
 
 Using this module requires ``sympy`` to be installed.
 """
-
 import numpy as np
 import scipy.special
 import sympy
@@ -42,7 +41,10 @@ def _Ynm(l, m, theta, phi):
     """
     # Note swapped arguments phi, theta, as scipy has a different
     # definition of these
-    return -scipy.special.sph_harm_y(l, m, phi, theta)
+    if hasattr(scipy.special, "sph_harm_y"):
+        return -scipy.special.sph_harm_y(l, m, phi, theta)
+    if hasattr(scipy.special, "sph_harm"):
+        return -scipy.special.sph_harm(m, l, phi, theta)
 
 
 def _cot(theta):
