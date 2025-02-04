@@ -81,7 +81,7 @@ def fix_hmi_meta(hmi_map):
         hmi_map.meta.update(_earth_obs_coord_meta(hmi_map.meta['date-obs']))
 
 
-@deprecated('1.0', message="This is not required anymore. An example of how to load an ADAPT file is available in the documentation.")
+@deprecated('1.0', message="Use sunpy.map.Map or read https://docs.sunpy.org/en/latest/generated/gallery/saving_and_loading_data/load_adapt_fits_into_map.html")
 def load_adapt(adapt_path):
     """
     Parse adapt .fts file as a `sunpy.map.MapSequence`
