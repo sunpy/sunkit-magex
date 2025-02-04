@@ -19,10 +19,10 @@ def test_bangular_rss(f):
 
 def test_br_rss():
     zss = 2
-    l = 1  # NOQA: E741
+    l = 1
     m = 0
     c = zss**(-l-2) * ((2*l + 1) / (l + 1 + l * zss**(-2*l - 1)))
     f = analytic.Br(l, m, zss)
     phi = 0 * u.deg
     theta = 0 * u.deg
-    assert f(zss, theta, phi) == -0.5 * np.sqrt(3 / np.pi) * c
+    np.testing.assert_allclose(f(zss, theta, phi), -0.5 * np.sqrt(3 / np.pi) * c)
