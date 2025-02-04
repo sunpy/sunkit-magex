@@ -33,7 +33,7 @@ gong_map = sunpy.map.Map(gong_fname)
 if not os.path.exists('aia_map.fits'):
     import urllib.request
     urllib.request.urlretrieve(
-        'http://jsoc2.stanford.edu/data/aia/synoptic/2020/09/01/H1300/AIA20200901_1300_0193.fits',
+        'http://jsoc1.stanford.edu/data/aia/synoptic/2020/09/01/H1300/AIA20200901_1300_0193.fits',
         'aia_map.fits')
 
 aia_map = sunpy.map.Map('aia_map.fits')
