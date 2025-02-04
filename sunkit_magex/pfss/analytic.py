@@ -35,14 +35,14 @@ def _normalise_angles(theta: u.deg, phi: u.deg):
     return theta, phi
 
 
-def _Ynm(l, m, theta, phi):  # NOQA: E741
+def _Ynm(l, m, theta, phi):
     """
     Return values of spherical harmonic with numbers l, m at coordinates
     theta, phi.
     """
     # Note swapped arguments phi, theta, as scipy has a different
     # definition of these
-    return -scipy.special.sph_harm(m, l, phi, theta)  # NOQA: E741
+    return -scipy.special.sph_harm_y(l, m, phi, theta)
 
 
 def _cot(theta):
@@ -52,7 +52,7 @@ def _cot(theta):
 _extras = {'Ynm': _Ynm, 'cot': _cot, 'exp': np.exp}
 
 
-def _spherical_harmonic_sympy(l, m):  # NOQA: E741
+def _spherical_harmonic_sympy(l, m):
     """
     Return a complex spherical harmonic with numbers ``l, m``.
 
@@ -80,7 +80,7 @@ def _spherical_harmonic_sympy(l, m):  # NOQA: E741
     return harm, theta, phi
 
 
-def _c(l, zss):  # NOQA: E741
+def _c(l, zss):
     """
     """
     def cl(z):
@@ -91,7 +91,7 @@ def _c(l, zss):  # NOQA: E741
     return cl
 
 
-def _d(l, zss):  # NOQA: E741
+def _d(l, zss):
     """
     """
     def dl(z):
@@ -102,7 +102,7 @@ def _d(l, zss):  # NOQA: E741
     return dl
 
 
-def Br(l, m, zss):  # NOQA: E741
+def Br(l, m, zss):
     """
     Analytic radial component of magnetic field on the source surface.
 
@@ -128,7 +128,7 @@ def Br(l, m, zss):  # NOQA: E741
     return f
 
 
-def Btheta(l, m, zss):  # NOQA: E741
+def Btheta(l, m, zss):
     """
     Analytic theta component of magnetic field on the source surface.
 
@@ -155,7 +155,7 @@ def Btheta(l, m, zss):  # NOQA: E741
     return f
 
 
-def Bphi(l, m, zss):  # NOQA: E741
+def Bphi(l, m, zss):
     """
     Analytic phi component of magnetic field on the source surface.
 
