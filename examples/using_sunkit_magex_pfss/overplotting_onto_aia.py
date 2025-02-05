@@ -7,7 +7,6 @@ overplot the traced field lines on an AIA 193 map.
 """
 # sphinx_gallery_thumbnail_number = 4
 
-import os
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -30,13 +29,7 @@ gong_map = sunpy.map.Map(gong_fname)
 ###############################################################################
 # Load the corresponding AIA 193 map.
 
-if not os.path.exists('aia_map.fits'):
-    import urllib.request
-    urllib.request.urlretrieve(
-        'http://jsoc1.stanford.edu/data/aia/synoptic/2020/09/01/H1300/AIA20200901_1300_0193.fits',
-        'aia_map.fits')
-
-aia_map = sunpy.map.Map('aia_map.fits')
+aia_map = sunpy.map.Map('http://jsoc.stanford.edu/data/aia/synoptic/2020/09/01/H1300/AIA20200901_1300_0193.fits')
 
 ###############################################################################
 # The PFSS solution is calculated on a regular 3D grid in (phi, s, rho), where
