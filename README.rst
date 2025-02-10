@@ -1,5 +1,5 @@
 ``sunkit-magex``
-----------------
+================
 
 ``sunkit-magex`` is a Python software package that provides a set of tools for the modelling of magnetic field data.
 It is a SunPy affiliated package and is built on top of ``sunpy`` and ``astropy``.
@@ -7,22 +7,22 @@ It is a SunPy affiliated package and is built on top of ``sunpy`` and ``astropy`
 Currently it only supports the potential field source surface (PFSS) model, but we hope to expand it to include other models in the future.
 
 Installation
-============
+------------
 
 We recommended following the `installation guide <https://docs.sunpy.org/projects/sunkit-magex/en/latest/installing.html>`__ in the documentation.
 
 Usage
-=====
+-----
 
 If you are new to ``sunkit-magex``, the best place to start is the `example gallery <https://docs.sunpy.org/projects/sunkit-magex/en/latest/generated/gallery/index.html>`__.
 
 Changes
-=======
+-------
 
 See our `changelog <https://docs.sunpy.org/projects/sunkit-magex/en/latest/whatsnew/changelog.html>`__.
 
 Getting Help
-============
+------------
 
 For more information or to ask questions about ``sunkit-magex`` or any other SunPy Project package, please check out:
 
@@ -31,7 +31,7 @@ For more information or to ask questions about ``sunkit-magex`` or any other Sun
 -  `SunPy Community forum <https://community.openastronomy.org/c/sunpy/5>`__
 
 Contributing
-============
+------------
 
 The SunPy Project is a community-driven open-source project that welcomes any and all contributions.
 Whether you are a developer, student, or user, you can help by contributing code, documentation, or community support.
@@ -44,11 +44,18 @@ Help is always welcome, so come and say hello by joining the `SunPy Chat`_ and l
 .. _Good First Issues list: https://github.com/sunpy/sunpy/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22Good+First+Issue%22
 
 Code of Conduct
-===============
+---------------
 
 When you are interacting with the SunPy Community you are asked to follow our `Code of Conduct <https://sunpy.org/coc>`__.
 
 .. _SunPy Chat: https://app.element.io/#/room/#sunpy:openastronomy.org
+
+Usage of Generative AI
+----------------------
+
+We expect authentic engagement in our community.
+Be wary of posting output from Large Language Models or similar generative AI as comments on GitHub or any other platform, as such comments tend to be formulaic and low quality content.
+If you use generative AI tools as an aid in developing code or documentation changes, ensure that you fully understand the proposed changes and can explain why they are the correct approach and an improvement to the current state.
 
 License
 -------
