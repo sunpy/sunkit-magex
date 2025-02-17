@@ -12,3 +12,4 @@ ignore-words-list =
     afile,
     precessed,
     precess,
+    thet,  # magex specific
