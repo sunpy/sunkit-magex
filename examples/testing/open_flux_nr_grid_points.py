@@ -10,8 +10,7 @@ cells in the `sunkit_magex.pfss` grid.
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import pandas as pd
-
-from examples.testing.helpers import LMAxes, result_dir
+from _helpers import LMAxes, result_dir
 
 df = pd.read_csv(result_dir / 'open_flux_results.csv', index_col=0)
 axs = LMAxes(nl=5)
@@ -41,7 +40,7 @@ for lm in df.columns:
 
         ax.yaxis.set_ticks([1, 1.05, 1.1])
         ax.yaxis.tick_right()
-        ax.set_ylabel(r'$\frac{\Phi_{sunkit_magex.pfss}}{\Phi_{analytic}}$',
+        ax.set_ylabel(r'$\frac{\Phi_{pfss}}{\Phi_{analytic}}$',
                       rotation=0, labelpad=30, fontsize=16, loc='center')
         ax.yaxis.set_label_position('right')
         ax.yaxis.set_major_formatter(mticker.ScalarFormatter())

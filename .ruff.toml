@@ -61,6 +61,15 @@ extend-ignore = [
 "test_*.py" = [
   "E402", # Module level import not at top of cell
 ]
+"sunkit_magex/pfss/analytic.py" = [
+  "E741",  # Ambiguous variable name: `l`
+]
+"sunkit_magex/pfss/pfss.py" = [
+  "E741",  # Ambiguous variable name: `l`
+]
+"sunkit_magex/pfss/tests/test_analytic.py" = [
+  "E741",  # Ambiguous variable name: `l`
+]
 
 [lint.pydocstyle]
 convention = "numpy"

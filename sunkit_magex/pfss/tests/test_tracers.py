@@ -10,7 +10,7 @@ from sunkit_magex.pfss import tracing
 
 
 @pytest.fixture(params=[tracing.PythonTracer(),
-                        tracing.FortranTracer()],
+                        tracing.PerformanceTracer()],
                 ids=['python', 'compiled'])
 def flines(dipole_result, request):
     tracer = request.param
@@ -43,13 +43,13 @@ def test_fline_step_size(dipole_result):
     seed = coord.SkyCoord(2*u.deg, -45*u.deg, 1.01*const.R_sun,
                           frame=out_frame)
 
-    tracer = tracing.FortranTracer(step_size=0.5)
+    tracer = tracing.PerformanceTracer(step_size=0.5)
     flines = tracer.trace(seed, out)
     assert out.grid.nr == 10
     # With a step size of 0.5, this should be ~20
     assert len(flines[0]) == 21
 
-    tracer = tracing.FortranTracer(step_size=0.2)
+    tracer = tracing.PerformanceTracer(step_size=0.2)
     flines = tracer.trace(seed, out)
     assert out.grid.nr == 10
     # With a step size of 0.2, this should be ~50
@@ -57,7 +57,7 @@ def test_fline_step_size(dipole_result):
 
 
 def test_rot_warning(dipole_result):
-    tracer = tracing.FortranTracer(max_steps=2)
+    tracer = tracing.PerformanceTracer(max_steps=2)
     input, out = dipole_result
     out_frame = out.coordinate_frame
     seed = coord.SkyCoord(0*u.deg, -45*u.deg, 1.01*const.R_sun,
