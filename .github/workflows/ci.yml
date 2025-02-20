@@ -100,3 +100,18 @@ jobs:
       submodules: false
     secrets:
       pypi_token: ${{ secrets.pypi_token }}
+
+  notify:
+    if: always() && (github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+    needs: [publish]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Cadair/matrix-notify-action@main
+        with:
+          matrix_token: ${{ secrets.matrix_access_token }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          homeserver: ${{ secrets.matrix_homeserver }}
+          roomid: '!jfEXWJFdXwYnBWsiqk:openastronomy.org'
+          ignore_pattern: '.*Load.*'
+          summarise_success: true
+          workflow_description: 'in sunpy/sunkit-magex'
