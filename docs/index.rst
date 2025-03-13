@@ -5,7 +5,7 @@ sunkit-magex Documentation
 This is the documentation for sunkit-magex.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
    installing
