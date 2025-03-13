@@ -28,7 +28,7 @@ def theta_phi_grid(nphi, ns):
     return theta * u.rad, phi * u.rad
 
 
-def pffspy_output(nphi, ns, nrho, rss, l, m):
+def pfsspy_output(nphi, ns, nrho, rss, l, m):
     assert l >= 1, 'l must be >= 1'
     # Return the sunkit_magex.pfss solution for given input parameters
     theta, phi = theta_phi_grid(nphi, ns)
@@ -45,7 +45,7 @@ def pffspy_output(nphi, ns, nrho, rss, l, m):
 def brss_pfss(nphi, ns, nrho, rss, l, m):
     # Return the radial component of the source surface mangetic field
     # for given input parameters
-    pfss_out = pffspy_output(nphi, ns, nrho, rss, l, m)
+    pfss_out = pfsspy_output(nphi, ns, nrho, rss, l, m)
     return pfss_out.bc[0][:, :, -1].T.astype(float)
 
 

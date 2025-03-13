@@ -42,7 +42,7 @@ def _Ynm(l, m, theta, phi):
     # Note swapped arguments phi, theta, as scipy has a different
     # definition of these
     if hasattr(scipy.special, "sph_harm_y"):
-        return -scipy.special.sph_harm_y(l, m, phi, theta)
+        return -scipy.special.sph_harm_y(l, m, theta, phi)
     if hasattr(scipy.special, "sph_harm"):
         return -scipy.special.sph_harm(m, l, phi, theta)
 

@@ -218,4 +218,4 @@ class PythonTracer(Tracer):
 class FortranTracer(PerformanceTracer):
     @deprecated('1.0', message='This class has been renamed to PerformanceTracer as this now does not use Fortran.')
     def __init__(*args, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(PerformanceTracer).__init__(*args, **kwargs)

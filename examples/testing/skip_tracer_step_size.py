@@ -4,7 +4,7 @@ Tracer step size (calculations)
 """
 import numpy as np
 import pandas as pd
-from _helpers import pffspy_output, phi_fline_coords, result_dir, theta_fline_coords
+from _helpers import pfsspy_output, phi_fline_coords, result_dir, theta_fline_coords
 
 import astropy.constants as const
 import astropy.units as u
@@ -22,7 +22,7 @@ rss = 2
 ###############################################################################
 # Calculate PFSS solution
 
-pfss_out = pffspy_output(nphi, ns, nr, rss, l, m)
+pfss_out = pfsspy_output(nphi, ns, nr, rss, l, m)
 
 ###############################################################################
 # Trace an array of field lines from the source surface down to the solar

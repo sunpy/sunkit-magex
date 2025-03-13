@@ -7,7 +7,7 @@ and field lines numerically traced by `sunkit_magex.pfss`.
 """
 import matplotlib.pyplot as plt
 import numpy as np
-from _helpers import pffspy_output, phi_fline_coords, theta_fline_coords
+from _helpers import pfsspy_output, phi_fline_coords, theta_fline_coords
 
 import astropy.constants as const
 import astropy.units as u
@@ -27,7 +27,7 @@ nphi = 360
 ns = 180
 nr = 40
 rss = 2
-pfss_out = pffspy_output(nphi, ns, nr, rss, l, m)
+pfss_out = pfsspy_output(nphi, ns, nr, rss, l, m)
 rss = rss * const.R_sun
 
 ###############################################################################
