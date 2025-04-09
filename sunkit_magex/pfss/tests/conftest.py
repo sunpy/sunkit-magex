@@ -6,7 +6,6 @@ from astropy.time import Time
 from sunpy.map import Map
 
 import sunkit_magex.pfss
-from sunkit_magex.pfss import utils
 from sunkit_magex.tests.helpers import get_dummy_map_from_header, get_fitsfile_from_header
 
 
@@ -65,10 +64,12 @@ def adapt_test_file(tmp_path):
         package="sunkit_magex.pfss.tests.data"
     )
 
-
 @pytest.fixture
 def adapt_map(adapt_test_file):
-    return utils.load_adapt(adapt_test_file)
+    import warnings
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        return Map(adapt_test_file, hdus=0)
 
 
 @pytest.fixture

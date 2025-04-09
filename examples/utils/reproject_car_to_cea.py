@@ -12,13 +12,14 @@ reproject a CAR projection to a CEA projection that `sunkit_magex.pfss` can take
 """
 import matplotlib.pyplot as plt
 
+import sunpy.map
+
 from sunkit_magex import pfss
 
 ###############################################################################
 # Load a sample ADAPT map, which has a CAR projection.
 
-adapt_maps = pfss.utils.load_adapt(pfss.sample_data.get_adapt_map())
-adapt_map_car = adapt_maps[0]
+adapt_map_car = sunpy.map.Map(pfss.sample_data.get_adapt_map(), hdus=0)
 
 ###############################################################################
 # Re-project into a CEA projection.
@@ -28,9 +29,13 @@ adapt_map_cea = pfss.utils.car_to_cea(adapt_map_car)
 ###############################################################################
 # Plot the original map and the reprojected map.
 
-plt.figure()
-adapt_map_car.plot()
-plt.figure()
-adapt_map_cea.plot()
+fig = plt.figure(figsize=(12, 6))
+ax = fig.add_subplot(1, 2, 1, projection=adapt_map_car)
+ax1 = fig.add_subplot(1, 2, 2, projection=adapt_map_cea)
+
+adapt_map_car.plot(axes=ax)
+adapt_map_cea.plot(axes=ax1)
+
+fig.tight_layout()
 
 plt.show()

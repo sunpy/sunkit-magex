@@ -16,7 +16,6 @@ import sunkit_magex.pfss.analytic as analytic
 import sunkit_magex.pfss.utils
 
 result_dir = (pathlib.Path(__file__) / '..' / 'results').resolve()
-
 pi = np.pi * u.rad
 
 
@@ -29,7 +28,7 @@ def theta_phi_grid(nphi, ns):
     return theta * u.rad, phi * u.rad
 
 
-def pffspy_output(nphi, ns, nrho, rss, l, m):
+def pfsspy_output(nphi, ns, nrho, rss, l, m):
     assert l >= 1, 'l must be >= 1'
     # Return the sunkit_magex.pfss solution for given input parameters
     theta, phi = theta_phi_grid(nphi, ns)
@@ -46,7 +45,7 @@ def pffspy_output(nphi, ns, nrho, rss, l, m):
 def brss_pfss(nphi, ns, nrho, rss, l, m):
     # Return the radial component of the source surface mangetic field
     # for given input parameters
-    pfss_out = pffspy_output(nphi, ns, nrho, rss, l, m)
+    pfss_out = pfsspy_output(nphi, ns, nrho, rss, l, m)
     return pfss_out.bc[0][:, :, -1].T.astype(float)
 
 
@@ -83,8 +82,6 @@ def open_flux_numeric(l, m, zss, nrho):
     return np.sum(np.abs(br)) * (4 * np.pi) / nphi / ns
 
 
-######################
-# Field line helpers #
 @u.quantity_input
 def fr(r: u.m, rss: u.m, l):
     rho = r / rss

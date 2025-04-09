@@ -265,3 +265,4 @@ package.json
 # Repo specific
 examples/using_sunkit_magex_pfss/aia_map.fits
 docs/sg_execution_times.rst
+aia_map.fits

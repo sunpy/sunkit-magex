@@ -46,12 +46,12 @@ files = Fido.fetch(result)
 # object.
 
 hmi_map = sunpy.map.Map(files[0])
-print('Data shape: ', hmi_map.data.shape)
 
 ###############################################################################
 # Since this map is far to big to calculate a PFSS solution quickly, lets
 # resample it down to a smaller size.
 
+print('Old shape: ', hmi_map.data.shape)
 hmi_map = hmi_map.resample([360, 180] * u.pix)
 print('New shape: ', hmi_map.data.shape)
 
@@ -68,15 +68,13 @@ pfss_out = pfss.pfss(pfss_in)
 # polarity inversion line.
 
 ss_br = pfss_out.source_surface_br
-# Create the figure and axes
-fig = plt.figure()
-ax = plt.subplot(projection=ss_br)
 
-# Plot the source surface map
-ss_br.plot()
+fig = plt.figure()
+ax = fig.add_subplot(projection=ss_br)
+
+ss_br.plot(axes=ax)
 # Plot the polarity inversion line
 ax.plot_coord(pfss_out.source_surface_pils[0])
-# Plot formatting
 plt.colorbar()
 ax.set_title('Source surface magnetic field')
 

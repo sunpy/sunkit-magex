@@ -18,7 +18,7 @@ def _eigh(A):
 
 
 def _compute_r_term(m, k, ns, Q, brt, lam, ffm, nr, ffp, psi, psir):
-    for l in range(ns):  # NOQA: E741
+    for l in range(ns):
         # Ignore the l=0 and m=0 term; for a globally divergence free field
         # this term is zero anyway, but numerically it may be small which
         # causes numerical issues when solving for c, d
