@@ -7,13 +7,13 @@ and field lines numerically traced by `sunkit_magex.pfss`.
 """
 import matplotlib.pyplot as plt
 import numpy as np
+from _helpers import pfsspy_output, phi_fline_coords, theta_fline_coords
 
 import astropy.constants as const
 import astropy.units as u
 from astropy.coordinates import SkyCoord
 from astropy.visualization import quantity_support
 
-from examples.testing.helpers import pffspy_output, phi_fline_coords, theta_fline_coords
 from sunkit_magex import pfss
 
 quantity_support()
@@ -27,7 +27,7 @@ nphi = 360
 ns = 180
 nr = 40
 rss = 2
-pfss_out = pffspy_output(nphi, ns, nr, rss, l, m)
+pfss_out = pfsspy_output(nphi, ns, nr, rss, l, m)
 rss = rss * const.R_sun
 
 ###############################################################################
@@ -48,7 +48,7 @@ step_size = 1
 dthetas = []
 print(f'Tracing {step_size}...')
 # Trace
-tracer = pfss.tracing.FortranTracer(step_size=step_size)
+tracer = pfss.tracing.PerformanceTracer(step_size=step_size)
 flines = tracer.trace(seeds, pfss_out)
 # Set a mask of open field lines
 mask = flines.connectivities.astype(bool).reshape(theta.shape)
@@ -73,7 +73,6 @@ dtheta = theta_solar - theta_analytic
 
 fig, axs = plt.subplots(nrows=2, sharex=True, sharey=True)
 
-
 def plot_map(field, ax, label, title):
     kwargs = dict(cmap='RdBu', vmin=-0.5, vmax=0.5, shading='nearest', edgecolors='face')
     im = ax.pcolormesh(phi.to_value(u.deg), np.sin(theta).value,
@@ -85,10 +84,10 @@ def plot_map(field, ax, label, title):
 
 
 plot_map(dtheta.to_value(u.deg), axs[0],
-         r'$\theta_{sunkit_magex.pfss} - \theta_{analytic}$ (deg)',
+         r'$\theta_{pfss} - \theta_{analytic}$ (deg)',
          'Error in latitude')
 plot_map(dphi.to_value(u.deg), axs[1],
-         r'$\phi_{sunkit_magex.pfss} - \phi_{analytic}$ (deg)',
+         r'$\phi_{pfss} - \phi_{analytic}$ (deg)',
          'Error in longitude')
 
 ax = axs[1]

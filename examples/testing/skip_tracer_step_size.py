@@ -4,12 +4,12 @@ Tracer step size (calculations)
 """
 import numpy as np
 import pandas as pd
+from _helpers import pfsspy_output, phi_fline_coords, result_dir, theta_fline_coords
 
 import astropy.constants as const
 import astropy.units as u
 from astropy.coordinates import SkyCoord
 
-from examples.testing.helpers import pffspy_output, phi_fline_coords, result_dir, theta_fline_coords
 from sunkit_magex.pfss import tracing
 
 l = 3
@@ -19,14 +19,15 @@ ns = 180
 nr = 40
 rss = 2
 
-
 ###############################################################################
 # Calculate PFSS solution
-pfss_out = pffspy_output(nphi, ns, nr, rss, l, m)
+
+pfss_out = pfsspy_output(nphi, ns, nr, rss, l, m)
 
 ###############################################################################
 # Trace an array of field lines from the source surface down to the solar
 # surface
+
 n = 90
 # Create 1D theta, phi arrays
 phi = np.linspace(0, 360, n * 2)
@@ -45,11 +46,10 @@ dphis = []
 for step_size in step_sizes:
     print(f'Tracing {step_size}...')
     # Trace
-    tracer = tracing.FortranTracer(step_size=step_size)
+    tracer = tracing.PerformanceTracer(step_size=step_size)
     flines = tracer.trace(seeds, pfss_out)
     # Set a mask of open field lines
     mask = flines.connectivities.astype(bool).reshape(theta.shape)
-
     # Get solar surface latitude
     phi_solar = np.ones_like(phi) * np.nan
     phi_solar[mask] = flines.open_field_lines.solar_feet.lon
@@ -57,7 +57,6 @@ for step_size in step_sizes:
     theta_solar[mask] = flines.open_field_lines.solar_feet.lat
     r_out = np.ones_like(theta.value) * const.R_sun * np.nan
     r_out[mask] = flines.open_field_lines.solar_feet.radius
-
     # Calculate analytical solution
     theta_analytic = theta_fline_coords(r_out, rss, l, m, theta)
     dtheta = (theta_solar - theta_analytic).to_value(u.deg)
@@ -66,14 +65,14 @@ for step_size in step_sizes:
     # Wrap phi values
     dphi[dphi > 180] -= 360
     dphi[dphi < -180] += 360
-
     dthetas.append(dtheta.ravel())
     dphis.append(dphi.ravel())
 
 
 ###############################################################################
 # Save results. This saves the maximum error in both phi and theta as a
-# function of thet tracer step size.
+# function of the tracer step size.
+
 dthetas = pd.DataFrame(data=np.array(dthetas), index=step_sizes)
 dthetas = dthetas.mask(np.abs(dthetas) > 30).max(axis=1)
 

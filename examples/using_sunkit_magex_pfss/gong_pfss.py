@@ -37,22 +37,15 @@ rss = 2.5
 
 pfss_in = pfss.Input(gong_map, nrho, rss)
 
-
 ###############################################################################
 # Using the Input object, plot the input field.
 
-def set_axes_lims(ax):
-    ax.set_xlim(0, 360)
-    ax.set_ylim(0, 180)
-
-
-m = pfss_in.map
+input_map = pfss_in.map
 fig = plt.figure()
-ax = plt.subplot(projection=m)
-m.plot()
+ax = fig.add_subplot(projection=input_map)
+input_map.plot(axes=ax)
 plt.colorbar()
 ax.set_title('Input field')
-set_axes_lims(ax)
 
 ###############################################################################
 # Now calculate the PFSS solution.
@@ -64,18 +57,15 @@ pfss_out = pfss.pfss(pfss_in)
 # polarity inversion line.
 
 ss_br = pfss_out.source_surface_br
-# Create the figure and axes
-fig = plt.figure()
-ax = plt.subplot(projection=ss_br)
 
-# Plot the source surface map
-ss_br.plot()
+fig = plt.figure()
+ax = fig.add_subplot(projection=ss_br)
+
+ss_br.plot(axes=ax)
 # Plot the polarity inversion line
 ax.plot_coord(pfss_out.source_surface_pils[0])
-# Plot formatting
 plt.colorbar()
 ax.set_title('Source surface magnetic field')
-set_axes_lims(ax)
 
 ###############################################################################
 # It is also easy to plot the magnetic field at an arbitrary height within
@@ -89,16 +79,12 @@ br = sunpy.map.Map(br.T, pfss_out.source_surface_br.wcs)
 # Get the radial coordinate
 r = np.exp(pfss_out.grid.rc[ridx])
 
-# Create the figure and axes
 fig = plt.figure()
-ax = plt.subplot(projection=br)
+ax = fig.add_subplot(projection=br)
 
-# Plot the source surface map
 br.plot(cmap='RdBu')
-# Plot formatting
 plt.colorbar()
 ax.set_title('$B_{r}$ ' + f'at r={r:.2f}' + '$r_{\\odot}$')
-set_axes_lims(ax)
 
 ###############################################################################
 # Finally, using the 3D magnetic field solution we can trace some field lines.
@@ -108,7 +94,7 @@ set_axes_lims(ax)
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
-tracer = pfss.tracing.FortranTracer()
+tracer = pfss.tracing.PerformanceTracer()
 r = 1.2 * const.R_sun
 lat = np.linspace(-np.pi / 2, np.pi / 2, 8, endpoint=False)
 lon = np.linspace(0, 2 * np.pi, 8, endpoint=False)
@@ -116,9 +102,7 @@ lat, lon = np.meshgrid(lat, lon, indexing='ij')
 lat, lon = lat.ravel() * u.rad, lon.ravel() * u.rad
 
 seeds = SkyCoord(lon, lat, r, frame=pfss_out.coordinate_frame)
-
 field_lines = tracer.trace(seeds, pfss_out)
-
 for field_line in field_lines:
     color = {0: 'black', -1: 'tab:blue', 1: 'tab:red'}.get(field_line.polarity)
     coords = field_line.coords
@@ -127,7 +111,6 @@ for field_line in field_lines:
             coords.y / const.R_sun,
             coords.z / const.R_sun,
             color=color, linewidth=1)
-
 ax.set_title('PFSS solution')
 
 plt.show()

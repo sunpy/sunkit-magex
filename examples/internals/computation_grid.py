@@ -1,5 +1,5 @@
 r"""
-Magnetic field grid
+Magnetic Field Grid
 ===================
 
 A plot of the grid corners which the magnetic field values are taken from
