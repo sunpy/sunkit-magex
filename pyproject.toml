@@ -23,6 +23,7 @@ dependencies = [
   "scipy>=1.10.1",
   "streamtracer>=2.2.0",
   "sunpy[map]>=6.0.1,!=6.0.0",
+  "matplotlib>=3.6.0",  # Needed for the oldest deps
 ]
 dynamic = ["version"]
 
