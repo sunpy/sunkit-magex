@@ -35,7 +35,7 @@ tests = [
   "pytest-arraydiff",
   "parfive",
   "reproject",
-  "matplotlib>=3.6.0",
+  "matplotlib>=3.6.0",  # Need to solve a working test env for oldestdeps
   "sunkit-magex[all]",
 ]
 docs = [
