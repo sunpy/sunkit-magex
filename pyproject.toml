@@ -14,14 +14,16 @@ readme = { file = "README.rst", content-type = "text/x-rst" }
 license = { file = "licenses/LICENSE.rst" }
 authors = [
   { name = "The SunPy Community", email = "sunpy@googlegroups.com" },
+  { name = "David Stansby" },
 ]
 dependencies = [
-  "astropy>=5.2.0",
-  "numpy>=1.23.0",
+  "astropy>=5.3.0",
+  "numpy>=1.23.5",
   "scikit-image>=0.19.0",
-  # !=1.10.0 due to https://github.com/scipy/scipy/issues/17718
-  "scipy>=1.8.0,!=1.10.0",
-  "sunpy[map]>=5.1",
+  "scipy>=1.10.1",
+  "streamtracer>=2.2.0",
+  "sunpy @ git+https://github.com/nabobalis/sunpy.git@database",
+  "matplotlib>=3.5.0",  # Needed to solve the correct env for oldestdeps
 ]
 dynamic = ["version"]
 
@@ -34,8 +36,7 @@ tests = [
   "pytest-arraydiff",
   "parfive",
   "reproject",
-  "streamtracer",
-  "sympy",
+  "sunkit-magex[all]",
 ]
 docs = [
   "sphinx",
@@ -43,16 +44,13 @@ docs = [
   "sphinx-changelog",
   "sunpy-sphinx-theme",
   "packaging",
-  "pillow",
   "reproject",
   "sphinx-gallery",
-  "streamtracer",
-  "sunpy[net,map]",
-  "sympy",
+  "sunpy[net,map]>=6.0.1,!=6.0.0",
+  "sunkit-magex[all]",
 ]
 performance = [
   "numba",
-  "streamtracer",
 ]
 analytic = [
   "sympy",
@@ -64,7 +62,7 @@ dev = ["sunkit-magex[all,tests,docs]"]
 Homepage = "https://sunpy.org"
 Download = "https://pypi.org/project/sunkit-magex/"
 "Source Code" = "https://github.com/sunpy/sunkit-magex/"
-Documentation = "https://docs.sunpy.org/"
+Documentation = "https://docs.sunpy.org/projects/sunkit-magex/en/stable/"
 Changelog = "https://docs.sunpy.org/en/stable/whatsnew/changelog.html"
 "Issue Tracker" = "https://github.com/sunpy/sunkit-magex/issues"
 

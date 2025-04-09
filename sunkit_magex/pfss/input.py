@@ -42,7 +42,6 @@ class Input:
         sunkit_magex.pfss.utils.is_full_sun_synoptic_map(br, error=True)
 
         self._map_in = copy.deepcopy(br)
-        self.dtime = self.map.date
         self.br = self.map.data
 
         # Force some nice defaults
