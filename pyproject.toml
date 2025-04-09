@@ -35,6 +35,7 @@ tests = [
   "pytest-arraydiff",
   "parfive",
   "reproject",
+  "matplotlib>=3.6.0",
   "sunkit-magex[all]",
 ]
 docs = [
