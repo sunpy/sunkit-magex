@@ -39,11 +39,6 @@ class Input:
             raise ValueError('At least one value in the input is NaN or '
                              'non-finite. The input must consist solely of '
                              'finite values.')
-
-        sunkit_magex.pfss.utils.is_cea_map(br, error=True)
-        sunkit_magex.pfss.utils.is_full_sun_synoptic_map(br, error=True)
-
-
         if isinstance(br_outer, sunpy.map.GenericMap):
             if np.any(~np.isfinite(br_outer.data)):
                 raise ValueError('At least one value in the input is NaN or '
@@ -52,9 +47,11 @@ class Input:
             if br.dimensions != br_outer.dimensions:
                 raise ValueError('br and br_outer must have the same dimensions')
 
+        sunkit_magex.pfss.utils.is_cea_map(br, error=True)
+        sunkit_magex.pfss.utils.is_full_sun_synoptic_map(br, error=True)
+
         self._map_in = copy.deepcopy(br)
         self.br = self.map.data
-
         if isinstance(br_outer, sunpy.map.GenericMap):
             self.br_outer = br_outer.data
         else:
