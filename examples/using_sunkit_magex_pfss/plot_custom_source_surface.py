@@ -4,14 +4,16 @@ Dipole source solution: Custom Source Surface
 A simple example comparing the solutions to a dipole source field when different
 source surface outer boundary conditions are provided: radial (default) and closed.
 """
-import astropy.constants as const
-import astropy.units as u
 import matplotlib.patches as mpatch
 import matplotlib.pyplot as plt
 import numpy as np
-import sunpy.map
+
+import astropy.constants as const
+import astropy.units as u
 from astropy.coordinates import SkyCoord
 from astropy.time import Time
+
+import sunpy.map
 
 import sunkit_magex.pfss
 
