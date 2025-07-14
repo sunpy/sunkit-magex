@@ -221,6 +221,6 @@ def test_bvec_interpolator(dipole_result):
         observer='Earth',
         representation_type="cartesian"
     )
-    with pytest.warns(UserWarning) as record:
+    match = "The obstime of one of more input coordinates do not match the pfss model obstime."
+    with pytest.warns(UserWarning, match=match):
         out.get_bvec(wrong_datetime)
-    assert record[0].message.args[0] == "The obstime of one of more input coordinates do not match the pfss model obstime."
