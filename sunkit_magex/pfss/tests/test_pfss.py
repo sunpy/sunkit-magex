@@ -39,6 +39,31 @@ def test_pfss(gong_map):
     return br
 
 
+@pytest.mark.array_compare(reference_dir="arraydiff_reference")
+def test_pfss_br_outer(gong_map):
+    # Regression test to check that the output of pfss doesn't change
+    # when an equivalent custom outer boundary condition is provided
+    m = sunpy.map.Map(gong_map)
+    # Resample to lower res for easier comparisons
+    m = m.resample([30, 15] * u.pix)
+
+    expected = np.loadtxt(test_data / 'br_in.txt')
+    m = sunpy.map.Map(expected, m.meta)
+
+    # Get a source surface
+    br_outer_in = sunkit_magex.pfss.Input(m, 50, 2)
+    br_outer_out = sunkit_magex.pfss.pfss(br_outer_in)
+    br_outer = br_outer_out.source_surface_br
+
+    # Use calculated source surface as outer boundary condition
+    pfss_in = sunkit_magex.pfss.Input(m, 50, 2, br_outer)
+    pfss_out = sunkit_magex.pfss.pfss(pfss_in)
+
+    br = pfss_out.source_surface_br.data
+    assert br.shape == m.data.shape
+    return br
+
+
 def test_bunit(gong_map):
     # Regression test to check that the output of pfss doesn't change
     m = sunpy.map.Map(gong_map)
