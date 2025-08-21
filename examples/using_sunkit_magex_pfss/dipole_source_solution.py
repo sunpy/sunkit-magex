@@ -127,7 +127,7 @@ plt.show()
 ###############################################################################
 # We are also able to provide a custom outer boundary condition to our
 # `sunkit_magex.pfss.Input` object. For example, we can set the radial
-# component of the magnetic field equal to zero across (outer) source surface.
+# component of the magnetic field equal to zero across the (outer) source surface.
 
 br_zeros = np.zeros((nphi, ns))
 header_zeros = pfss.utils.carr_cea_wcs_header(Time('2020-1-1'), br_zeros.shape)
