@@ -122,7 +122,6 @@ ax.add_patch(mpatch.Circle((0, 0), pfss_in.grid.rss, color='k', linestyle='--',
                            fill=False))
 ax.set_title('PFSS solution for a dipole source field')
 
-plt.show()
 
 ###############################################################################
 # We are also able to provide a custom outer boundary condition to our
