@@ -153,6 +153,8 @@ def test_footpoints(dipole_result):
 
 def test_closed_br_outer(dipole_result_closed):
     _, out = dipole_result_closed
+    out_frame = out.coordinate_frame
+
     br, bs, bp = out.bc
     ns_half = br.shape[1] // 2
 
@@ -167,6 +169,18 @@ def test_closed_br_outer(dipole_result_closed):
     # Test across equator
     assert np.allclose(br[0, ns_half-1::-1, :], -br[0, ns_half:, :])
     assert np.allclose(bs[0, ns_half-1::-1, :], bs[0, ns_half+1:, :])
+
+    tracer = tracing.PythonTracer(atol=1e-8, rtol=1e-8)
+    seed_lat = np.linspace(0, 90, 9, endpoint=False) * u.deg
+    seed = coord.SkyCoord(0 * u.deg, seed_lat, 1.01 * R_sun, frame=out_frame)
+    field_lines = tracer.trace(seed, out)
+
+    for fl in field_lines:
+        ss_fp = fl.source_surface_footpoint
+        s_fp = fl.solar_footpoint
+        assert np.isclose(s_fp.lon, ss_fp.lon)
+        assert np.isclose(s_fp.lat, -ss_fp.lat)
+        assert np.isclose(s_fp.radius, ss_fp.radius)
 
 
 def test_shape(zero_map):
