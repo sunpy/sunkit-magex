@@ -151,6 +151,24 @@ def test_footpoints(dipole_result):
     check_radius(field_line.source_surface_footpoint, const.R_sun)
 
 
+def test_closed_br_outer(dipole_result_closed):
+    _, out = dipole_result_closed
+    br, bs, bp = out.bc
+    ns_half = br.shape[1] // 2
+
+    assert np.allclose(br[:, :, -1].value, 0)
+    # where br[:, :, -1] the source surface br
+    assert np.allclose(bp.value, 0)
+
+    # Test if bc equal for constant phi
+    assert np.allclose(br, br[0, :, :])
+    assert np.allclose(bs, bs[0, :, :])
+
+    # Test across equator
+    assert np.allclose(br[0, ns_half-1::-1, :], -br[0, ns_half:, :])
+    assert np.allclose(bs[0, ns_half-1::-1, :], bs[0, ns_half+1:, :])
+
+
 def test_shape(zero_map):
     # Test output map shapes
     _input, out = zero_map
