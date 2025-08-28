@@ -141,7 +141,6 @@ fig, ax = plt.subplots()
 ax.set_aspect('equal')
 
 seeds = SkyCoord(lon, lat, r, frame=pfss_out_closed.coordinate_frame)
-
 field_lines_closed = tracer.trace(seeds, pfss_out_closed)
 
 for field_line in field_lines_closed:
