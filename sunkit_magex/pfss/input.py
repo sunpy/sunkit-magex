@@ -23,9 +23,8 @@ class Input:
         on.
     rss : float
         Radius of the source surface, as a fraction of the solar radius.
-    br_outer : sunpy.map.GenericMap, str, optional
+    br_outer : sunpy.map.GenericMap, str
         Boundary condition of radial magnetic field at the outer surface.
-        Defaults to "radial".
 
     Notes
     -----
