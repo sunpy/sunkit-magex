@@ -58,10 +58,10 @@ def dipole_result_closed(dipole_map):
     nr = 10
     rss = 2.5
 
-    br_zeros = np.zeros(dipole_map.data.shape)
-    header_zeros = sunkit_magex.pfss.utils.carr_cea_wcs_header(Time('1992-12-21'), br_zeros.shape[::-1])
+    br_zeros = np.zeros(dipole_map.data.shape[::-1])
+    header_zeros = sunkit_magex.pfss.utils.carr_cea_wcs_header(Time('1992-12-21'), br_zeros.shape)
     header_zeros['bunit'] = 'nT'
-    map_zeros = Map((br_zeros, header_zeros))
+    map_zeros = Map((br_zeros.T, header_zeros))
 
     input = sunkit_magex.pfss.Input(dipole_map, nr, rss, map_zeros)
     output = sunkit_magex.pfss.pfss(input)
