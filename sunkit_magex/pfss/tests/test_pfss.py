@@ -39,7 +39,7 @@ def test_pfss(gong_map):
     return br
 
 
-@pytest.mark.array_compare(reference_dir="arraydiff_reference")
+@pytest.mark.array_compare(reference_dir="arraydiff_reference", filename='test_pfss.txt')
 def test_pfss_br_outer(gong_map):
     # Regression test to check that the output of pfss doesn't change
     # when an equivalent custom outer boundary condition is provided
