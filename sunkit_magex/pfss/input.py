@@ -1,4 +1,5 @@
 import copy
+import warnings
 
 import numpy as np
 
@@ -53,6 +54,10 @@ class Input:
 
             sunkit_magex.pfss.utils.is_cea_map(br_outer, error=True)
             sunkit_magex.pfss.utils.is_full_sun_synoptic_map(br_outer, error=True)
+        elif isinstance(br_outer, str):
+            if br_outer != 'radial':
+                warnings.warn('br_outer will be ignored because it is a string '
+                              'not equal to "radial"')
 
         self._map_in = copy.deepcopy(br)
         self.br = self.map.data
