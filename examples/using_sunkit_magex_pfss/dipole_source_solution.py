@@ -122,4 +122,38 @@ ax.add_patch(mpatch.Circle((0, 0), pfss_in.grid.rss, color='k', linestyle='--',
                            fill=False))
 ax.set_title('PFSS solution for a dipole source field')
 
+
+###############################################################################
+# We are also able to provide a custom outer boundary condition to our
+# `sunkit_magex.pfss.Input` object. For example, we can set the radial
+# component of the magnetic field equal to zero across the (outer) source surface.
+
+br_zeros = np.zeros((nphi, ns))
+header_zeros = pfss.utils.carr_cea_wcs_header(Time('2020-1-1'), br_zeros.shape)
+map_zeros = sunpy.map.Map((br_zeros.T, header_zeros))
+
+pfss_in_closed = pfss.Input(input_map, nrho, rss, map_zeros)
+pfss_out_closed = pfss.pfss(pfss_in_closed)
+
+# Now trace field lines from the same starting positions as before but using
+# our new solution.
+fig, ax = plt.subplots()
+ax.set_aspect('equal')
+
+seeds = SkyCoord(lon, lat, r, frame=pfss_out_closed.coordinate_frame)
+field_lines_closed = tracer.trace(seeds, pfss_out_closed)
+
+for field_line in field_lines_closed:
+    coords = field_line.coords
+    coords.representation_type = 'cartesian'
+    color = {0: 'black', -1: 'tab:blue', 1: 'tab:red'}.get(field_line.polarity)
+    ax.plot(coords.y / const.R_sun,
+            coords.z / const.R_sun, color=color)
+
+
+ax.add_patch(mpatch.Circle((0, 0), 1, color='k', fill=False))
+ax.add_patch(mpatch.Circle((0, 0), pfss_in.grid.rss, color='k', linestyle='--',
+                           fill=False))
+ax.set_title('PFSS solution with a closed source surface')
+
 plt.show()

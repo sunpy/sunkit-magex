@@ -1,4 +1,5 @@
 import copy
+import warnings
 
 import numpy as np
 
@@ -23,6 +24,8 @@ class Input:
         on.
     rss : float
         Radius of the source surface, as a fraction of the solar radius.
+    br_outer : Optional[sunpy.map.GenericMap or str]
+        Boundary condition of radial magnetic field at the outer surface.
 
     Notes
     -----
@@ -30,7 +33,7 @@ class Input:
     :math:`s = \cos (\theta)`. See `sunkit_magex.pfss.grid` for more
     information on the coordinate system.
     """
-    def __init__(self, br, nr, rss):
+    def __init__(self, br, nr, rss, br_outer="radial"):
         if not isinstance(br, sunpy.map.GenericMap):
             raise ValueError('br must be a sunpy Map')
         if np.any(~np.isfinite(br.data)):
@@ -41,8 +44,27 @@ class Input:
         sunkit_magex.pfss.utils.is_cea_map(br, error=True)
         sunkit_magex.pfss.utils.is_full_sun_synoptic_map(br, error=True)
 
+        if isinstance(br_outer, sunpy.map.GenericMap):
+            if np.any(~np.isfinite(br_outer.data)):
+                raise ValueError('At least one value in the input is NaN or '
+                                 'non-finite. The input must consist solely of '
+                                 'finite values.')
+            if br.dimensions != br_outer.dimensions:
+                raise ValueError('br and br_outer must have the same dimensions')
+
+            sunkit_magex.pfss.utils.is_cea_map(br_outer, error=True)
+            sunkit_magex.pfss.utils.is_full_sun_synoptic_map(br_outer, error=True)
+        elif isinstance(br_outer, str):
+            if br_outer != 'radial':
+                warnings.warn('br_outer will be ignored because it is a string '
+                              'not equal to "radial"')
+
         self._map_in = copy.deepcopy(br)
         self.br = self.map.data
+        if isinstance(br_outer, sunpy.map.GenericMap):
+            self.br_outer = br_outer.data
+        else:
+            self.br_outer = br_outer
 
         # Force some nice defaults
         self._map_in.plot_settings['cmap'] = 'RdBu'

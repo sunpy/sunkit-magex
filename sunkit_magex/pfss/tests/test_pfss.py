@@ -39,6 +39,31 @@ def test_pfss(gong_map):
     return br
 
 
+@pytest.mark.array_compare(reference_dir="arraydiff_reference", filename='test_pfss.txt')
+def test_pfss_br_outer(gong_map):
+    # Regression test to check that the output of pfss doesn't change
+    # when an equivalent custom outer boundary condition is provided
+    m = sunpy.map.Map(gong_map)
+    # Resample to lower res for easier comparisons
+    m = m.resample([30, 15] * u.pix)
+
+    expected = np.loadtxt(test_data / 'br_in.txt')
+    m = sunpy.map.Map(expected, m.meta)
+
+    # Get a source surface
+    br_outer_in = sunkit_magex.pfss.Input(m, 50, 2)
+    br_outer_out = sunkit_magex.pfss.pfss(br_outer_in)
+    br_outer = br_outer_out.source_surface_br
+
+    # Use calculated source surface as outer boundary condition
+    pfss_in = sunkit_magex.pfss.Input(m, 50, 2, br_outer)
+    pfss_out = sunkit_magex.pfss.pfss(pfss_in)
+
+    br = pfss_out.source_surface_br.data
+    assert br.shape == m.data.shape
+    return br
+
+
 def test_bunit(gong_map):
     # Regression test to check that the output of pfss doesn't change
     m = sunpy.map.Map(gong_map)
@@ -124,6 +149,38 @@ def test_footpoints(dipole_result):
     field_line = tracer.trace(seed, out)[0]
     check_radius(field_line.solar_footpoint, const.R_sun)
     check_radius(field_line.source_surface_footpoint, const.R_sun)
+
+
+def test_closed_br_outer(dipole_result_closed):
+    _, out = dipole_result_closed
+    out_frame = out.coordinate_frame
+
+    br, bs, bp = out.bc
+    ns_half = br.shape[1] // 2
+
+    assert np.allclose(br[:, :, -1].value, 0)
+    # where br[:, :, -1] the source surface br
+    assert np.allclose(bp.value, 0)
+
+    # Test if bc equal for constant phi
+    assert np.allclose(br, br[0, :, :])
+    assert np.allclose(bs, bs[0, :, :])
+
+    # Test across equator
+    assert np.allclose(br[0, ns_half-1::-1, :], -br[0, ns_half:, :])
+    assert np.allclose(bs[0, ns_half-1::-1, :], bs[0, ns_half+1:, :])
+
+    tracer = tracing.PythonTracer(atol=1e-8, rtol=1e-8)
+    seed_lat = np.linspace(0, 90, 9, endpoint=False) * u.deg
+    seed = coord.SkyCoord(0 * u.deg, seed_lat, 1.01 * R_sun, frame=out_frame)
+    field_lines = tracer.trace(seed, out)
+
+    for fl in field_lines:
+        ss_fp = fl.source_surface_footpoint
+        s_fp = fl.solar_footpoint
+        assert np.isclose(s_fp.lon, ss_fp.lon)
+        assert np.isclose(s_fp.lat, -ss_fp.lat)
+        assert np.isclose(s_fp.radius, ss_fp.radius)
 
 
 def test_shape(zero_map):
