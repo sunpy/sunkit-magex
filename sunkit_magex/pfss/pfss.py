@@ -34,7 +34,7 @@ def _compute_r_term(m, k, ns, Q, brt, lam, ffm, nr, ffp, psi, psir, rss, brt_out
             dlm = cdlm / (1.0 + ratio)
             clm = ratio * dlm
         else:
-            cdlm1 = np.dot(Q[:, l], brt_outer[:, m]) / lam[l] * rss ** 2
+            cdlm1 = np.dot(Q[:, l], np.asfortranarray(brt_outer[:, m])) / lam[l] * rss ** 2
             clm = (cdlm1 - ffm[l] ** nr * cdlm) / (ffp[l] ** nr - ffm[l] ** nr)
             dlm = (cdlm1 - ffp[l] ** nr * cdlm) / (ffm[l] ** nr - ffp[l] ** nr)
 
