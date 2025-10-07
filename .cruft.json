@@ -6,7 +6,7 @@
     "cookiecutter": {
       "package_name": "sunkit-magex",
       "module_name": "sunkit_magex",
-      "short_description": "Potential field source surface modelling",
+      "short_description": "Solar Magnetic field Extrapolation",
       "author_name": "The SunPy Community",
       "author_email": "sunpy@googlegroups.com",
       "project_url": "https://sunpy.org",
