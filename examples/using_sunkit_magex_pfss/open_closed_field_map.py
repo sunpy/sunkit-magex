@@ -6,7 +6,6 @@ Creating an open/closed field map on the solar surface.
 """
 import matplotlib.colors as mcolor
 import matplotlib.pyplot as plt
-import numpy as np
 
 import astropy.constants as const
 import astropy.units as u
@@ -45,8 +44,8 @@ pfss_out = pfss.pfss(pfss_in)
 coords = sunpy.map.all_coordinates_from_map(gong_map)
 ny, nx = gong_map.data.shape
 
-lon = coords.lon.wrap_at(360*u.deg)    
-lat = coords.lat                      
+lon = coords.lon.wrap_at(360*u.deg)
+lat = coords.lat
 
 seeds = SkyCoord(lon.ravel(), lat.ravel(), const.R_sun, frame=pfss_out.coordinate_frame)
 
@@ -65,7 +64,7 @@ wcs_header = gong_map.wcs.to_header(relax=True)
 wcs_header['NAXIS']  = 2
 wcs_header['NAXIS1'] = pols.shape[1]
 wcs_header['NAXIS2'] = pols.shape[0]
-wcs_header['BTYPE']  = 'polarity' 
+wcs_header['BTYPE']  = 'polarity'
 wcs_header['BUNIT']  = ''           # dimensionless
 
 pols_map = sunpy.map.Map(pols.astype(float), wcs_header)
