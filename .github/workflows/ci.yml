@@ -62,6 +62,7 @@ jobs:
       posargs: -n auto
       envs: |
         - linux: py314
+          name: "py314 (expected to fail)"
         - windows: py312
         - macos: py312
         - linux: py312-oldestdeps
