@@ -6,7 +6,6 @@ Creating an open/closed field map on the solar surface.
 """
 import matplotlib.colors as mcolor
 import matplotlib.pyplot as plt
-import numpy as np
 
 import astropy.constants as const
 import astropy.units as u
@@ -41,12 +40,13 @@ pfss_out = pfss.pfss(pfss_in)
 #
 # First, set up the tracing seeds.
 
-# Number of steps in cos(latitude)
-nsteps = 45
-lon_1d = np.linspace(0, 2 * np.pi, nsteps * 2 + 1)
-lat_1d = np.arcsin(np.linspace(-1, 1, nsteps + 1))
-lon, lat = np.meshgrid(lon_1d, lat_1d, indexing='ij')
-lon, lat = lon*u.rad, lat*u.rad
+# Here we will use the gong map coordinates to set the seed points
+coords = sunpy.map.all_coordinates_from_map(gong_map)
+ny, nx = gong_map.data.shape
+
+lon = coords.lon.wrap_at(360*u.deg)
+lat = coords.lat
+
 seeds = SkyCoord(lon.ravel(), lat.ravel(), const.R_sun, frame=pfss_out.coordinate_frame)
 
 ###############################################################################
@@ -56,7 +56,24 @@ tracer = pfss.tracing.PerformanceTracer()
 field_lines = tracer.trace(seeds, pfss_out)
 
 ###############################################################################
-# Plot the result. The to plot is the input magnetogram, and the bottom plot
+# Create a Map object for the open/closed fields.
+
+pols = field_lines.polarities.reshape(ny,nx)
+
+wcs_header = gong_map.wcs.to_header(relax=True)
+wcs_header['NAXIS']  = 2
+wcs_header['NAXIS1'] = pols.shape[1]
+wcs_header['NAXIS2'] = pols.shape[0]
+wcs_header['BTYPE']  = 'polarity'
+wcs_header['BUNIT']  = ''           # dimensionless
+
+pols_map = sunpy.map.Map(pols.astype(float), wcs_header)
+# Adjust plot settings
+pols_map.plot_settings['cmap'] =  mcolor.ListedColormap(['tab:red', 'black', 'tab:blue'])
+pols_map.plot_settings['norm'] = mcolor.BoundaryNorm([-1.5, -0.5, 0.5, 1.5], ncolors=3)
+
+###############################################################################
+# Plot the result. The top plot is the input magnetogram, and the bottom plot
 # shows a contour map of the the footpoint polarities, which are +/- 1 for open
 # field regions and 0 for closed field regions.
 
@@ -67,13 +84,11 @@ input_map.plot(axes=ax)
 ax.set_title('Input GONG magnetogram')
 
 ax = fig.add_subplot(2, 1, 2)
-cmap = mcolor.ListedColormap(['tab:red', 'black', 'tab:blue'])
-norm = mcolor.BoundaryNorm([-1.5, -0.5, 0.5, 1.5], ncolors=3)
-pols = field_lines.polarities.reshape(2 * nsteps + 1, nsteps + 1).T
-ax.contourf(np.rad2deg(lon_1d), np.sin(lat_1d), pols, norm=norm, cmap=cmap)
-ax.set_ylabel('sin(latitude)')
+
+ax = fig.add_subplot(2, 1, 2, projection=pols_map)
+pols_map.plot()
 ax.set_title('Open (blue/red) and closed (black) field')
-ax.set_aspect(0.5 * 360 / 2)
+
 
 fig.tight_layout()
 
