@@ -317,7 +317,7 @@ def car_to_cea(m, method='interp'):
 
 
 @u.quantity_input
-def roll_map(m, lh_edge_lon: u.deg = 0.0 * u.deg, method='interp'):
+def roll_map(m, lh_edge_lon: u.Quantity[u.deg] = 0.0 * u.deg, method='interp'):
     """
     Roll an input synoptic map so that it's left edge corresponds to a specific
     Carrington longitude.
@@ -332,7 +332,7 @@ def roll_map(m, lh_edge_lon: u.deg = 0.0 * u.deg, method='interp'):
     ----------
     m : sunpy.map.GenericMap
         Input map
-    lh_edge_lon : float
+    lh_edge_lon
         Desired Carrington longitude (degrees) for left hand edge of map.
         Default is 0.0 which results in a map with the edges at 0/360 degrees
         Carrington  longitude. Input value must be in the range [0,360]
