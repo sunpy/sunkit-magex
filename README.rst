@@ -42,29 +42,17 @@ Help is always welcome, so come and say hello by joining the `SunPy Chat`_ and l
 
 .. _Newcomers Guide: https://docs.sunpy.org/en/latest/dev_guide/contents/newcomers.html
 .. _Good First Issues list: https://github.com/sunpy/sunpy/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc+label%3A%22Good+First+Issue%22
+.. _SunPy Chat: https://app.element.io/#/room/#sunpy:openastronomy.org
 
 Code of Conduct
 ---------------
 
 When you are interacting with the SunPy Community you are asked to follow our `Code of Conduct <https://sunpy.org/coc>`__.
 
-<<<<<<<
-.. _SunPy Chat: https://app.element.io/#/room/#sunpy:openastronomy.org
 
 Usage of Generative AI
 ----------------------
 
-We expect authentic engagement in our community.
-Be wary of posting output from Large Language Models or similar generative AI as comments on GitHub or any other platform, as such comments tend to be formulaic and low quality content.
-If you use generative AI tools as an aid in developing code or documentation changes, ensure that you fully understand the proposed changes and can explain why they are the correct approach and an improvement to the current state.
-
-License
--------
-
-This project is Copyright (c) The SunPy Community and licensed under the terms of the GNU GPL v3+ license.
-This package is based upon the `Openastronomy packaging guide <https://github.com/OpenAstronomy/packaging-guide>`_ which is licensed under the BSD 3-clause license.
-See the licenses folder for more information.
-=======
 We expect authentic engagement in our community.
 **Do not post the output from Large Language Models or similar generative AI as code, issues or comments on GitHub or any other platform.**
 If you use generative AI tools as an aid in developing code or documentation changes, ensure that you fully understand the proposed changes and can explain why they are the correct approach and an improvement to the current state.
@@ -78,7 +66,6 @@ the terms of the GNU GPL v3+ license. This package is based upon
 the `Openastronomy packaging guide <https://github.com/OpenAstronomy/packaging-guide>`__
 which is licensed under the BSD 3-clause licence. See the licenses folder for
 more information.
->>>>>>>
 
 Contributing
 ------------
@@ -99,16 +86,6 @@ That's how we all improve, and we are happy to help others learn.
 
 Being an open source contributor doesn't just mean writing code, either.
 You can help out by writing documentation, tests, or even giving feedback about the project (and yes - that includes giving feedback about the contribution process).
-<<<<<<<
 Some of these contributions may be the most valuable to the project as a whole, because you're coming to the project with fresh eyes, so you can see the errors and assumptions that seasoned contributors have glossed over.
 
 Note: This disclaimer was originally written by `Adrienne Lowe <https://github.com/adriennefriend>`_ for a `PyCon talk <https://www.youtube.com/watch?v=6Uj746j9Heo>`_, and was adapted for sunkit-magex based on its use in the README file for the `MetPy project <https://github.com/Unidata/MetPy>`_.
-=======
-the errors and assumptions that seasoned contributors have glossed over.
-
-Note: This disclaimer was originally written by
-`Adrienne Lowe <https://github.com/adriennefriend>`__ for a
-`PyCon talk <https://www.youtube.com/watch?v=6Uj746j9Heo>`__, and was adapted by
-sunkit-magex based on its use in the README file for the
-`MetPy project <https://github.com/Unidata/MetPy>`__.
->>>>>>>
