@@ -58,15 +58,6 @@ We expect authentic engagement in our community.
 If you use generative AI tools as an aid in developing code or documentation changes, ensure that you fully understand the proposed changes and can explain why they are the correct approach and an improvement to the current state.
 For more information see our documentation on fair and appropriate `AI usage <https://docs.sunpy.org/en/latest/dev_guide/contents/ai_usage.html>`__.
 
-License
--------
-
-This project is Copyright (c) The SunPy Community and licensed under
-the terms of the GNU GPL v3+ license. This package is based upon
-the `Openastronomy packaging guide <https://github.com/OpenAstronomy/packaging-guide>`__
-which is licensed under the BSD 3-clause licence. See the licenses folder for
-more information.
-
 Contributing
 ------------
 
