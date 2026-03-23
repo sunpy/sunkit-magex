@@ -26,7 +26,7 @@ Getting Help
 
 For more information or to ask questions about ``sunkit-magex`` or any other SunPy Project package, please check out:
 
--  `SunPy Chat`_
+-  The `#sunkit-magex:openastronomy.org`_ chat
 -  `SunPy mailing list <https://groups.google.com/forum/#!forum/sunpy>`__
 -  `SunPy Community forum <https://community.openastronomy.org/c/sunpy/5>`__
 
@@ -46,13 +46,13 @@ We love contributions! sunkit-magex is open source,
 built on open source, and we'd love to have you hang out in our community.
 
 If you would like to get involved, check out the `Developers Guide`_ section of the SunPy docs.
-Stop by our chat room `#sunpy:openastronomy.org`_ if you have any questions.
+Stop by our chat room `#sunkit-magex:openastronomy.org`_ if you have any questions.
 Help is always welcome so let us know what you like to work on, or check out the `issues page`_ for the list of known outstanding items.
 
 For more information on contributing to SunPy, please read our `Newcomers' guide`_.
 
 .. _Developers Guide: https://docs.sunpy.org/en/latest/dev_guide/index.html
-.. _`#sunpy:openastronomy.org`: https://app.element.io/#/room/#sunpy:openastronomy.org
+.. _`#sunkit-magex:openastronomy.org`: https://app.element.io/#/room/#sunkit-magex:openastronomy.org
 .. _issues page: https://github.com/sunpy/sunkit-magex/issues
 .. _Newcomers' guide: https://docs.sunpy.org/en/latest/dev_guide/contents/newcomers.html
 
