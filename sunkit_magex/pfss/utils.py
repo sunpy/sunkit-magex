@@ -168,7 +168,7 @@ def _check_projection(m, proj_code, error=False):
 
 def is_cea_map(m, error=False):
     """
-    Returns `True` if *m* is in a cylindrical equal area projeciton.
+    Returns `True` if *m* is in a cylindrical equal area projection.
 
     Parameters
     ----------
@@ -181,7 +181,7 @@ def is_cea_map(m, error=False):
 
 def is_car_map(m, error=False):
     """
-    Returns `True` if *m* is in a plate carée projeciton.
+    Returns `True` if *m* is in a plate carée projection.
 
     Parameters
     ----------
