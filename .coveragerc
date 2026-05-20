@@ -4,6 +4,8 @@ omit =
   sunkit_magex/*setup_package*
   sunkit_magex/extern/*
   sunkit_magex/version*
+  sunkit_magex/_dev/*
+  */sunkit_magex/_dev/*
   */sunkit_magex/conftest.py
   */sunkit_magex/*setup_package*
   */sunkit_magex/extern/*
