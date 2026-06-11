@@ -1,19 +1,22 @@
 import numpy as np
+cimport numpy as cnp
+
+cnp.import_array()
 
 def _compute_r_term(
-    m,
-    k,
-    ns,
-    Q,
-    brt,
-    lam,
-    ffm,
-    nr,
-    ffp,
-    psi,
-    psir,
-    rss,
-    brt_outer,
+    int m,
+    cnp.ndarray k,
+    int ns,
+    cnp.ndarray Q,
+    cnp.ndarray brt,
+    cnp.ndarray lam,
+    cnp.ndarray ffm,
+    int nr,
+    cnp.ndarray ffp,
+    cnp.ndarray psi,
+    cnp.ndarray psir,
+    float rss,
+    cnp.ndarray brt_outer,
 ):
     for l in range(ns):
         # Ignore the l=0 and m=0 term; for a globally divergence free field
@@ -42,7 +45,15 @@ def _compute_r_term(
     return psi, psir
 
 
-def _als_alp(nr, nphi, Fs, psi, Fp, als, alp):
+def _als_alp(
+    int nr,
+    int nphi,
+    cnp.ndarray Fs,
+    cnp.ndarray psi,
+    cnp.ndarray Fp,
+    cnp.ndarray als,
+    cnp.ndarray alp,
+):
     for j in range(nr + 1):
         for i in range(nphi + 1):
             als[i, :, j] = Fs * (psi[j, :, ((i - 1) % nphi)] - psi[j, :, ((i) % nphi)])
@@ -51,7 +62,7 @@ def _als_alp(nr, nphi, Fs, psi, Fp, als, alp):
     return als, alp
 
 
-def _A_diag(A, ns, Vg, Uc, mu, m):
+def _A_diag(cnp.ndarray A, int ns, cnp.ndarray Vg, cnp.ndarray Uc, cnp.ndarray mu, int m):
     for j in range(ns):
         A[j, j] = Vg[j] + Vg[j + 1] + Uc[j] * mu[m]
     return A
