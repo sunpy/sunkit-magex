@@ -1,20 +1,30 @@
 import numpy as np
 cimport numpy as cnp
+cimport cython
 
 cnp.import_array()
 
+FTYPE = np.float64
+CTYPE = np.complex128
+
+ctypedef cnp.float64_t FTYPE_t
+ctypedef cnp.complex128_t CTYPE_t
+
+
+@cython.boundscheck(False) # turn off bounds-checking for entire function
+@cython.wraparound(False)  # turn off negative index wrapping for entire function
 def _compute_r_term(
     int m,
-    cnp.ndarray k,
+    cnp.ndarray[FTYPE_t, ndim=1] k,
     int ns,
-    cnp.ndarray Q,
-    cnp.ndarray brt,
-    cnp.ndarray lam,
-    cnp.ndarray ffm,
+    cnp.ndarray[CTYPE_t, ndim=2] Q,
+    cnp.ndarray[CTYPE_t, ndim=2] brt,
+    cnp.ndarray[FTYPE_t, ndim=1] lam,
+    cnp.ndarray[FTYPE_t, ndim=1] ffm,
     int nr,
-    cnp.ndarray ffp,
-    cnp.ndarray psi,
-    cnp.ndarray psir,
+    cnp.ndarray[FTYPE_t, ndim=1] ffp,
+    cnp.ndarray[CTYPE_t, ndim=3] psi,
+    cnp.ndarray[CTYPE_t, ndim=2] psir,
     float rss,
     cnp.ndarray brt_outer,
 ):
@@ -45,14 +55,16 @@ def _compute_r_term(
     return psi, psir
 
 
+@cython.boundscheck(False) # turn off bounds-checking for entire function
+@cython.wraparound(False)  # turn off negative index wrapping for entire function
 def _als_alp(
     int nr,
     int nphi,
-    cnp.ndarray Fs,
-    cnp.ndarray psi,
-    cnp.ndarray Fp,
-    cnp.ndarray als,
-    cnp.ndarray alp,
+    cnp.ndarray[FTYPE_t, ndim=1] Fs,
+    cnp.ndarray[FTYPE_t, ndim=3] psi,
+    cnp.ndarray[FTYPE_t, ndim=1] Fp,
+    cnp.ndarray[FTYPE_t, ndim=3] als,
+    cnp.ndarray[FTYPE_t, ndim=3] alp,
 ):
     for j in range(nr + 1):
         for i in range(nphi + 1):
@@ -62,7 +74,16 @@ def _als_alp(
     return als, alp
 
 
-def _A_diag(cnp.ndarray A, int ns, cnp.ndarray Vg, cnp.ndarray Uc, cnp.ndarray mu, int m):
+@cython.boundscheck(False) # turn off bounds-checking for entire function
+@cython.wraparound(False)  # turn off negative index wrapping for entire function
+def _A_diag(
+    cnp.ndarray[FTYPE_t, ndim=2] A,
+    int ns,
+    cnp.ndarray[FTYPE_t, ndim=1] Vg,
+    cnp.ndarray[FTYPE_t, ndim=1] Uc,
+    cnp.ndarray[FTYPE_t, ndim=1] mu,
+    int m,
+):
     for j in range(ns):
         A[j, j] = Vg[j] + Vg[j + 1] + Uc[j] * mu[m]
     return A
