@@ -36,7 +36,7 @@ tests = [
   "pytest-arraydiff",
   "parfive",
   "reproject",
-  "sunkit-magex[all]",
+  "sunkit-magex[analytic]",
 ]
 docs = [
   "sphinx",
