@@ -18,7 +18,7 @@
       "issue_tracker_url": "https://github.com/sunpy/sunkit-magex/issues",
       "license": "GNU GPL v3+",
       "minimum_python_version": "3.12",
-      "use_compiled_extensions": "n",
+      "use_compiled_extensions": "y",
       "enable_dynamic_dev_versions": "y",
       "include_example_code": "n",
       "include_cruft_update_github_workflow": "y",

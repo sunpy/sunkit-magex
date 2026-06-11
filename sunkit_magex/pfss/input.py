@@ -33,7 +33,14 @@ class Input:
     :math:`s = \cos (\theta)`. See `sunkit_magex.pfss.grid` for more
     information on the coordinate system.
     """
-    def __init__(self, br, nr, rss, br_outer="radial"):
+    br: np.ndarray[tuple[int, int], np.dtype[np.float64]]
+    br_outer: np.ndarray[tuple[int, int], np.dtype[np.float64]] | str
+
+    def __init__(self,
+                 br: sunpy.map.GenericMap,
+                 nr: int,
+                 rss: float,
+                 br_outer: sunpy.map.GenericMap | str = "radial"):
         if not isinstance(br, sunpy.map.GenericMap):
             raise ValueError('br must be a sunpy Map')
         if np.any(~np.isfinite(br.data)):
@@ -77,14 +84,14 @@ class Input:
         self._grid = Grid(ns, nphi, nr, rss)
 
     @property
-    def map(self):
+    def map(self) -> sunpy.map.GenericMap:
         """
         :class:`sunpy.map.GenericMap` representation of the input.
         """
         return self._map_in
 
     @property
-    def grid(self):
+    def grid(self) -> Grid:
         """
         `~sunkit_magex.pfss.grid.Grid` that the PFSS solution for this input is
         calculated on.
