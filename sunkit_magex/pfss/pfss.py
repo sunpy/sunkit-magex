@@ -3,7 +3,7 @@ Code for calculating a PFSS extrapolation.
 """
 import numpy as np
 
-import sunkit_magex.pfss
+from sunkit_magex.pfss.input import Input
 
 HAS_NUMBA = False
 try:
@@ -67,7 +67,7 @@ if HAS_NUMBA:
     _A_diag = numba.jit(nopython=True)(_A_diag)
 
 
-def pfss(input):
+def pfss(input: Input):
     r"""
     Compute PFSS model.
 
