@@ -3,6 +3,9 @@ requires = [
   "setuptools>=62.1",
   "setuptools_scm[toml]>=8.0.0",
   "wheel",
+  "extension-helpers",
+  "numpy>=1.25",
+  "cython",
 ]
 build-backend = "setuptools.build_meta"
 
@@ -75,8 +78,17 @@ include-package-data = true
 include = ["sunkit_magex*"]
 exclude = ["sunkit_magex._dev*"]
 
+[tool.setuptools.exclude-package-data]
+"*" = ["*.c", "*.h"]
+
 [tool.setuptools_scm]
 version_file = "sunkit_magex/_version.py"
+
+[tool.cibuildwheel]
+environment-pass = ["EXTENSION_HELPERS_PY_LIMITED_API"]
+
+[tool.extension-helpers]
+use_extension_helpers = "true"
 
 [tool.gilesbot]
   [tool.gilesbot.pull_requests]
