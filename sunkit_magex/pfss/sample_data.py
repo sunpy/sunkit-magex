@@ -17,7 +17,7 @@ def get_gong_map():
 
 
 @manager.require('adapt_map',
-                 'https://gong.nso.edu/adapt/maps/gong/2020/adapt40311_03k012_202001010000_i00005600n1.fts.gz',
-                 'fd8f3a23059b2118d0097c448df3ccbdb5388a0031536dd3a6f61fa0e08a9bb5')
+                 'https://gong.nso.edu/adapt/maps/gong/2020/adapt40311_044012_202010100000_i00005600n1.fts.gz',
+                 'b8a04ec57eb3e797fe3de88f0d2b58b1a93607a914625341bb5a79268cc6314a')
 def get_adapt_map():
     return manager.get('adapt_map')
