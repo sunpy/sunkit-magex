@@ -1,5 +1,5 @@
-import warnings
 import functools
+import warnings
 
 import numpy as np
 
