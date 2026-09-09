@@ -1,3 +1,24 @@
+1.2.0 (2026-09-09)
+==================
+
+Breaking Changes
+----------------
+
+- Increased minimum version of Python to 3.12.
+  Increased minimum version of NumPy to 1.26.0.
+  Increased minimum version of Matplotlib to 3.8.0.
+  Increased minimum version of SciPy to 1.12.0.
+  Increased minimum version of sunpy to 7.0.0.
+  Increased minimum version of Astropy to 6.1.0.
+  Increased minimum version of scikit-image to 0.22.0. (`#111 <https://github.com/sunpy/sunkit-magex/pull/111>`__)
+
+
+New Features
+------------
+
+- Add functionality for a custom outer boundary condition on ``br`` for the input for PFSS. (`#98 <https://github.com/sunpy/sunkit-magex/pull/98>`__)
+
+
 1.1.0 (2025-05-07)
 ==================
 
