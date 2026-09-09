@@ -1,1 +1,0 @@
-Add functionality for a custom outer boundary condition on ``br`` for the input for PFSS.
