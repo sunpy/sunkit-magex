@@ -67,8 +67,7 @@ jobs:
       toxdeps: tox-pypi-filter
       posargs: -n auto
       envs: |
-        - name: py314 (Expected to Fail)
-          linux: py314
+        - linux: py314
         - windows: py312
         - macos: py312
         - linux: py312-oldestdeps
