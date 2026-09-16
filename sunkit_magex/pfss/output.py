@@ -523,7 +523,13 @@ class OutflowOutput(Output):
     -----
     Unlike `Output`, an outflow field is not derived from a vector
     potential: ``br``, ``bs`` and ``bp`` are the magnetic field components
-    themselves (already divergence-free by construction)
+    themselves (already divergence-free by construction), stored directly
+    rather than a vector potential to be curled. This class only overrides
+    ``_common_b``; every other method (``bc``, ``bg``, ``get_bvec``,
+    ``trace``, ...) is inherited unchanged from `Output`, which is what
+    lets existing tracers (e.g.
+    `~sunkit_magex.pfss.tracing.PerformanceTracer`) work on outflow field
+    results with no changes.
 
     Instances of this class are intended to be created by
     `sunkit_magex.pfss.outflow`, and not by users.
