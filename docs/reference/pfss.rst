@@ -9,3 +9,5 @@
 .. automodapi:: sunkit_magex.pfss.utils
 
 .. automodapi:: sunkit_magex.pfss.analytic
+
+.. automodapi:: sunkit_magex.pfss.outflow

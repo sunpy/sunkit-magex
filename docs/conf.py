@@ -123,6 +123,13 @@ autoclass_content = "both"
 os.environ["JSOC_EMAIL"] = 'jsoc@sunpy.org'
 
 nitpicky = True
+nitpick_ignore = []
+for line in open('nitpick-exceptions'):
+    if line.strip() == "" or line.startswith("#"):
+        continue
+    dtype, target = line.split(None, 1)
+    target = target.strip()
+    nitpick_ignore.append((dtype, target))
 numfig = True
 
 # -- Sphinx Gallery ----------------------------------------------------------

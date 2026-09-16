@@ -28,6 +28,7 @@ from scipy.optimize import minimize_scalar, root_scalar
 
 import astropy.units as u
 
+from sunkit_magex.pfss import Output
 from sunkit_magex.pfss.grid import Grid
 from sunkit_magex.pfss.input import Input
 
@@ -48,7 +49,7 @@ def _azimuthal_eigenmodes(pc, dp):
     Eigenvalues and eigenvectors of the azimuthal (phi) direction.
 
     Unlike PFSS (where the radial ODE has a closed-form solution and a
-    plain FFT can be used), the outflow radial ODE has no closed form, so
+    plain FFT can be used), the outflow radial ODE has no closed form. So
     the azimuthal basis has to be built explicitly by combining the
     eigenvectors of the equivalent sine and cosine tridiagonal eigenvalue
     problems.
@@ -111,7 +112,7 @@ def _boundary_coefficient(br0, q, p):
     return lhs / rhs
 
 
-def _radial_h_function(l, rcx, vcx, vdcx, dr):
+def _radial_h_function(l_mode, rcx, vcx, vdcx, dr):
     """
     Radial function H(rho), found via a finite-difference recursion
     (shooting from the source surface inward) that includes the outflow
@@ -125,7 +126,7 @@ def _radial_h_function(l, rcx, vcx, vdcx, dr):
     for i in range(len(rcx) - 3, -1, -1):
         A = 1.0
         B = 3 - vcx[i + 1] * np.exp(rcx[i + 1])
-        C = 2 - l - 3 * vcx[i + 1] * np.exp(rcx[i + 1]) - vdcx[i + 1] * np.exp(rcx[i + 1])
+        C = 2 - l_mode - 3 * vcx[i + 1] * np.exp(rcx[i + 1]) - vdcx[i + 1] * np.exp(rcx[i + 1])
         top = hcx[i + 1] * (2 * A / dr**2 - C) + hcx[i + 2] * (-A / dr**2 - B / (2 * dr))
         bottom = A / dr**2 - B / (2 * dr)
         hcx[i] = top / bottom
@@ -136,7 +137,7 @@ def _radial_h_function(l, rcx, vcx, vdcx, dr):
     return hcx / grad
 
 
-def _radial_g_function(hcx, l, rg):
+def _radial_g_function(hcx, l_mode, rg):
     """
     Radial function G(rho), derived from H via the divergence-free
     coupling between the two.
@@ -145,7 +146,7 @@ def _radial_g_function(hcx, l, rg):
     gs[0] = 1.0
     for i in range(1, len(gs)):
         gs[i] = np.exp(-2 * rg[i]) * (
-            0.5 * l * hcx[i] * (np.exp(2 * rg[i]) - np.exp(2 * rg[i - 1]))
+            0.5 * l_mode * hcx[i] * (np.exp(2 * rg[i]) - np.exp(2 * rg[i - 1]))
             + gs[i - 1] * np.exp(2 * rg[i - 1]))
     return gs
 
@@ -205,21 +206,21 @@ class OutflowInput(Input):
 
     Parameters
     ----------
-    br : sunpy.map.GenericMap
+    br : `sunpy.map.GenericMap`
         Boundary condition of radial magnetic field at the inner surface.
         Note that the data *must* have a cylindrical equal area projection.
-    nr : int
+    nr : `int`
         Number of cells in the radial direction on which to calculate the
         3D solution.
-    rss : float
+    rss : `float`
         Radius of the source surface, in units of solar radii.
-    corona_temp : astropy.units.Quantity, optional
+    corona_temp : `astropy.units.Quantity`, optional
         Temperature of the corona for the implicit Parker wind solution, in
         units convertible to Kelvin (e.g. ``1.5e6 * u.K``).
-    mf_constant : float, optional
+    mf_constant : `float`, optional
         Magnetofrictional constant. ``mf_constant=0`` gives the zero-outflow
         (PFSS-equivalent) solution.
-    sound_speed : astropy.units.Quantity, optional
+    sound_speed : `astropy.units.Quantity`, optional
         Sound speed of the Parker wind solution, in units convertible to
         m/s (e.g. ``150 * u.km / u.s``).
 
@@ -231,7 +232,7 @@ class OutflowInput(Input):
         in m/s.
     polynomial_coeffs : array-like, optional
         Coefficients of a polynomial (in :math:`r`) outflow speed profile.
-    polynomial_type : str, optional
+    polynomial_type : `str`, optional
         One of ``'abs'``, ``'clip'``, ``'raw'``, ``'smooth'`` or
         ``'smooth_monotonic'`` (the default), specifying how the polynomial
         given by ``polynomial_coeffs`` is transformed to ensure it is
@@ -437,11 +438,11 @@ def outflow(input):
 
     Extrapolates a 3D magnetic field including a radial solar wind outflow
     speed profile, using an eigenfunction expansion in :math:`r, s, p`
-    coordinates on the same dumfric grid used by
-    `~sunkit_magex.pfss.pfss.pfss` (equally spaced in
-    :math:`\rho = \ln(r/r_{sun})`, :math:`s = \cos(\theta)`, and
-    :math:`p = \phi`). Setting the outflow speed to zero everywhere
-    (``OutflowInput(..., mf_constant=0)``) recovers the PFSS solution.
+    coordinates on the same dumfric grid used by `sunkit_magex.pfss.pfss`
+    (equally spaced in :math:`\rho = \ln(r/r_{sun})`,
+    :math:`s = \cos(\theta)`, and :math:`p = \phi`). Setting the outflow
+    speed to zero everywhere (``OutflowInput(..., mf_constant=0)``)
+    recovers the PFSS solution.
 
     Parameters
     ----------
@@ -450,11 +451,11 @@ def outflow(input):
 
     Returns
     -------
-    `~sunkit_magex.pfss.output.OutflowOutput`
+    ~sunkit_magex.pfss.OutflowOutput
 
     See Also
     --------
-    sunkit_magex.pfss.pfss.pfss
+    sunkit_magex.pfss.pfss : Compute a PFSS model.
 
     Notes
     -----
@@ -502,4 +503,4 @@ def outflow(input):
     bs = np.swapaxes(bs, 0, 2)
     bp = np.swapaxes(bp, 0, 2)
 
-    return OutflowOutput(br, bs, bp, grid, input.map)
+    return Output(br, bs, bp, grid, input.map)
