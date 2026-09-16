@@ -1,8 +1,13 @@
 import numpy as np
 import pytest
 
+import astropy.constants as const
+import astropy.coordinates as acoord
 import astropy.units as u
 
+import sunkit_magex.pfss
+from sunkit_magex.pfss import tracing
+from sunkit_magex.pfss.fieldline import FieldLine, FieldLines
 from sunkit_magex.pfss.grid import Grid
 from sunkit_magex.pfss.outflow import (
     OutflowGrid,
@@ -12,12 +17,25 @@ from sunkit_magex.pfss.outflow import (
     _latitudinal_eigenmodes,
     _radial_g_function,
     _radial_h_function,
+    outflow,
 )
+from sunkit_magex.pfss.output import OutflowOutput
 
 
 @pytest.fixture
 def outflow_grid():
     return OutflowGrid(ns=10, nphi=8, nr=5, rss=2.5)
+
+
+@pytest.fixture
+def outflow_result(dipole_map):
+    # Same resolution as the `dipole_result` PFSS fixture in conftest.py,
+    # so the two can be compared directly.
+    nr = 10
+    rss = 2.5
+    input = OutflowInput(dipole_map, nr, rss, mf_constant=0.0)
+    output = outflow(input)
+    return input, output
 
 
 def test_azimuthal_eigenmodes_shapes():
@@ -168,3 +186,62 @@ class TestOutflowInput:
     def test_sound_speed_wrong_unit(self, dipole_map):
         with pytest.raises(u.UnitsError):
             OutflowInput(dipole_map, nr=5, rss=2.5, mf_constant=1e-3, sound_speed=150 * u.K)
+
+
+class TestOutflow:
+    def test_returns_outflow_output(self, outflow_result):
+        _, output = outflow_result
+        assert isinstance(output, OutflowOutput)
+
+    def test_default_profile_runs(self, dipole_map):
+        input = OutflowInput(dipole_map, nr=6, rss=2.5)
+        output = outflow(input)
+        br, bth, bph = output.bc
+        assert np.all(np.isfinite(br.value))
+        assert np.all(np.isfinite(bth.value))
+        assert np.all(np.isfinite(bph.value))
+
+    def test_zero_flow_matches_pfss(self, dipole_map, outflow_result):
+        # outflow() with mf_constant=0 solves the same physical problem as
+        # pfss(), via a completely different numerical method (eigenfunction
+        # expansion + radial finite-difference recursion, vs FFT + a
+        # closed-form radial quadratic). They are independent
+        # discretisation's of the same continuous problem, so they agree up
+        # to the (shrinking, as resolution increases) discretisation error
+        # of each method rather than to machine precision.
+        # Checked convergence at several grid resolutions during
+        # development. At this fixture's resolution (ns=30, nphi=20, nr=10)
+        # the two methods agree to within ~1%.
+        nr = 10
+        rss = 2.5
+        pfss_input = sunkit_magex.pfss.Input(dipole_map, nr, rss)
+        pfss_output = sunkit_magex.pfss.pfss(pfss_input)
+
+        _, outflow_output = outflow_result
+
+        bg_pfss = pfss_output.bg.value
+        bg_outflow = outflow_output.bg.value
+        max_val = np.max(np.abs(bg_pfss))
+        np.testing.assert_allclose(bg_outflow, bg_pfss, atol=0.02 * max_val)
+
+
+class TestOutflowOutputTracing:
+    @pytest.fixture(params=[tracing.PythonTracer(), tracing.PerformanceTracer()],
+                    ids=['python', 'compiled'])
+    def flines(self, outflow_result, request):
+        tracer = request.param
+        _, output = outflow_result
+        out_frame = output.coordinate_frame
+        seed = acoord.SkyCoord(2 * u.deg, -45 * u.deg, 1.01 * const.R_sun, frame=out_frame)
+        return tracer.trace(seed, output)
+
+    def test_field_lines(self, flines):
+        # Proves the existing tracers (including the rust-backed
+        # PerformanceTracer) work unmodified on OutflowOutput, since they
+        # only ever touch output.bg / output.grid / output.coordinate_frame.
+        assert isinstance(flines, FieldLines)
+        assert isinstance(flines[0], FieldLine)
+
+    def test_fline_in_bounds(self, flines):
+        assert np.all(flines[0].coords.radius >= const.R_sun)
+        assert np.all(flines[0].coords.radius <= 2.5 * const.R_sun)

@@ -28,7 +28,7 @@ from scipy.optimize import minimize_scalar, root_scalar
 
 import astropy.units as u
 
-from sunkit_magex.pfss import Output
+from sunkit_magex.pfss import OutflowOutput
 from sunkit_magex.pfss.grid import Grid
 from sunkit_magex.pfss.input import Input
 
@@ -462,7 +462,6 @@ def outflow(input):
     See Rice & Yeates, 2021, *Global Coronal Equilibria with Solar Wind
     Outflow*, ApJ 923, 57, https://doi.org/10.3847/1538-4357/ac2c71.
     """
-    from sunkit_magex.pfss.output import OutflowOutput
 
     grid = input.grid
     br0 = input.br
@@ -503,4 +502,4 @@ def outflow(input):
     bs = np.swapaxes(bs, 0, 2)
     bp = np.swapaxes(bp, 0, 2)
 
-    return Output(br, bs, bp, grid, input.map)
+    return OutflowOutput(br, bs, bp, grid, input.map)
