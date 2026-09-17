@@ -243,5 +243,11 @@ class TestOutflowOutputTracing:
         assert isinstance(flines[0], FieldLine)
 
     def test_fline_in_bounds(self, flines):
-        assert np.all(flines[0].coords.radius >= const.R_sun)
-        assert np.all(flines[0].coords.radius <= 2.5 * const.R_sun)
+        # The tracers terminate a field line by root-finding for the
+        # (r - 1) * (r - rss) = 0 crossing, so the last point can land a
+        # tiny floating-point amount outside [1, rss] depending on
+        # platform/BLAS-dependent rounding in the field reconstruction.
+        tol = 1e-9  # ~1 meter
+        radius = flines[0].coords.radius
+        np.testing.assert_array_less(const.R_sun * (1 - tol), radius)
+        np.testing.assert_array_less(radius, 2.5 * const.R_sun * (1 + tol))
