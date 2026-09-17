@@ -600,6 +600,11 @@ def outflow(input, mode_tol=1e-10):
     br = (partial_br.reshape(nphi, -1).T @ p_central).reshape(nr + 1, ns, nphi)
     bs = (partial_bs.reshape(nphi, -1).T @ p_central).reshape(nr, ns + 1, nphi)
     bp = (partial_bp.reshape(nphi, -1).T @ dp_).reshape(nr, ns, nphi + 1)
+    # Hum OpenBLAS's backed GEMM (linux) and Accelerate MacOS seem to give
+    # different results. With Accelerate dp_[:, 0] and dp_[:, -1] are bit-identical
+    # (both represent the phi=0/phi=2pi wrap point) but GEMM
+    # Re-assert the periodicity explicitly, since streamtracer's cyclic grid requires it exactly.
+    bp[:, :, -1] = bp[:, :, 0]
 
     br = np.swapaxes(br, 0, 2)
     bs = np.swapaxes(bs, 0, 2)
