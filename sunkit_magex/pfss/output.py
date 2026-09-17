@@ -504,7 +504,7 @@ class Output:
 
 class OutflowOutput(Output):
     '''
-    Output of outflow field modelling (see `sunkit_magex.pfss.outflow.outflow`).
+    Output of outflow field modelling (see `sunkit_magex.pfss.outflow`).
 
     Parameters
     ----------
@@ -514,7 +514,7 @@ class OutflowOutput(Output):
         Magnetic field strength in the elevation direction.
     bp :
         Magnetic field strength in the azimuth direction.
-    grid : `~sunkit_magex.pfss.outflow.OutflowGrid`
+    grid : `~sunkit_magex.pfss.OutflowGrid`
         Grid that the output was calculated on.
     input_map : sunpy.map.GenericMap
         The input map.
@@ -526,7 +526,7 @@ class OutflowOutput(Output):
     themselves (already divergence-free by construction)
 
     Instances of this class are intended to be created by
-    `sunkit_magex.pfss.outflow.outflow`, and not by users.
+    `sunkit_magex.pfss.outflow`, and not by users.
     '''
     def __init__(self, br, bs, bp, grid, input_map=None):
         self.br = br

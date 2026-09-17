@@ -460,7 +460,8 @@ def outflow(input):
     Notes
     -----
     See Rice & Yeates, 2021, *Global Coronal Equilibria with Solar Wind
-    Outflow*, ApJ 923, 57, https://doi.org/10.3847/1538-4357/ac2c71.
+    Outflow*, ApJ 923, 57, https://doi.org/10.3847/1538-4357/ac2c71 and
+    https://github.com/oekrice/outflowpy for original version.
     """
 
     grid = input.grid
