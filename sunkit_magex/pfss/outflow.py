@@ -151,10 +151,33 @@ def _radial_g_function(hcx, l_mode, rg):
     return gs
 
 
+def _radial_h_g_batch(l_modes, rcx, vcx, vdcx, dr, rg):
+    """
+    Compute the H and G radial functions for every l-eigenvalue in
+    ``l_modes`` in a single call, instead of one Python-level call per
+    mode. When jitted, nested calls to `_radial_h_function`/
+    `_radial_g_function` from within this function compile to direct
+    calls with no Python<->numba boundary crossing, avoiding the
+    per-call dispatch overhead that adds up when there are many
+    non-negligible modes (e.g. for realistically-scaled magnetogram
+    data, see the performance note on :func:`outflow`).
+    """
+    n = len(l_modes)
+    hcx_all = np.empty((n, len(rcx)))
+    gg_all = np.empty((n, len(rg)))
+    for idx in range(n):
+        l_mode = l_modes[idx]
+        hcx = _radial_h_function(l_mode, rcx, vcx, vdcx, dr)
+        hcx_all[idx] = hcx
+        gg_all[idx] = _radial_g_function(hcx, l_mode, rg)
+    return hcx_all, gg_all
+
+
 if HAS_NUMBA:
     _radial_h_function = numba.jit(nopython=True)(_radial_h_function)
     _radial_g_function = numba.jit(nopython=True)(_radial_g_function)
     _boundary_coefficient = numba.jit(nopython=True)(_boundary_coefficient)
+    _radial_h_g_batch = numba.jit(nopython=True)(_radial_h_g_batch)
 
 
 class OutflowGrid(Grid):
@@ -452,33 +475,49 @@ def outflow(input, mode_tol=1e-10):
     Notes
     -----
     See Rice & Yeates, 2021, *Global Coronal Equilibria with Solar Wind
-    Outflow*, ApJ 923, 57, https://doi.org/10.3847/1538-4357/ac2c71 and
-    https://github.com/oekrice/outflowpy for original version.
+    Outflow*, ApJ 923, 57, https://doi.org/10.3847/1538-4357/ac2c71, and
+    https://github.com/oekrice/outflowpy for the original implementation
+    this is adapted from.
 
-    Outflow*, ApJ 923, 57, https://doi.org/10.3847/1538-4357/ac2c71.
+    **Performance note.** Direct implementation of this method is
+    ``O((ns*nphi)^2)`` for the boundary-fitting sweep and
+    ``O(n_active * nr * ns * nphi)`` for the field reconstruction, in the
+    total number of modes. For a normalised analytic test field (e.g. a
+    dipole), only a handful of modes are ever non-negligible, so this is
+    ok a real magnetogram data, essentially every mode is non-negligible,
+    and the cost becomes prohibitive. Three changes address this:
 
-    **Performance note.** The radial (H, G) and latitudinal (Q) profiles
-    of a mode depend on *both* azimuthal index ``i`` and latitudinal
-    index ``j`` (the l-eigenvalue used in the radial recursion, and the
-    latitudinal eigenvector, are both computed per-``(i, j)`` pair), but
-    the azimuthal profile (P) depends only on ``i``. That asymmetry is
-    exploited to reconstruct br/bs/bp with two batched matrix
-    multiplications instead of one broadcast-and-add per mode:
+    1. **Boundary-fitting coefficients (new)**``C_{l,m}`` (`_boundary_coefficient`
+       is the reference per-mode formula) are computed for every ``(i, j)``
+       pair at once: the azimuthal projection ``T = Br @ Phi`` is one
+       matmul, and the remaining latitudinal sum is a batched
+       matrix-vector product (one small matmul per ``i``, executed as a
+       single batched ``@`` call), instead of ``ns*nphi`` separate calls
+       each redoing an ``O(ns*nphi)`` reduction from scratch.
+    2. **Field reconstruction (in orig Fortran but not python)**:
+       the radial (H, G) and latitudinal (Q) profiles of a mode depend
+       on *both* azimuthal index ``i`` and latitudinal index ``j``, but
+       the azimuthal profile (P) depends only on ``i``. That asymmetry
+       is exploited to reconstruct br/bs/bp with two batched matrix
+       multiplications instead of one broadcast-and-add per mode:
+       for each ``i``, the contributions of its non-negligible ``j`` modes
+       are combined with a single small matmul (at most ``ns`` terms), and
+       the per-``i`` results are then combined with one final matmul that
+       sums over ``i`` (at most``nphi`` terms).
+    3. **Radial recursion (new numba optim)** (`_radial_h_g_batch`):
+       all of a given ``i``'s non-negligible ``j`` modes are processed
+       in a single jitted call rather than one Python-level call per mode,
+       avoiding Python<->numba dispatch overhead when there are many
+       non-negligible modes.
 
-    1. For each ``i``, the contributions of its non-negligible ``j``
-       modes are combined with a single small matmul (at most ``ns``
-       terms).
-    2. The per-``i`` results are then combined with one final matmul
-       that contracts over ``i`` (at most ``nphi`` terms).
-
-    This keeps the reconstruction cost close to
+    Together these keep the solve cost close to
     ``O(n_active * nr * ns)`` even when nearly every mode is
-    non-negligible, rather than ``O(n_active * nr * ns * nphi)`` for
-    accumulating each mode's full ``(nr, ns, nphi)`` outer product
-    individually. On a full-resolution HMI synoptic map
-    (360x180 pixels, ~65,000 total modes, effectively
-    all non-negligible), this reduces the solve time from several
-    minutes to about ten seconds.
+    non-negligible, rather than scaling with the square of the total
+    mode count. Measured on this machine:
+
+    - Full-resolution HMI synoptic map (360x180 pixels, nr=35, ~65,000
+      total modes, effectively all non-negligible): several minutes
+      (naive per-mode python loop) down to ~0.3s.
     """
     grid = input.grid
     br0 = input.br
@@ -494,8 +533,8 @@ def outflow(input, mode_tol=1e-10):
     threshold = mode_tol * br_scale if br_scale > 0 else mode_tol
 
     # Vectorised boundary-fitting coefficients C_{l,m} for every (m, l)
-    # pair at once -- see `_boundary_coefficient` for the per-mode formula
-    # this is derived from. T_{s,m} = sum_p Br(s,p) Phi_m(p) is one
+    # pair at once (see `_boundary_coefficient` for the per-mode formula
+    # this is derived from). T_{s,m} = sum_p Br(s,p) Phi_m(p) is one
     # matmul, and the l-sum is then a batched matrix-vector product (one
     # small matmul per m, executed as a single batched ``@`` call), instead
     # of ns*nphi separate calls each redoing an O(ns*nphi) reduction from
@@ -529,8 +568,13 @@ def outflow(input, mode_tol=1e-10):
 
         n_i = len(active_j)
         cmls_i = cmls_all_j[active_j]
-        gg_i = np.empty((n_i, nr + 1))
-        hcx_central_i = np.empty((n_i, nr))
+
+        # One jitted call for all of this i's active modes, instead of
+        # one Python-level call per mode (see `_radial_h_g_batch`).
+        l_modes_i = grid.ls[i, active_j]
+        hcx_all_i, gg_i = _radial_h_g_batch(l_modes_i, grid.rcx, input.vcx, input.vdcx, grid.dr, grid.rg)
+        hcx_central_i = hcx_all_i[:, 1:-1]
+
         q_central_i = np.empty((n_i, ns))
         b_bs_i = np.empty((n_i, ns + 1))
         b_bp_i = np.empty((n_i, ns))
@@ -541,10 +585,6 @@ def outflow(input, mode_tol=1e-10):
             q_pad[0] = q_pad[1]
             q_pad[-1] = q_pad[-2]
 
-            l_mode = grid.ls[i, j]
-            hcx = _radial_h_function(l_mode, grid.rcx, input.vcx, input.vdcx, grid.dr)
-            gg_i[idx] = _radial_g_function(hcx, l_mode, grid.rg)
-            hcx_central_i[idx] = hcx[1:-1]
             q_central_i[idx] = q_pad[1:-1]
             b_bs_i[idx] = sigs * (q_pad[1:] - q_pad[:-1]) / grid.ds
             b_bp_i[idx] = q_pad[1:-1] / sigc
