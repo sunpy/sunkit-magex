@@ -487,14 +487,14 @@ def outflow(input, mode_tol=1e-10):
     ok a real magnetogram data, essentially every mode is non-negligible,
     and the cost becomes prohibitive. Three changes address this:
 
-    1. **Boundary-fitting coefficients (new)**``C_{l,m}`` (`_boundary_coefficient`
+    1. **Boundary-fitting coefficients (new)** ``C_{l,m}`` (`_boundary_coefficient`
        is the reference per-mode formula) are computed for every ``(i, j)``
        pair at once: the azimuthal projection ``T = Br @ Phi`` is one
        matmul, and the remaining latitudinal sum is a batched
        matrix-vector product (one small matmul per ``i``, executed as a
        single batched ``@`` call), instead of ``ns*nphi`` separate calls
        each redoing an ``O(ns*nphi)`` reduction from scratch.
-    2. **Field reconstruction (in orig Fortran but not python)**:
+    2. **Field reconstruction (in orig Fortran but not python)** :
        the radial (H, G) and latitudinal (Q) profiles of a mode depend
        on *both* azimuthal index ``i`` and latitudinal index ``j``, but
        the azimuthal profile (P) depends only on ``i``. That asymmetry
