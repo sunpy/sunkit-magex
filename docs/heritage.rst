@@ -38,8 +38,8 @@ A ready made bibtex entry is
 =============
 
 The outflow field extrapolation (`sunkit_magex.pfss.outflow`) is adapted from `outflowpy <https://github.com/oekrice/outflowpy>`__, developed by `Oliver Rice <https://www.durham.ac.uk/staff/oliver-e-k-rice/>`__ at Durham University.
-`outflowpy` implements the outflow field model, which generalises PFSS by including a solar wind outflow speed profile, and is itself based on `pfsspy`.
-Both `outflowpy` and `sunkit-magex` are distributed under the GNU General Public License v3.
+``outflowpy`` implements the outflow field model, which generalises PFSS by including a solar wind outflow speed profile, and is itself based on `pfsspy`.
+Both ``outflowpy`` and ``sunkit-magex`` are distributed under the GNU General Public License v3.
 
 Citing
 ------
