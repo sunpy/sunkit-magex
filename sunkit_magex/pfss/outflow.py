@@ -493,6 +493,20 @@ def outflow(input, mode_tol=1e-10):
     br_scale = np.max(np.abs(br0))
     threshold = mode_tol * br_scale if br_scale > 0 else mode_tol
 
+    # Vectorised boundary-fitting coefficients C_{l,m} for every (m, l)
+    # pair at once -- see `_boundary_coefficient` for the per-mode formula
+    # this is derived from. T_{s,m} = sum_p Br(s,p) Phi_m(p) is one
+    # matmul, and the l-sum is then a batched matrix-vector product (one
+    # small matmul per m, executed as a single batched ``@`` call), instead
+    # of ns*nphi separate calls each redoing an O(ns*nphi) reduction from
+    # scratch (which made the boundary-fitting sweep O((ns*nphi)^2)
+    # overall).
+    T = br0 @ grid.trigs  # (ns, n_m)
+    numerator = (T.T[:, np.newaxis, :] @ grid.legs).squeeze(1)  # (n_m, ns)
+    q_sq_sum = np.sum(grid.legs**2, axis=1)  # (n_m, ns)
+    p_sq_sum = np.sum(grid.trigs**2, axis=0)  # (n_m,)
+    all_cmls = numerator / (q_sq_sum * p_sq_sum[:, np.newaxis])  # (nphi, ns)
+
     # Azimuthal (P) profiles only depend on i, so build them once for
     # every mode up front.
     p_pad = np.zeros((nphi, nphi + 2))
@@ -508,8 +522,7 @@ def outflow(input, mode_tol=1e-10):
     partial_bp = np.zeros((nphi, nr, ns))
 
     for i in range(nphi):
-        cmls_all_j = np.array([_boundary_coefficient(br0, grid.legs[i, :, j], grid.trigs[:, i])
-                               for j in range(ns)])
+        cmls_all_j = all_cmls[i]
         active_j = np.nonzero(np.abs(cmls_all_j) >= threshold)[0]
         if len(active_j) == 0:
             continue
