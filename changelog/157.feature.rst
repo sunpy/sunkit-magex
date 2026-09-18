@@ -1,1 +1,1 @@
-Improve performance of `~sunkit_magex.pfss.pfss.pfss` by ~2x by switching to `scipy.linalg.eigh_tridiagonal` and refactoring some python loops to Numpy vectorised versions.
+Improve performance of `~sunkit_magex.pfss.pfss` by ~2x by switching to `scipy.linalg.eigh_tridiagonal` and refactoring some python loops to Numpy vectorised versions.
