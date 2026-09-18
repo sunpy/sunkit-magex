@@ -575,19 +575,11 @@ def outflow(input, mode_tol=1e-10):
         hcx_all_i, gg_i = _radial_h_g_batch(l_modes_i, grid.rcx, input.vcx, input.vdcx, grid.dr, grid.rg)
         hcx_central_i = hcx_all_i[:, 1:-1]
 
-        q_central_i = np.empty((n_i, ns))
-        b_bs_i = np.empty((n_i, ns + 1))
-        b_bp_i = np.empty((n_i, ns))
-
-        for idx, j in enumerate(active_j):
-            q_pad = np.zeros(ns + 2)
-            q_pad[1:-1] = grid.legs[i, :, j]
-            q_pad[0] = q_pad[1]
-            q_pad[-1] = q_pad[-2]
-
-            q_central_i[idx] = q_pad[1:-1]
-            b_bs_i[idx] = sigs * (q_pad[1:] - q_pad[:-1]) / grid.ds
-            b_bp_i[idx] = q_pad[1:-1] / sigc
+        q_central_i = grid.legs[i, :, active_j]
+        b_bp_i = q_central_i / sigc[np.newaxis, :]
+        b_bs_i = np.zeros((n_i, ns + 1))
+        b_bs_i[:, 1:-1] = np.diff(q_central_i, axis=1)
+        b_bs_i *= sigs[np.newaxis, :] / grid.ds
 
         a_br_i = cmls_i[:, np.newaxis] * gg_i
         a_bsbp_i = cmls_i[:, np.newaxis] * hcx_central_i
