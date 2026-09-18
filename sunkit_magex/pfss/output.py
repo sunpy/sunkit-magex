@@ -256,14 +256,9 @@ class Output:
         """
         br, bs, bp, Sbr, Sbs, Sbp = self._common_b()
         # Remove area factors:
-        br = br.copy()
-        bs = bs.copy()
-        bp = bp.copy()
-        for i in range(self.grid.nphi + 2):
-            br[i, :, :] = br[i, :, :] / Sbr
-            bs[i, :, :] = bs[i, :, :] / Sbs
-        for i in range(self.grid.nphi + 1):
-            bp[i, :, :] = bp[i, :, :] / Sbp
+        br = br / Sbr
+        bs = bs / Sbs
+        bp = bp / Sbp
 
         # Slice to remove ghost cells
         return (br[1:-1, 1:-1, :] * self.bunit,
@@ -289,12 +284,10 @@ class Output:
         brg = br[:-1, :-1, :] + br[1:, :-1, :] + br[1:, 1:, :] + br[:-1, 1:, :]
         bsg = bs[:-1, :, :-1] + bs[1:, :, :-1] + bs[1:, :, 1:] + bs[:-1, :, 1:]
         bpg = bp[:, :-1, :-1] + bp[:, 1:, :-1] + bp[:, 1:, 1:] + bp[:, :-1, 1:]
-        for i in range(self.grid.nphi + 1):
-            brg[i, :, :] /= 2 * (Sbr[:-1, :] + Sbr[1:, :])
-            bsg[i, :, :] /= 2 * (Sbs[:, :-1] + Sbs[:, 1:])
-        for i in range(self.grid.nphi + 1):
-            bpg[i, :, :] /= (Sbp[:-1, :-1] + Sbp[1:, :-1] +
-                             Sbp[1:, 1:] + Sbp[:-1, 1:])
+        brg = brg / (2 * (Sbr[:-1, :] + Sbr[1:, :]))
+        bsg = bsg / (2 * (Sbs[:, :-1] + Sbs[:, 1:]))
+        bpg = bpg / (Sbp[:-1, :-1] + Sbp[1:, :-1] +
+                     Sbp[1:, 1:] + Sbp[:-1, 1:])
         bsg *= -1
         out = np.stack((bpg, bsg, brg), axis=-1)
         out.flags.writeable = False
@@ -341,39 +334,32 @@ class Output:
         # Required face normals:
         dnp = np.zeros((ns + 2, 2))
         dns = np.zeros((ns + 1, 2))
-        dnr = np.zeros(ns + 2)
         for k in range(2):
-            for j in range(1, ns + 1):
-                dnp[j, k] = rrc[k] * np.sqrt(1 - sc[j - 1]**2) * dp
+            dnp[1:-1, k] = rrc[k] * np.sqrt(1 - sc**2) * dp
             dnp[0, k] = dnp[1, k]
             dnp[-1, k] = dnp[-2, k]
-            for j in range(1, ns):
-                dns[j, k] = rrc[k] * (np.arcsin(sc[j]) - np.arcsin(sc[j - 1]))
+            dns[1:-1, k] = rrc[k] * (np.arcsin(sc[1:]) - np.arcsin(sc[:-1]))
             dns[0, k] = dns[1, k]
             dns[-1, k] = dns[-2, k]
-        for j in range(ns + 2):
-            dnr[j] = rrc[0] * (np.exp(dr) - 1)
+        dnr = np.full(ns + 2, rrc[0] * (np.exp(dr) - 1))
         dnr[0] = -dnr[0]
         dnr[-1] = -dnr[-1]
 
         # Required area factors:
         Sbr = np.zeros((ns + 2, nr + 1))
-        for k in range(nr + 1):
-            Sbr[1:-1, k] = np.exp(2 * rg[k]) * ds * dp
-            Sbr[0, k] = Sbr[1, k]
-            Sbr[-1, k] = Sbr[-2, k]
+        Sbr[1:-1, :] = np.exp(2 * rg) * ds * dp
+        Sbr[0, :] = Sbr[1, :]
+        Sbr[-1, :] = Sbr[-2, :]
         Sbs = np.zeros((ns + 1, nr + 2))
-        for k in range(nr + 2):
-            for j in range(1, ns):
-                Sbs[j, k] = 0.5 * np.exp(2 * rc[k] - dr) * dp * (np.exp(2 * dr) - 1) * np.sqrt(1 - sg[j]**2)
-            Sbs[0, k] = Sbs[1, k]
-            Sbs[-1, k] = Sbs[-2, k]
+        Sbs[1:-1, :] = (0.5 * np.exp(2 * rc - dr) * dp * (np.exp(2 * dr) - 1))[np.newaxis, :] * \
+            np.sqrt(1 - sg[1:-1]**2)[:, np.newaxis]
+        Sbs[0, :] = Sbs[1, :]
+        Sbs[-1, :] = Sbs[-2, :]
         Sbp = np.zeros((ns + 2, nr + 2))
-        for k in range(nr + 2):
-            for j in range(1, ns + 1):
-                Sbp[j, k] = 0.5 * np.exp(2 * rc[k] - dr) * (np.exp(2 * dr) - 1) * (np.arcsin(sg[j]) - np.arcsin(sg[j - 1]))
-            Sbp[0, k] = Sbp[1, k]
-            Sbp[-1, k] = Sbp[-2, k]
+        Sbp[1:-1, :] = (0.5 * np.exp(2 * rc - dr) * (np.exp(2 * dr) - 1))[np.newaxis, :] * \
+            (np.arcsin(sg[1:]) - np.arcsin(sg[:-1]))[:, np.newaxis]
+        Sbp[0, :] = Sbp[1, :]
+        Sbp[-1, :] = Sbp[-2, :]
 
         # Compute br*Sbr, bs*Sbs, bp*Sbp at cell centres by Stokes theorem:
         br = np.zeros((nphi + 2, ns + 2, nr + 1))
@@ -393,21 +379,17 @@ class Output:
         br[0, :, :] = br[-2, :, :]
         br[-1, :, :] = br[1, :, :]
         # js = jp = 0 at photosphere:
-        for i in range(nphi + 1):
-            bp[i, :, 0] = Sbp[:, 0] / dnp[:, 0] * (bp[i, :, 1] * dnp[:, 1] / Sbp[:, 1] + br[i, :, 0] * dnr[:] / Sbr[:, 0] - br[i + 1, :, 0] * dnr[:] / Sbr[:, 0])
-        for i in range(nphi + 2):
-            bs[i, :, 0] = Sbs[:, 0] / dns[:, 0] * (bs[i, :, 1] * dns[:, 1] / Sbs[:, 1] + br[i, :-1, 0] * dnr[:-1] / Sbr[:-1, 0] - br[i, 1:, 0] * dnr[1:] / Sbr[1:, 0])
+        bp[:, :, 0] = Sbp[:, 0] / dnp[:, 0] * (bp[:, :, 1] * dnp[:, 1] / Sbp[:, 1] + br[:-1, :, 0] * dnr / Sbr[:, 0] - br[1:, :, 0] * dnr / Sbr[:, 0])
+        bs[:, :, 0] = Sbs[:, 0] / dns[:, 0] * (bs[:, :, 1] * dns[:, 1] / Sbs[:, 1] + br[:, :-1, 0] * dnr[:-1] / Sbr[:-1, 0] - br[:, 1:, 0] * dnr[1:] / Sbr[1:, 0])
         # - polar boundaries as in dumfric:
-        for i in range(nphi + 2):
-            i1 = (i + nphi // 2) % nphi
-            br[i, -1, :] = br[i1, -2, :]
-            br[i, 0, :] = br[i1, 1, :]
-            bs[i, -1, :] = 0.5 * (bs[i, -2, :] - bs[i1, -2, :])
-            bs[i, 0, :] = 0.5 * (bs[i, 1, :] - bs[i1, 1, :])
-        for i in range(nphi + 1):
-            i1 = (i + nphi // 2) % nphi
-            bp[i, -1, :] = -bp[i1, -2, :]
-            bp[i, 0, :] = -bp[i1, 1, :]
+        i1 = (np.arange(nphi + 2) + nphi // 2) % nphi
+        br[:, -1, :] = br[i1, -2, :]
+        br[:, 0, :] = br[i1, 1, :]
+        bs[:, -1, :] = 0.5 * (bs[:, -2, :] - bs[i1, -2, :])
+        bs[:, 0, :] = 0.5 * (bs[:, 1, :] - bs[i1, 1, :])
+        i1p = i1[:-1]
+        bp[:, -1, :] = -bp[i1p, -2, :]
+        bp[:, 0, :] = -bp[i1p, 1, :]
 
         self._common_b_cache = br, bs, bp, Sbr, Sbs, Sbp
         return self._common_b_cache
