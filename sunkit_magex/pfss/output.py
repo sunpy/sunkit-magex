@@ -498,5 +498,5 @@ class Output:
                  np.cos(coords.lon).value,
                  np.zeros(len(coords))],
             ])
-            bvecs = np.array([np.dot(M_.T, v) for M_, v in zip(M.T, bvecs)])
+            bvecs = np.einsum('ijn,nj->ni', M, bvecs)
         return bvecs * self.bunit
