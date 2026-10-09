@@ -476,7 +476,12 @@ class Output:
                           "do not match the pfss model obstime.")
 
         # Convert SkyCoord to sunkit_magex.pfss.Output coordinate frame
-        coords.transform_to(self.coordinate_frame)
+        coords = coords.transform_to(self.coordinate_frame)
+
+        # In general the phi value of the magnetic field array can differ from
+        # the longitude value in world coordinates
+        lon = coords.lon - (self._lon0 - 180 * u.deg)
+        coords = SkyCoord(lon, coords.lat, coords.radius, frame=self.coordinate_frame)
 
         # Do interpolation (returns cartesian vector)
         bvecs = self._brgi(np.array([coords.lon.to("rad").value,
