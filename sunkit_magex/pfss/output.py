@@ -493,7 +493,7 @@ class Output:
         # Rotate by +lon0_offset around Z axis
         cos_off = np.cos(lon0_offset).value
         sin_off = np.sin(lon0_offset).value
-        
+
         bvecs = np.zeros_like(bvecs_shifted)
         bvecs[:, 0] = bvecs_shifted[:, 0] * cos_off - bvecs_shifted[:, 1] * sin_off
         bvecs[:, 1] = bvecs_shifted[:, 0] * sin_off + bvecs_shifted[:, 1] * cos_off
