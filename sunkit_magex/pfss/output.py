@@ -476,13 +476,28 @@ class Output:
                           "do not match the pfss model obstime.")
 
         # Convert SkyCoord to sunkit_magex.pfss.Output coordinate frame
-        coords.transform_to(self.coordinate_frame)
+        coords = coords.transform_to(self.coordinate_frame)
 
-        # Do interpolation (returns cartesian vector)
-        bvecs = self._brgi(np.array([coords.lon.to("rad").value,
-                                     np.sin(coords.lat).value,
-                                     np.log(coords.radius.to("R_sun").value)]).T
-                           )
+        # In general the phi value of the magnetic field array can differ from
+        # the longitude value in world coordinates
+        lon0_offset = self._lon0 - 180 * u.deg
+        lon_shifted = (coords.lon - lon0_offset).to_value("rad") % (2 * np.pi)
+
+        # Do interpolation (returns cartesian vector in SHIFTED frame)
+        bvecs_shifted = self._brgi(np.array([lon_shifted,
+                                             np.sin(coords.lat).value,
+                                             np.log(coords.radius.to("R_sun").value)]).T
+                                   )
+
+        # Rotate cartesian vectors back to the UNSHIFTED frame
+        # Rotate by +lon0_offset around Z axis
+        cos_off = np.cos(lon0_offset).value
+        sin_off = np.sin(lon0_offset).value
+
+        bvecs = np.zeros_like(bvecs_shifted)
+        bvecs[:, 0] = bvecs_shifted[:, 0] * cos_off - bvecs_shifted[:, 1] * sin_off
+        bvecs[:, 1] = bvecs_shifted[:, 0] * sin_off + bvecs_shifted[:, 1] * cos_off
+        bvecs[:, 2] = bvecs_shifted[:, 2]
 
         # Convert to spherical if requested
         if out_type == "spherical":
