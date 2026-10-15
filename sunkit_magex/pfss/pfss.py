@@ -2,6 +2,7 @@
 Code for calculating a PFSS extrapolation.
 """
 import numpy as np
+from scipy.linalg import eigh_tridiagonal
 
 import sunkit_magex.pfss
 
@@ -11,10 +12,6 @@ try:
     HAS_NUMBA = True
 except Exception:
     pass
-
-
-def _eigh(A):
-    return np.linalg.eigh(A)
 
 
 def _compute_r_term(m, k, ns, Q, brt, lam, ffm, nr, ffp, psi, psir, rss, brt_outer):
@@ -54,17 +51,9 @@ def _als_alp(nr, nphi, Fs, psi, Fp, als, alp):
     return als, alp
 
 
-def _A_diag(A, ns, Vg, Uc, mu, m):
-    for j in range(ns):
-        A[j, j] = Vg[j] + Vg[j + 1] + Uc[j] * mu[m]
-    return A
-
-
 if HAS_NUMBA:
-    _eigh = numba.jit(nopython=True)(_eigh)
     _compute_r_term = numba.jit(nopython=True)(_compute_r_term)
     _als_alp = numba.jit(nopython=True)(_als_alp)
-    _A_diag = numba.jit(nopython=True)(_A_diag)
 
 
 def pfss(input):
@@ -105,9 +94,6 @@ def pfss(input):
     dp = input.grid.dp
     dr = input.grid.dr
 
-    input.grid.rg
-    input.grid.rc
-
     sg = input.grid.sg
     sc = input.grid.sc
 
@@ -132,11 +118,10 @@ def pfss(input):
         brt_outer = None
 
     # Prepare tridiagonal matrix:
-    # - create off-diagonal part of the matrix:
-    A = np.zeros((ns, ns))
-    for j in range(ns - 1):
-        A[j, j + 1] = -Vg[j + 1]
-        A[j + 1, j] = A[j, j + 1]
+    # - off-diagonal part of the matrix (same for every m):
+    e = -Vg[1:ns]
+    # - m-independent part of the diagonal:
+    d0 = Vg[:-1] + Vg[1:]
     # - term required for m-dependent part of matrix:
     mu = np.fft.fftfreq(nphi)
     mu = 4 * np.sin(np.pi * mu)**2
@@ -149,11 +134,11 @@ def pfss(input):
     # Loop over azimuthal modes (positive m):
     for m in range(nphi // 2 + 1):
         # - set diagonal terms of matrix:
-        A = _A_diag(A, ns, Vg, Uc, mu, m)
+        d = d0 + Uc * mu[m]
 
         # - compute eigenvectors Q_{lm} and eigenvalues lam_{lm}:
-        #   (note that A is symmetric so use special solver)
-        lam, Q = _eigh(A)
+        #  using tridiagonal solver
+        lam, Q = eigh_tridiagonal(d, e)
         Q = Q.astype(np.complex128)
         # - solve quadratic:
         Flm = 0.5 * (1 + e1 + lam * fact)
@@ -167,7 +152,7 @@ def pfss(input):
             psi[:, :, nphi - m] = np.conj(psi[:, :, m])
 
     # Past this point only psi, Fs, Fp are needed
-    # Compute psi by inverse fft:
+    # to compute psi by inverse fft:
     psi = np.real(np.fft.ifft(psi, axis=2))
 
     # Hence compute vector potential [note index order, for netcdf]:
