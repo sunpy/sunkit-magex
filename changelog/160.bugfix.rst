@@ -1,0 +1,1 @@
+Fixed a bug in ``pfss.Output.get_bvec`` where the input ``SkyCoord`` was not properly transformed or offset by the model's longitude (``_lon0``).
