@@ -87,8 +87,7 @@ def test_roll_map(adapt_map, gong_map):
 
     # Test ref pixel rolled correctly
     # (-0.5, -0.5) is the bottom-left corner of the bottom-left pixel
-    assert rolled_map.pixel_to_world(-0.5 * u.pixel,
-                                     -0.5 * u.pixel).lon == lh_edge_test
+    assert rolled_map.wcs.pixel_to_world(-0.5, -0.5).lon == lh_edge_test
 
     # Test output map is all finite
     assert np.all(np.isfinite(rolled_map.data))
