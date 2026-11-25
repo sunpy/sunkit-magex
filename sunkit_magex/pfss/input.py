@@ -49,8 +49,8 @@ class Input:
                 raise ValueError('At least one value in the input is NaN or '
                                  'non-finite. The input must consist solely of '
                                  'finite values.')
-            if br.dimensions != br_outer.dimensions:
-                raise ValueError('br and br_outer must have the same dimensions')
+            if br.shape != br_outer.shape:
+                raise ValueError('br and br_outer must have the same shape')
 
             sunkit_magex.pfss.utils.is_cea_map(br_outer, error=True)
             sunkit_magex.pfss.utils.is_full_sun_synoptic_map(br_outer, error=True)
