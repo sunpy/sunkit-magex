@@ -500,3 +500,148 @@ class Output:
             ])
             bvecs = np.array([np.dot(M_.T, v) for M_, v in zip(M.T, bvecs)])
         return bvecs * self.bunit
+
+
+class OutflowOutput(Output):
+    '''
+    Output of outflow field modelling (see `sunkit_magex.pfss.outflow`).
+
+    Parameters
+    ----------
+    br :
+        Magnetic field strength in the radial direction.
+    bs :
+        Magnetic field strength in the elevation direction.
+    bp :
+        Magnetic field strength in the azimuth direction.
+    grid : `~sunkit_magex.pfss.OutflowGrid`
+        Grid that the output was calculated on.
+    input_map : sunpy.map.GenericMap
+        The input map.
+
+    Notes
+    -----
+    Unlike `Output`, an outflow field is not derived from a vector
+    potential: ``br``, ``bs`` and ``bp`` are the magnetic field components
+    themselves (already divergence-free by construction)
+
+    Instances of this class are intended to be created by
+    `sunkit_magex.pfss.outflow`, and not by users.
+    '''
+    def __init__(self, br, bs, bp, grid, input_map=None):
+        self.br = br
+        self.bs = bs
+        self.bp = bp
+        self.grid = grid
+        self.input_map = input_map
+
+        # Cache attributes
+        self._common_b_cache = None
+        self._rgi = None
+
+    def _common_b(self):
+        """
+        Common code needed to calculate the magnetic field on cell faces
+        and grid points.
+
+        This is the same as `Output._common_b`, except the cell-centre
+        values of br*Sbr, bs*Sbs, bp*Sbp are set directly from the stored
+        br, bs, bp arrays, rather than computed as the curl of a vector
+        potential.
+        """
+        if self._common_b_cache is not None:
+            return self._common_b_cache
+
+        dr = self.grid.dr
+        ds = self.grid.ds
+        dp = self.grid.dp
+
+        nr = self.grid.nr
+        ns = self.grid.ns
+        nphi = self.grid.nphi
+
+        rss = self.grid.rss
+
+        sc = self.grid.sc
+
+        rg = self.grid.rg
+        sg = self.grid.sg
+
+        # Centre of cells in rho (including ghost cells)
+        rc = np.linspace(-0.5 * dr, np.log(rss) + 0.5 * dr, nr + 2)
+        rrc = np.exp(rc)
+
+        # Required face normals:
+        dnp = np.zeros((ns + 2, 2))
+        dns = np.zeros((ns + 1, 2))
+        dnr = np.zeros(ns + 2)
+        for k in range(2):
+            for j in range(1, ns + 1):
+                dnp[j, k] = rrc[k] * np.sqrt(1 - sc[j - 1]**2) * dp
+            dnp[0, k] = dnp[1, k]
+            dnp[-1, k] = dnp[-2, k]
+            for j in range(1, ns):
+                dns[j, k] = rrc[k] * (np.arcsin(sc[j]) - np.arcsin(sc[j - 1]))
+            dns[0, k] = dns[1, k]
+            dns[-1, k] = dns[-2, k]
+        for j in range(ns + 2):
+            dnr[j] = rrc[0] * (np.exp(dr) - 1)
+        dnr[0] = -dnr[0]
+        dnr[-1] = -dnr[-1]
+
+        # Required area factors:
+        Sbr = np.zeros((ns + 2, nr + 1))
+        for k in range(nr + 1):
+            Sbr[1:-1, k] = np.exp(2 * rg[k]) * ds * dp
+            Sbr[0, k] = Sbr[1, k]
+            Sbr[-1, k] = Sbr[-2, k]
+        Sbs = np.zeros((ns + 1, nr + 2))
+        for k in range(nr + 2):
+            for j in range(1, ns):
+                Sbs[j, k] = 0.5 * np.exp(2 * rc[k] - dr) * dp * (np.exp(2 * dr) - 1) * np.sqrt(1 - sg[j]**2)
+            Sbs[0, k] = Sbs[1, k]
+            Sbs[-1, k] = Sbs[-2, k]
+        Sbp = np.zeros((ns + 2, nr + 2))
+        for k in range(nr + 2):
+            for j in range(1, ns + 1):
+                Sbp[j, k] = 0.5 * np.exp(2 * rc[k] - dr) * (np.exp(2 * dr) - 1) * (np.arcsin(sg[j]) - np.arcsin(sg[j - 1]))
+            Sbp[0, k] = Sbp[1, k]
+            Sbp[-1, k] = Sbp[-2, k]
+
+        # Set br*Sbr, bs*Sbs, bp*Sbp at cell centres directly from the
+        # stored (already divergence-free) field components:
+        br = np.zeros((nphi + 2, ns + 2, nr + 1))
+        bs = np.zeros((nphi + 2, ns + 1, nr + 2))
+        bp = np.zeros((nphi + 1, ns + 2, nr + 2))
+        br[1:-1, 1:-1, :] = self.br * Sbr[np.newaxis, 1:-1, :]
+        bs[1:-1, :, 1:-1] = self.bs * Sbs[np.newaxis, :, 1:-1]
+        bp[:, 1:-1, 1:-1] = self.bp * Sbp[np.newaxis, 1:-1, 1:-1]
+
+        # Fill ghost values with boundary conditions:
+        # - zero-gradient at outer boundary:
+        bs[1:-1, :, -1] = 2 * bs[1:-1, :, -2] - bs[1:-1, :, -3]
+        bp[:, 1:-1, -1] = 2 * bp[:, 1:-1, -2] - bp[:, 1:-1, -3]
+        # - periodic in phi:
+        bs[0, :, :] = bs[-2, :, :]
+        bs[-1, :, :] = bs[1, :, :]
+        br[0, :, :] = br[-2, :, :]
+        br[-1, :, :] = br[1, :, :]
+        # js = jp = 0 at photosphere:
+        for i in range(nphi + 1):
+            bp[i, :, 0] = Sbp[:, 0] / dnp[:, 0] * (bp[i, :, 1] * dnp[:, 1] / Sbp[:, 1] + br[i, :, 0] * dnr[:] / Sbr[:, 0] - br[i + 1, :, 0] * dnr[:] / Sbr[:, 0])
+        for i in range(nphi + 2):
+            bs[i, :, 0] = Sbs[:, 0] / dns[:, 0] * (bs[i, :, 1] * dns[:, 1] / Sbs[:, 1] + br[i, :-1, 0] * dnr[:-1] / Sbr[:-1, 0] - br[i, 1:, 0] * dnr[1:] / Sbr[1:, 0])
+        # - polar boundaries as in dumfric:
+        for i in range(nphi + 2):
+            i1 = (i + nphi // 2) % nphi
+            br[i, -1, :] = br[i1, -2, :]
+            br[i, 0, :] = br[i1, 1, :]
+            bs[i, -1, :] = 0.5 * (bs[i, -2, :] - bs[i1, -2, :])
+            bs[i, 0, :] = 0.5 * (bs[i, 1, :] - bs[i1, 1, :])
+        for i in range(nphi + 1):
+            i1 = (i + nphi // 2) % nphi
+            bp[i, -1, :] = -bp[i1, -2, :]
+            bp[i, 0, :] = -bp[i1, 1, :]
+
+        self._common_b_cache = br, bs, bp, Sbr, Sbs, Sbp
+        return self._common_b_cache
