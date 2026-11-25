@@ -42,12 +42,12 @@ def test_header_generation():
 
     tols = {'rtol': 0, 'atol': 0.01 * u.deg}
     # Bottom left corner
-    corner_coord = m.pixel_to_world(-0.5 * u.pix, -0.5 * u.pix)
+    corner_coord = m.wcs.pixel_to_world(-0.5, -0.5)
     assert u.allclose(corner_coord.lat, -90 * u.deg, **tols)
     assert u.allclose(corner_coord.lon, 180 * u.deg, **tols)
 
     # Top right corner
-    top_coord = m.pixel_to_world(89.5 * u.pix, 179.5 * u.pix)
+    top_coord = m.wcs.pixel_to_world(89.5, 179.5)
     assert u.allclose(top_coord.lat, 90 * u.deg, **tols)
     assert u.allclose(corner_coord.lon, 180 * u.deg, **tols)
 
