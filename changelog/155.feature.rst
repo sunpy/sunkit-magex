@@ -1,0 +1,1 @@
+Improve the performance of `sunkit_magex.pfss.outflow` by ~100-1000x with a vectorised version of the boundary-fitting coefficient sweep and the field reconstruction as batched matrix multiplications, also batching the radial recursion into a single JIT-compiled call.
